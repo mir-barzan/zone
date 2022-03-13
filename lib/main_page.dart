@@ -16,7 +16,12 @@ class _mainPageState extends State<mainPage> {
           child: const Text("Hello Zone"),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(items: const [
+      bottomNavigationBar: BottomNavigationBar(
+        fixedColor: Colors.white,
+        unselectedItemColor: Colors.white38 ,
+        backgroundColor: Colors.black,
+        type: BottomNavigationBarType.fixed,
+        items: const [
         BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Main")
