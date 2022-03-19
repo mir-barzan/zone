@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zone/login.dart';
 import 'package:zone/main_page.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:zone/signup.dart';
+
 
 void main() => runApp(const MyApp());
 
@@ -32,52 +36,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-
-      appBar: AppBar(
-        title: const Text('Zone'),
-        backgroundColor: ,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            Container(
-              width: 300,
-              child: TextField(decoration: InputDecoration(
-                  border: InputBorder.none,
-                  labelText: 'Username',
-                  hintText: 'Enter Your Username',
-                  alignLabelWithHint: true,
-                  filled: true,
-
-              ),
-              ),
-            )  ,
-            SizedBox(width: 10,height: 10,),
-
-            Container(
-              width: 300,
-              child: TextField(decoration: InputDecoration(
-                  border: InputBorder.none,
-                  labelText: 'Password',
-                  hintText: 'Enter Your Password',
-                  alignLabelWithHint: true,
-                filled: true,
-
-
-
-              )),
-            ),
-          SizedBox(height: 50,),
-            IconButton(onPressed: (){}, icon: Icon(Icons.arrow_right_alt_sharp), iconSize: 50, color: Colors.white38,)
-
-          ],
-        ),
-
-      ),
-      backgroundColor: Colors.cyan.shade50,
-    );
+    return signup();
   }
 }
+
