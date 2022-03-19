@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "680267048158",
+    "project_id": "zone-b3608",
+    "storage_bucket": "zone-b3608.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680267048158:android:fb6c09eafd574a4043ce4f",
+        "android_client_info": {
+          "package_name": "com.zone.appers.zone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680267048158-l4j1ut7gm2kaggd6p6mhruf373lcp6hr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiUYPubcu0FT4g5aVAMQVQi5lVt2doKQc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680267048158-l4j1ut7gm2kaggd6p6mhruf373lcp6hr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zone/main_page.dart';
 
@@ -25,26 +26,8 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    mainPage(),
-    Text(
-      'Index 1: Profile',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: Settings',
-      style: optionStyle,
-    ),
-  ];
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,29 +36,48 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
       appBar: AppBar(
         title: const Text('Zone'),
+        backgroundColor: ,
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            Container(
+              width: 300,
+              child: TextField(decoration: InputDecoration(
+                  border: InputBorder.none,
+                  labelText: 'Username',
+                  hintText: 'Enter Your Username',
+                  alignLabelWithHint: true,
+                  filled: true,
+
+              ),
+              ),
+            )  ,
+            SizedBox(width: 10,height: 10,),
+
+            Container(
+              width: 300,
+              child: TextField(decoration: InputDecoration(
+                  border: InputBorder.none,
+                  labelText: 'Password',
+                  hintText: 'Enter Your Password',
+                  alignLabelWithHint: true,
+                filled: true,
+
+
+
+              )),
+            ),
+          SizedBox(height: 50,),
+            IconButton(onPressed: (){}, icon: Icon(Icons.arrow_right_alt_sharp), iconSize: 50, color: Colors.white38,)
+
+          ],
+        ),
+
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
+      backgroundColor: Colors.cyan.shade50,
     );
   }
 }
