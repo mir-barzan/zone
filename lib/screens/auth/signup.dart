@@ -24,7 +24,20 @@ class signup extends StatelessWidget {
               ),
             )  ,
             SizedBox(width: 10,height: 10,),
+            Container(
+              width: 300,
+              child: TextField(decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: 'E-mail',
+                hintText: 'Enter Your E-mail',
+                alignLabelWithHint: true,
+                filled: true,
 
+
+
+              )),
+            ),
+            SizedBox(height: 10,),
             Container(
               width: 300,
               child: TextField(decoration: InputDecoration(
@@ -38,7 +51,7 @@ class signup extends StatelessWidget {
 
               )),
             ),
-            SizedBox(height: 50,),
+            SizedBox(height: 20,),
             Text("Sign Up"),
             IconButton(onPressed: (){}, icon: Icon(Icons.arrow_right_alt_sharp), iconSize: 50, color: Colors.black  ,)
 
