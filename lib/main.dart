@@ -6,6 +6,7 @@ import 'package:zone/screens/auth/listner.dart';
 import 'package:zone/screens/main_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:zone/screens/auth/signup.dart';
+import 'firebase_options.dart';
 
 
 void main() => runApp(const MyApp());
@@ -38,7 +39,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
 
-    return listner();
+    // return listner();
+    return login();
   }
 }
 
