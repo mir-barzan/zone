@@ -1,100 +1,131 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:zone/additional/colors.dart';
+import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/signup.dart';
+import 'package:zone/widgets/AdditionalWidgets.dart';
+import 'package:zone/widgets/text_field_input.dart';
 
-class login extends StatelessWidget {
+import '../main_page.dart';
+
+class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
+
+  @override
+  State<login> createState() => _loginState();
+}
+
+class _loginState extends State<login> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
+  bool _isLoading = false;
+
+  void signInUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String result = await FireAuth().signInUser(
+        email: _emailController.text, password: _passwordController.text);
+    if (result != 'success') {
+      showAlertDialog(context,"Make sure all fields are filled correctly!" ,result, Icon(Icons.error, color: Colors.red,));
+    } else {
+      showAlertDialog(context, "","Success", Icon(Icons.check, color: Colors.green,));
+      navigateToWithoutBack(context, mainPage());
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+        body: SafeArea(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        width: double.infinity,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
-            Container(
-              width: 300,
-              child: TextField(decoration: InputDecoration(
-                border: InputBorder.none,
-                labelText: 'Username',
-                hintText: 'Enter Your Username',
-                alignLabelWithHint: true,
-                filled: true,
-
-              ),
-              ),
-            )  ,
-            SizedBox(width: 10,height: 10,),
-
-            Container(
-              width: 300,
-              child: TextField(decoration: InputDecoration(
-                border: InputBorder.none,
-                labelText: 'Password',
-                hintText: 'Enter Your Password',
-                alignLabelWithHint: true,
-                filled: true,
-
-
-
-              )),
+            Flexible(
+              child: Container(),
+              flex: 1,
             ),
-            SizedBox(height: 50,),
-            MaterialButton(
-                child: Text("Login",style: TextStyle(
-                  color: Colors.white,
+            const SizedBox(
+              height: 64,
+            ),
+            TextFieldInput(
+                textEditingController: _emailController,
+                hintText: "Enter your email",
+                textInputType: TextInputType.emailAddress),
+            const SizedBox(
+              height: 20,
+            ),
+            TextFieldInput(
+              textEditingController: _passwordController,
+              hintText: "Enter your password",
+              textInputType: TextInputType.text,
+              isPass: true,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: signInUser,
+              child: Container(
+                  child: const Text(
+                    'Login',
+                    style: (TextStyle(color: primaryColor)),
+                  ),
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4))),
+                    color: secColor,
+                  )),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            Flexible(
+              child: Container(),
+              flex: 2,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: const Text("New Zoner?"),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                 ),
-                ),
-                color: Colors.lightBlue[900],
-                minWidth: 125,
-                onPressed: (){},
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)
-              ),
+                GestureDetector(
+                  onTap: () {
+                    navigateToWithoutBack(context, const signup());
+                  },
+                  child: Container(
+                    child: const Text("   Register",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: secColor)),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                  ),
+                )
+              ],
             )
-
-          ],
-        ),
-
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-
-          children: [
-        new RichText(
-        text: new TextSpan(text: 'New User ? ', children: [
-          new TextSpan(
-            text: 'Register',
-            style: TextStyle(
-              color: Colors.lightBlue[900],
-              fontSize: 14,
-            ),
-            recognizer: new TapGestureRecognizer()..onTap = () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const signup()),
-            ),
-          )
-        ]),
-      )
-            // Text("New User?", style: TextStyle(fontSize: 16),),
-            // SizedBox(width: 5, height: 5,),
-            // MaterialButton(
-            //   child: Text("Register",style: TextStyle(
-            //     color: Colors.white,
-            //   ),
-            //   ),
-            //   color: Colors.transparent,
-            //   minWidth: 125,
-            //   onPressed: (){},
-            //   shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(10)
-            //   ),
-            // )
           ],
         ),
       ),
-    );
+    ));
   }
 }

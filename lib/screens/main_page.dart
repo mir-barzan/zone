@@ -51,6 +51,7 @@ class _mainPageState extends State<mainPage> {
           height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
