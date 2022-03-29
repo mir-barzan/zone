@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../additional/colors.dart';
+
 showSnackBar(BuildContext context, String text) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -77,5 +79,27 @@ showAlertDialog(BuildContext context, String errorText,String text, Icon icon) {
     builder: (BuildContext context) {
       return alert;
     },
+  );
+}
+Widget ccontainer(String text){
+  return Container(
+    child: Center(child: Text(text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),
+    decoration: BoxDecoration(
+      color: secColor,
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(42),
+          topRight: Radius.circular(42),
+          bottomLeft: Radius.circular(42),
+          bottomRight: Radius.circular(42)
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: const Offset(0, 3), // changes position of shadow
+        ),
+      ],
+    ),
   );
 }

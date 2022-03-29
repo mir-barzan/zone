@@ -20,6 +20,7 @@ class FireAuth {
     String result = "Error !";
     try{
     if(email.isNotEmpty || password.isNotEmpty){
+     await _auth.signInWithEmailAndPassword(email: email, password: password);
       result = 'success';
     }else{
       print("Please fill the fields");
@@ -34,14 +35,21 @@ class FireAuth {
     required String fname,
     required String lname,
     required String email,
-
+    required String password,
   }) async {
     String result = "";
     try {
       if (fname.isNotEmpty ||
           lname.isNotEmpty ||
           email.isNotEmpty ||
-
+          password.isNotEmpty) {
+        UserCredential cred = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        //add user to the firebase database
+        _firestore.collection('users').doc(cred.user!.uid);
+        model.User user = model.User(
+          fname: fname,
+          lname: lname,
           email: email,
           password: password,
           uid: cred.user!.uid,
