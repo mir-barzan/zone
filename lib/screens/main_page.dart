@@ -15,9 +15,6 @@ class mainPage extends StatefulWidget {
 }
 
 class _mainPageState extends State<mainPage> {
-
-
-
   int currentTab = 0;
   final List<Widget> screens = [
     dashboard(),
@@ -29,19 +26,21 @@ class _mainPageState extends State<mainPage> {
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = dashboard();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageStorage(child: currentScreen ,bucket: bucket,),
+      body: PageStorage(
+        child: currentScreen,
+        bucket: bucket,
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: (){
-          currentTab=2;
-          currentScreen=postScreen();
+        onPressed: () {
+          currentTab = 2;
+          currentScreen = postScreen();
         },
         backgroundColor: Colors.lightBlue[800],
-
-
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -51,16 +50,14 @@ class _mainPageState extends State<mainPage> {
           height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MaterialButton(
-
                     minWidth: 40,
-                    onPressed: (){
+                    onPressed: () {
                       setState(() {
                         currentScreen = dashboard();
                         currentTab = 0;
@@ -71,21 +68,24 @@ class _mainPageState extends State<mainPage> {
                       children: [
                         Icon(
                           Icons.dashboard,
-                          color: currentTab == 0? Colors.lightBlue[900] : Colors.grey,
-
+                          color: currentTab == 0
+                              ? Colors.lightBlue[900]
+                              : Colors.grey,
                         ),
-                        Text('Dashboard', style: TextStyle(
-                          color: currentTab == 0? Colors.lightBlue[900] : Colors.grey,
-                        ),)
+                        Text(
+                          'Dashboard',
+                          style: TextStyle(
+                            color: currentTab == 0
+                                ? Colors.lightBlue[900]
+                                : Colors.grey,
+                          ),
+                        )
                       ],
                     ),
-
-
                   ),
                   MaterialButton(
-
                     minWidth: 40,
-                    onPressed: (){
+                    onPressed: () {
                       setState(() {
                         currentScreen = projectsScreen();
                         currentTab = 1;
@@ -96,16 +96,20 @@ class _mainPageState extends State<mainPage> {
                       children: [
                         Icon(
                           Icons.work,
-                          color: currentTab == 1? Colors.lightBlue[900] : Colors.grey,
-
+                          color: currentTab == 1
+                              ? Colors.lightBlue[900]
+                              : Colors.grey,
                         ),
-                        Text('Projects', style: TextStyle(
-                          color: currentTab == 1? Colors.lightBlue[900] : Colors.grey,
-                        ),)
+                        Text(
+                          'Projects',
+                          style: TextStyle(
+                            color: currentTab == 1
+                                ? Colors.lightBlue[900]
+                                : Colors.grey,
+                          ),
+                        )
                       ],
                     ),
-
-
                   )
                 ],
               ),
@@ -114,9 +118,8 @@ class _mainPageState extends State<mainPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MaterialButton(
-
                     minWidth: 40,
-                    onPressed: (){
+                    onPressed: () {
                       setState(() {
                         currentScreen = offersScreen();
                         currentTab = 3;
@@ -127,21 +130,24 @@ class _mainPageState extends State<mainPage> {
                       children: [
                         Icon(
                           Icons.local_offer,
-                          color: currentTab == 3? Colors.lightBlue[900] : Colors.grey,
-
+                          color: currentTab == 3
+                              ? Colors.lightBlue[900]
+                              : Colors.grey,
                         ),
-                        Text('Offers', style: TextStyle(
-                          color: currentTab == 3? Colors.lightBlue[900] : Colors.grey,
-                        ),)
+                        Text(
+                          'Offers',
+                          style: TextStyle(
+                            color: currentTab == 3
+                                ? Colors.lightBlue[900]
+                                : Colors.grey,
+                          ),
+                        )
                       ],
                     ),
-
-
                   ),
                   MaterialButton(
-
                     minWidth: 40,
-                    onPressed: (){
+                    onPressed: () {
                       setState(() {
                         currentScreen = profileScreen();
                         currentTab = 4;
@@ -152,16 +158,20 @@ class _mainPageState extends State<mainPage> {
                       children: [
                         Icon(
                           Icons.person,
-                          color: currentTab == 4? Colors.lightBlue[900] : Colors.grey,
-
+                          color: currentTab == 4
+                              ? Colors.lightBlue[900]
+                              : Colors.grey,
                         ),
-                        Text('Profile', style: TextStyle(
-                          color: currentTab == 4? Colors.lightBlue[900] : Colors.grey,
-                        ),)
+                        Text(
+                          'Profile',
+                          style: TextStyle(
+                            color: currentTab == 4
+                                ? Colors.lightBlue[900]
+                                : Colors.grey,
+                          ),
+                        )
                       ],
                     ),
-
-
                   )
                 ],
               )

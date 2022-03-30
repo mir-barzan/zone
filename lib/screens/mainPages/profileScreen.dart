@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/login.dart';
-import 'package:zone/screens/subScreens/userSettings.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
+
+import '../settingsScreens/userSettings.dart';
 
 class profileScreen extends StatefulWidget {
   const profileScreen({Key? key}) : super(key: key);
@@ -38,14 +39,19 @@ class _profileScreenState extends State<profileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         elevation: 0,
         backgroundColor: primaryColor,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(onTap:(){navigateTo(context, const userSettings());},
-              child: Icon(Icons.settings, color: secColor,),
+            child: GestureDetector(
+              onTap: () {
+                navigateTo(context, const userSettings());
+              },
+              child: Icon(
+                Icons.settings,
+                color: secColor,
+              ),
             ),
           )
         ],
@@ -67,23 +73,25 @@ class _profileScreenState extends State<profileScreen> {
                 )
               ],
             ),
-            SizedBox(height: 60,),
+            SizedBox(
+              height: 60,
+            ),
             InkWell(
-
               onTap: () async {
                 await FireAuth().signOut();
                 navigateToWithoutBack(context, login());
               },
               child: Container(
                   child: Text(
-                    'Log out', style: (TextStyle(color: primaryColor)),),
+                    'Log out',
+                    style: (TextStyle(color: primaryColor)),
+                  ),
                   alignment: Alignment.center,
                   width: 150,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: const ShapeDecoration(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(
-                            4))),
+                        borderRadius: BorderRadius.all(Radius.circular(4))),
                     color: secColor,
                   )),
             ),

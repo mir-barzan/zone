@@ -1,5 +1,4 @@
-
-class User{
+class User {
   final String fname;
   final String lname;
   final String email;
@@ -12,13 +11,13 @@ class User{
     required this.email,
     required this.password,
     required this.uid,
-});
+  });
 
   Map<String, dynamic> toJson() => {
-    "fname": fname,
-    "lname": lname,
-    "email": email,
-    "password": password,
-    "uid": uid,
-  };
+        "fname": fname,
+        "lname": lname,
+        "email": email,
+        "password": password,
+        "uid": uid,
+      };
 }

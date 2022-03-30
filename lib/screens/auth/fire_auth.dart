@@ -8,28 +8,32 @@ import 'package:zone/Services/UModel.dart' as model;
 class FireAuth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   //USO
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
   //ULI
   Future<String> signInUser({
     required String email,
     required String password,
-  })async{
+  }) async {
     String result = "Error !";
-    try{
-    if(email.isNotEmpty || password.isNotEmpty){
-     await _auth.signInWithEmailAndPassword(email: email, password: password);
-      result = 'success';
-    }else{
-      print("Please fill the fields");
-    }
-    }catch(err){
-    result = err.toString();
+    try {
+      if (email.isNotEmpty || password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        result = 'success';
+      } else {
+        print("Please fill the fields");
+      }
+    } catch (err) {
+      result = err.toString();
     }
     return result;
   }
+
   //USU
   Future<String> signUpUser({
     required String fname,
@@ -55,8 +59,8 @@ class FireAuth {
           uid: cred.user!.uid,
         );
         await _firestore.collection('users').doc(cred.user!.uid).set(
-          user.toJson(),
-        );
+              user.toJson(),
+            );
         result = "success";
       }
     } catch (err) {

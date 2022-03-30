@@ -11,7 +11,9 @@ class _offersScreenState extends State<offersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("Welcome to Offers Screen"),),
+      body: Center(
+        child: Text("Welcome to Offers Screen"),
+      ),
     );
   }
 }

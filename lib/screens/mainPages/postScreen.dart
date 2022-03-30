@@ -11,7 +11,9 @@ class _postScreenState extends State<postScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("Welcome to Post Projects/Offers Screen"),),
+      body: Center(
+        child: Text("Welcome to Post Projects/Offers Screen"),
+      ),
     );
   }
 }

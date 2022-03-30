@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../additional/colors.dart';
@@ -45,11 +46,14 @@ navigateToWithoutBack(BuildContext context, Widget widget) {
       .pushReplacement(MaterialPageRoute(builder: (context) => widget));
 }
 
-showAlertDialog(BuildContext context, String errorText,String text, Icon icon) {
+showAlertDialog(
+    BuildContext context, String errorText, String text, Icon icon) {
   // set up the button
   Widget okButton = TextButton(
     child: Text("OK"),
-    onPressed: () {  Navigator.of(context).pop();},
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
   );
 
   // set up the AlertDialog
@@ -59,13 +63,15 @@ showAlertDialog(BuildContext context, String errorText,String text, Icon icon) {
       child: Row(
         children: [
           icon,
-      Flexible(
-        child: Text(text,
-          maxLines: 1,
-          softWrap: false,
-          overflow: TextOverflow.fade,
-        ),
-      )],
+          Flexible(
+            child: Text(
+              text,
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.fade,
+            ),
+          )
+        ],
       ),
     ),
     actions: [
@@ -81,25 +87,52 @@ showAlertDialog(BuildContext context, String errorText,String text, Icon icon) {
     },
   );
 }
-Widget ccontainer(String text){
+
+Widget ccontainer(String text) {
   return Container(
-    child: Center(child: Text(text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),
+    child: Center(
+        child: Text(
+      text,
+      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    )),
     decoration: BoxDecoration(
       color: secColor,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(42),
           topRight: Radius.circular(42),
           bottomLeft: Radius.circular(42),
-          bottomRight: Radius.circular(42)
-      ),
+          bottomRight: Radius.circular(42)),
       boxShadow: [
         BoxShadow(
           color: Colors.grey.withOpacity(0.5),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: const Offset(0, 3), // changes position of shadow
+          spreadRadius: 1,
+          blurRadius: 1,
+          offset: const Offset(0, 1), // changes position of shadow
         ),
       ],
     ),
+    width: 30,
+    height: 30,
   );
+}
+
+settingButton(String text, IconData icon, Widget screen) {
+  return FlatButton(
+      onPressed: () {screen;},
+      shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30.0),
+  side: BorderSide(color: secColor),),
+      child: Container(
+          child: Expanded(
+              child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [SizedBox(width: 20,),
+          Icon(icon,color: secColor,),
+          Expanded(
+              child: Container(
+                  child: Center(
+            child: Text(text, style: TextStyle(color: secColor, fontWeight: FontWeight.bold),),
+          )))
+        ],
+      ))));
 }

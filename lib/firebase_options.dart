@@ -61,7 +61,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '680267048158',
     projectId: 'zone-b3608',
     storageBucket: 'zone-b3608.appspot.com',
-    iosClientId: '680267048158-30t91i1u7nmcqcpb4pur22nj145v49ug.apps.googleusercontent.com',
+    iosClientId:
+        '680267048158-30t91i1u7nmcqcpb4pur22nj145v49ug.apps.googleusercontent.com',
     iosBundleId: 'com.zone.appers.zone',
   );
 }

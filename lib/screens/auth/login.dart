@@ -37,9 +37,23 @@ class _loginState extends State<login> {
     String result = await FireAuth().signInUser(
         email: _emailController.text, password: _passwordController.text);
     if (result != 'success') {
-      showAlertDialog(context,"Make sure all fields are filled correctly!" ,result, Icon(Icons.error, color: Colors.red,));
+      showAlertDialog(
+          context,
+          "Make sure all fields are filled correctly!",
+          result,
+          Icon(
+            Icons.error,
+            color: Colors.red,
+          ));
     } else {
-      showAlertDialog(context, "","Success", Icon(Icons.check, color: Colors.green,));
+      showAlertDialog(
+          context,
+          "",
+          "Success",
+          Icon(
+            Icons.check,
+            color: Colors.green,
+          ));
       navigateToWithoutBack(context, mainPage());
     }
     setState(() {
