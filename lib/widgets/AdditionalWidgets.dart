@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../additional/colors.dart';
 
@@ -116,23 +118,137 @@ Widget ccontainer(String text) {
   );
 }
 
-settingButton(String text, IconData icon, Widget screen) {
+settingButton(String text, IconData icon, BuildContext context, Widget widget) {
   return FlatButton(
-      onPressed: () {screen;},
-      shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(30.0),
-  side: BorderSide(color: secColor),),
+      height: 25.0,
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => widget));
+      },
       child: Container(
+          height: 50.0,
           child: Expanded(
               child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [SizedBox(width: 20,),
-          Icon(icon,color: secColor,),
-          Expanded(
-              child: Container(
-                  child: Center(
-            child: Text(text, style: TextStyle(color: secColor, fontWeight: FontWeight.bold),),
-          )))
-        ],
-      ))));
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 20,
+              ),
+              Icon(
+                icon,
+                color: secColor,
+              ),
+              Expanded(
+                  child: Container(
+                      child: Center(
+                child: Text(
+                  text,
+                  style:
+                      TextStyle(color: secColor, fontWeight: FontWeight.bold),
+                ),
+              )))
+            ],
+          ))));
+}
+
+// settingsDialog(
+//     BuildContext context, String errorText, String text, Icon icon) {
+//   // set up the button
+//   Widget okButton = TextButton(
+//     child: Text("Confirm"),
+//     onPressed: () {
+//       Navigator.of(context).pop();
+//     },
+//   );
+//
+//   // set up the AlertDialog
+//   AlertDialog alert = AlertDialog(
+//     title: Text(errorText),
+//     content: Container(
+//       child: Row(
+//         children: [
+//           icon,
+//           Flexible(
+//             child: Text(
+//               text,
+//               maxLines: 1,
+//               softWrap: false,
+//               overflow: TextOverflow.fade,
+//             ),
+//           )
+//         ],
+//       ),
+//     ),
+//     actions: [
+//       okButton,
+//     ],
+//   );
+//
+//   // show the dialog
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return alert;
+//     },
+//   );
+// }
+//TODO: complete here below
+// showDialogSubScreen(BuildContext context){
+//   TextEditingController _emailController = new TextEditingController();
+//   showDialog(context: context, builder: BuildContext context)
+// }
+
+settingButton2(
+    String labelText, String dataText, BuildContext context, Widget widget) {
+//TODO connect data with firebase!!(for example: show the current username before changing it like Facebook)
+  return FlatButton(
+      height: 25.0,
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => widget));
+      },
+      child: Container(
+          height: 50.0,
+          child: Expanded(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                  child: Container(
+                      child: Center(
+                          child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        labelText,
+                        style:
+                        TextStyle(color: secColor, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 7.0,),
+                  Center(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          dataText,
+                          style:
+                          TextStyle(color: secColor, fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              )))),
+              Icon(
+                Icons.keyboard_arrow_right_rounded,
+                color: secColor,
+              ),
+            ],
+          ))));
 }

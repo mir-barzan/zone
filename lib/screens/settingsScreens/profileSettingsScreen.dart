@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:zone/screens/settingsScreens/personalSettingsScreen.dart';
+import 'package:zone/screens/settingsScreens/portfolioScreen.dart';
+import 'package:zone/screens/settingsScreens/securityScreens.dart';
 
 import '../../additional/colors.dart';
+import '../../widgets/AdditionalWidgets.dart';
+import 'aboutUsScreen.dart';
+import 'helpScreen.dart';
 
 class profileSettingsScreen extends StatefulWidget {
   const profileSettingsScreen({Key? key}) : super(key: key);
@@ -25,22 +31,7 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
         backgroundColor: primaryColor,
       ),
       body: Center(
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              margin: EdgeInsets.only(top: 30),
-              padding: EdgeInsets.all(12.0),
-              child: GridView.count(
-                  crossAxisCount: 1,
-                  childAspectRatio: 20 / 8,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 20,
-                  children: [
-
-
-                    // TODO: fix containers
-                  ]),
-            )),
+        child: Text("Profile settings")
       ),
     );
   }

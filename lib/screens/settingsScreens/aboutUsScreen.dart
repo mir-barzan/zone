@@ -27,19 +27,14 @@ class _aboutUsScreenState extends State<aboutUsScreen> {
       body: Center(
         child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
-              margin: EdgeInsets.only(top: 30),
-              padding: EdgeInsets.all(12.0),
-              child: GridView.count(
-                  crossAxisCount: 1,
-                  childAspectRatio: 20 / 8,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 20,
-                  children: [
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 32.0,
+                ),
+                Text("The Zone Co."),
 
-
-                    // TODO: fix containers
-                  ]),
+              ],
             )),
       ),
     );

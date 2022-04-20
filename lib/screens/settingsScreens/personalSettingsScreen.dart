@@ -27,19 +27,12 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
       body: Center(
         child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
-              margin: EdgeInsets.only(top: 30),
-              padding: EdgeInsets.all(12.0),
-              child: GridView.count(
-                  crossAxisCount: 1,
-                  childAspectRatio: 20 / 8,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 20,
-                  children: [
+            child: Column(
+              children: [
+                SizedBox(height: 20,),
+                settingButton2("Name", "   AbdallahAlsaifi", context, widget),
 
-
-                    // TODO: fix containers
-                  ]),
+              ],
             )),
       ),
     );

@@ -76,25 +76,7 @@ class _profileScreenState extends State<profileScreen> {
             SizedBox(
               height: 60,
             ),
-            InkWell(
-              onTap: () async {
-                await FireAuth().signOut();
-                navigateToWithoutBack(context, login());
-              },
-              child: Container(
-                  child: Text(
-                    'Log out',
-                    style: (TextStyle(color: primaryColor)),
-                  ),
-                  alignment: Alignment.center,
-                  width: 150,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: const ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4))),
-                    color: secColor,
-                  )),
-            ),
+
           ],
         ),
       ),

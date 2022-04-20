@@ -57,7 +57,7 @@ class _mainPageState extends State<mainPage> {
                 children: [
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: () {
+                    onPressed: ()  {
                       setState(() {
                         currentScreen = dashboard();
                         currentTab = 0;
