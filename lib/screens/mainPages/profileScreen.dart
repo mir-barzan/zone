@@ -112,8 +112,8 @@ class _profileScreenState extends State<profileScreen> {
                               width: width,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(15.0),
-                                    topLeft: Radius.circular(15.0),
+                                    topRight: Radius.circular(40.0),
+                                    topLeft: Radius.circular(40.0),
                                     bottomRight: Radius.circular(40.0),
                                     bottomLeft: Radius.circular(40.0)),
                                 color: secColor.withOpacity(0.4),
@@ -130,7 +130,7 @@ class _profileScreenState extends State<profileScreen> {
                               width: width,
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 10, right: 10, top: 10, bottom: 0),
+                                    left: 10, right: 10, top: 10, bottom: 6),
                                 child: Column(
                                   children: [
                                     Row(
@@ -178,12 +178,13 @@ class _profileScreenState extends State<profileScreen> {
                                         ),
                                       ],
                                     ),
+                                    SizedBox(height: 10,),
                                     Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Container(
 
-                                          padding: const EdgeInsets.all(8),
+                                          padding: const EdgeInsets.all(5),
                                           child: Text(
                                             "I am a professional Programmer",
                                             style: TextStyle(
@@ -208,8 +209,8 @@ class _profileScreenState extends State<profileScreen> {
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(15.0),
-                                    topLeft: Radius.circular(15.0),
+                                    topRight: Radius.circular(40.0),
+                                    topLeft: Radius.circular(40.0),
                                     bottomRight: Radius.circular(40.0),
                                     bottomLeft: Radius.circular(40.0)),
                                 color: secColor.withOpacity(0.4),
@@ -349,9 +350,13 @@ class _profileScreenState extends State<profileScreen> {
 
             ],),
             Divider(thickness: 2,color: secColor.withOpacity(0.4)),
+            SizedBox(
+              height: 10.0,
+            ),
+
             Column(mainAxisAlignment: MainAxisAlignment.center,children: [
               Text(
-                "About",
+                "About me",
                 style: TextStyle(
                     color: secColor,
                     fontSize: 16,
@@ -359,17 +364,25 @@ class _profileScreenState extends State<profileScreen> {
               ),
               Center(
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(20),
                   child: Text(
                     "Hi, I am a professional Developer. I graduated from Cyprus international university in 2022 and I am working as a Zoner in The Zone",
                     style: TextStyle(
                         color: secColor.withOpacity(0.8),
                         fontSize: 16,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
                   ),
                 ),
               ),
-            ],)
+            ],),
+            SizedBox(
+              height: 10.0,
+            ),
+
+            Divider(thickness: 2,color: secColor.withOpacity(0.4)),
+
           ],
         ));
   }
