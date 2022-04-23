@@ -198,8 +198,7 @@ settingButton(String text, IconData icon, BuildContext context, Widget widget) {
 //   showDialog(context: context, builder: BuildContext context)
 // }
 
-settingButton2(
-    String labelText, String dataText, BuildContext context, Widget widget) {
+settingButton2(String labelText, String dataText, BuildContext context, Widget widget) {
 //TODO connect data with firebase!!(for example: show the current username before changing it like Facebook)
   return FlatButton(
       height: 25.0,
@@ -221,6 +220,7 @@ settingButton2(
                       child: Center(
                           child: Column(
                 children: [
+
                   Row(
                     children: [
                       Text(
@@ -252,3 +252,9 @@ settingButton2(
             ],
           ))));
 }
+
+
+
+
+whiteTextInDark(String label,double fontSize){return Text(label, style: TextStyle(color: primaryColor, fontSize: fontSize));}
+

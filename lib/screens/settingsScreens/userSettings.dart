@@ -24,14 +24,14 @@ class _userSettingsState extends State<userSettings> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          color: secColor,
+          color: primaryColor,
         ),
         title: Text(
           'Settings',
-          style: TextStyle(color: secColor),
+          style: TextStyle(color: primaryColor),
         ),
         elevation: 0,
-        backgroundColor: primaryColor,
+        backgroundColor: secColor,
       ),
       body: Center(
         child: Padding(

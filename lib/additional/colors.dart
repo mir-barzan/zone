@@ -1,4 +1,4 @@
 import 'package:flutter/material.dart';
 
 const primaryColor = Colors.white;
-const secColor = Color.fromRGBO(0, 149, 246, 1);
+const secColor = Color.fromRGBO(5, 53, 125, 1.0);

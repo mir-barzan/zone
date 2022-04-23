@@ -29,9 +29,14 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                SizedBox(height: 20,),
-                settingButton2("Name", "   AbdallahAlsaifi", context, widget),
+                SizedBox(height: 10,),
 
+                settingButton2("Name", "   AbdallahAlsaifi", context, widget),
+                Divider(),
+                settingButton2("Name:", "   AbdallahAlsaifi", context, widget),Divider(),
+                settingButton2("Email:", "   Abdallah.@gmail.com", context, widget),Divider(),
+                settingButton2("Phone Number:", "   05338548187", context, widget),Divider(),
+                settingButton2("Security Question:", "   ...", context, widget),
               ],
             )),
       ),
