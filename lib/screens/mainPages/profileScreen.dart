@@ -30,7 +30,13 @@ class _profileScreenState extends State<profileScreen> {
     getUserLName();
   }
 
-  void getUserName() async {
+  // Stream<String> _clock() async* {
+  //   // This loop will run forever because _running is always true
+  //   await getUserName();
+  //   await getUserLName();
+  // }
+
+  getUserName() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -41,7 +47,7 @@ class _profileScreenState extends State<profileScreen> {
     });
   }
 
-  void getUserLName() async {
+  getUserLName() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -57,6 +63,9 @@ class _profileScreenState extends State<profileScreen> {
     return Scaffold(
         backgroundColor: primaryColor,
         appBar: AppBar(
+          leadingWidth: 110,
+          leading: hireButton("Start a Project", Colors.green,
+              Icons.location_history_outlined, primaryColor, 10),
           elevation: 0,
           backgroundColor: primaryColor,
           title: Text(
@@ -72,7 +81,7 @@ class _profileScreenState extends State<profileScreen> {
                   //navigateTo(context, const userSettings());
                 },
                 child: Icon(
-                  Icons.ios_share,
+                  Icons.adaptive.share,
                   color: secColor,
                 ),
               ),
@@ -91,305 +100,408 @@ class _profileScreenState extends State<profileScreen> {
             ),
           ],
         ),
-        body: ListView(
-          children: [
-            SizedBox(
-              height: 10.0,
-            ),
-            Center(
-              child: Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        body: Center(
+            child: checker(
+                username,
+                ListView(
+                  padding: EdgeInsets.all(20),
                   children: [
-                    Stack(
-                      clipBehavior: Clip.none,
+                    Center(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ClipRect(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                            child: Container(
-                              height: 180,
-                              width: width,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(40.0),
-                                    topLeft: Radius.circular(40.0),
-                                    bottomRight: Radius.circular(40.0),
-                                    bottomLeft: Radius.circular(40.0)),
-                                color: secColor.withOpacity(0.4),
-                              ),
-                            ),
-                          ),
-                        ),
-                        ClipRect(
-
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                            child: Container(
-                              height: 180,
-                              width: width,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10, right: 10, top: 10, bottom: 6),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 55,
-                                              backgroundColor: primaryColor,
-                                              child: CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                    'https://images.unsplash.com/photo-1650476371091-c84969271dbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
-                                                radius: 50,
+                        rating(4.2),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "(1000)",
+                              style: TextStyle(color: secColor),
+                            )
+                          ],
+                        )
+                      ],
+                    )),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Center(
+                      child: Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                ClipRect(
+                                  child: Container(
+                                    height: 180 + 15,
+                                    width: width + 15,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(40.0),
+                                          topLeft: Radius.circular(40.0),
+                                          bottomRight: Radius.circular(40.0),
+                                          bottomLeft: Radius.circular(40.0)),
+                                      color: Colors.amber,
+                                    ),
+                                  ),
+                                ),
+                                ClipRect(
+                                  child: Container(
+                                    height: 180,
+                                    width: width,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 10,
+                                          bottom: 6),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 55,
+                                                    backgroundColor:
+                                                        primaryColor,
+                                                    child: CircleAvatar(
+                                                      backgroundImage: NetworkImage(
+                                                          'https://images.unsplash.com/photo-1650476371091-c84969271dbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
+                                                      radius: 50,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Expanded(
-                                          child: Row(
+                                              Expanded(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            whiteTextInDark(
+                                                                "$username",
+                                                                20),
+                                                            whiteTextInDark(
+                                                                " ", 20),
+                                                            whiteTextInDark(
+                                                                "$lname", 20),
+                                                          ],
+                                                        ),
+                                                        decoration: BoxDecoration(
+                                                            border: Border(
+                                                                bottom: BorderSide(
+                                                                    color:
+                                                                        primaryColor))),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Expanded(
-                                                child: Container(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.center,
-                                                    children: [
-                                                      whiteTextInDark(
-                                                          "$username", 20),
-                                                      whiteTextInDark(" ", 20),
-                                                      whiteTextInDark("$lname", 20),
-                                                    ],
-                                                  ),
-                                                  decoration: BoxDecoration(
-                                                      border: Border(
-                                                          bottom: BorderSide(
-                                                              color: primaryColor))),
+                                              Container(
+                                                margin: EdgeInsets.all(2),
+                                                padding:
+                                                    const EdgeInsets.all(5),
+                                                child: Text(
+                                                  "I am a professional Programmer",
+                                                  style: TextStyle(
+                                                      color: secColor,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
-                                              )
+                                                decoration: BoxDecoration(
+                                                  color: primaryColor,
+                                                  borderRadius:
+                                                      BorderRadius.circular(45),
+                                                  border: Border.all(
+                                                      color: primaryColor),
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                    SizedBox(height: 10,),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-
-                                          padding: const EdgeInsets.all(5),
-                                          child: Text(
-                                            "I am a professional Programmer",
-                                            style: TextStyle(
-                                                color: secColor,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            borderRadius: BorderRadius.circular(45),
-                                            border: Border.all(color: primaryColor),
-                                          ),
-
-                                        ),
-
-
-                                      ],
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(40.0),
+                                          topLeft: Radius.circular(40.0),
+                                          bottomRight: Radius.circular(40.0),
+                                          bottomLeft: Radius.circular(40.0)),
+                                      color: secColor.withOpacity(0.2),
                                     ),
-
-                                  ],
+                                  ),
                                 ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  left: 8, bottom: 8, top: 15, right: 8),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Projects",
+                                    style: TextStyle(
+                                        color: secColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1),
+                                  ),
+                                  Divider(),
+                                  Text(
+                                    "0",
+                                    style: TextStyle(
+                                        color: secColor.withOpacity(0.4),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
                               ),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(40.0),
-                                    topLeft: Radius.circular(40.0),
-                                    bottomRight: Radius.circular(40.0),
-                                    bottomLeft: Radius.circular(40.0)),
-                                color: secColor.withOpacity(0.4),
+                                border: Border(
+                                    right: BorderSide(
+                                        color: secColor.withOpacity(0.4),
+                                        width: 2)),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                        Positioned(
-                          bottom: 200,
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                                left: 8, bottom: 1, top: 8, right: 1),
-                            child: Text(
-                              "Zoner",
-                              style: TextStyle(
-                                  color: secColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
+                        Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  left: 8, bottom: 8, top: 15, right: 8),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Offers",
+                                    style: TextStyle(
+                                        color: secColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1),
+                                  ),
+                                  Divider(),
+                                  Text(
+                                    "0",
+                                    style: TextStyle(
+                                        color: secColor.withOpacity(0.4),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                    right: BorderSide(
+                                        color: secColor.withOpacity(0.4),
+                                        width: 2)),
+                              ),
                             ),
-                            decoration: BoxDecoration(
-                              color: primaryColor,
-                              borderRadius: BorderRadius.circular(45),
-                              border: Border.all(color: primaryColor),
-                            ),
-                          ),
+                          ],
                         ),
-
-
-
+                        Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  left: 8, bottom: 8, top: 15, right: 8),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Title",
+                                    style: TextStyle(
+                                        color: secColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1),
+                                  ),
+                                  Divider(
+                                    color: Colors.grey,
+                                    thickness: 1,
+                                  ),
+                                  Text(
+                                    "Pro Zoner",
+                                    style: TextStyle(
+                                        color: Colors.amber,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1),
+                                  ),
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(45),
+                                border: Border.all(color: primaryColor),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-
-              Column(children: [
-                Container(
-                  padding: const EdgeInsets.only(
-                      left: 8, bottom: 8, top: 15, right: 8),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Projects",
-                        style: TextStyle(
-                            color: secColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Divider(),
-                      Text(
-                        "0",
-                        style: TextStyle(
-                            color: secColor.withOpacity(0.4),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-
-
-                    border: Border(right: BorderSide(color: secColor.withOpacity(0.4))),
-                  ),
-                ),
-
-              ],),
-              Column(children: [
-                Container(
-                  padding: const EdgeInsets.only(
-                      left: 8, bottom: 8, top: 15, right: 8),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Offers",
-                        style: TextStyle(
-                            color: secColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Divider(),
-                      Text(
-                        "0",
-                        style: TextStyle(
-                            color: secColor.withOpacity(0.4),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border(right: BorderSide(color: secColor.withOpacity(0.4))),
-                  ),
-                ),
-              ],),
-              Column(children: [
-
-                Container(
-                  padding: const EdgeInsets.only(
-                      left: 8, bottom: 8, top: 15, right: 8),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Title",
-                        style: TextStyle(
-                            color: secColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Divider(color: Colors.grey,thickness: 1,),
-                      Text(
-                        "Zoner",
-                        style: TextStyle(
-                            color: secColor.withOpacity(0.4),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.circular(45),
-                    border: Border.all(color: primaryColor),
-                  ),
-                ),
-              ],),
-
-
-
-            ],),
-            Divider(thickness: 2,color: secColor.withOpacity(0.4)),
-            SizedBox(
-              height: 10.0,
-            ),
-
-            Column(mainAxisAlignment: MainAxisAlignment.center,children: [
-              Text(
-                "About me",
-                style: TextStyle(
-                    color: secColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold),
-              ),
-              Center(
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  child: Text(
-                    "Hi, I am a professional Developer. I graduated from Cyprus international university in 2022 and I am working as a Zoner in The Zone",
-                    style: TextStyle(
-                        color: secColor.withOpacity(0.8),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
+                    Divider(thickness: 2, color: secColor.withOpacity(0.4)),
+                    SizedBox(
+                      height: 10.0,
                     ),
-                  ),
-                ),
-              ),
-            ],),
-            SizedBox(
-              height: 10.0,
-            ),
-
-            Divider(thickness: 2,color: secColor.withOpacity(0.4)),
-
-          ],
-        ));
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Skills",
+                          style: TextStyle(
+                              letterSpacing: 1,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: secColor),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              roundedContainerWithBackground(
+                                  "Prgramming", Colors.green.shade500),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              roundedContainerWithBackground(
+                                  "Programming", Colors.green.shade500)
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              roundedContainerWithBackground(
+                                  "Programming", Colors.green.shade500),
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              roundedContainerWithBackground(
+                                  "Programming", Colors.green.shade500),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              roundedContainerWithBackground(
+                                  "Programming", Colors.green.shade500)
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "",
+                          style: TextStyle(
+                              color: secColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Center(
+                          child: Container(
+                            padding: EdgeInsets.all(20),
+                            child: Wrap(
+                              children: [
+                                Text(
+                                  "Hi, I am a professional Developer. I graduated from Cyprus international university in 2022 and I am working as a Zoner in The Zone",
+                                  style: TextStyle(
+                                    color: secColor.withOpacity(0.8),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(thickness: 2, color: secColor.withOpacity(0.4)),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Portfolio",
+                          style: TextStyle(
+                              color: secColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        GridView.count(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 13,
+                          crossAxisSpacing: 10,
+                          physics: NeverScrollableScrollPhysics(),
+                          // to disable GridView's scrolling
+                          shrinkWrap: true,
+                          // You won't see infinite size error
+                          children: <Widget>[
+                            portfolioContainer("Logo for Tesla",
+                                "https://images.unsplash.com/photo-1601158935942-52255782d322?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80"),
+                            portfolioContainer("Logo for Hp",
+                                "https://images.unsplash.com/photo-1589561084283-930aa7b1ce50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aHB8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"),
+                            portfolioContainer("Logo for Intel",
+                                "https://images.unsplash.com/photo-1616401014465-0e9f6e4695e0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"),
+                            portfolioContainer("Logo for Security Company",
+                                "https://images.unsplash.com/photo-1639327380081-bf86fc57a7a5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80")
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ))));
   }
 }
-// Icon( Icons.star_border_rounded, color: primaryColor,),
-// Icon( Icons.star_border_rounded, color: primaryColor,),
-// Icon( Icons.star_border_rounded, color: primaryColor,),
-// Icon( Icons.star_border_rounded, color: primaryColor,),
-// Icon( Icons.star_border_rounded, color: primaryColor,),
-// whiteTextInDark("(Not Rated!)", 14)

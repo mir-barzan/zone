@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../additional/colors.dart';
 
 showSnackBar(BuildContext context, String text) {
@@ -198,7 +198,8 @@ settingButton(String text, IconData icon, BuildContext context, Widget widget) {
 //   showDialog(context: context, builder: BuildContext context)
 // }
 
-settingButton2(String labelText, String dataText, BuildContext context, Widget widget) {
+settingButton2(
+    String labelText, String dataText, BuildContext context, Widget widget) {
 //TODO connect data with firebase!!(for example: show the current username before changing it like Facebook)
   return FlatButton(
       height: 25.0,
@@ -220,25 +221,26 @@ settingButton2(String labelText, String dataText, BuildContext context, Widget w
                       child: Center(
                           child: Column(
                 children: [
-
                   Row(
                     children: [
                       Text(
                         labelText,
-                        style:
-                        TextStyle(color: secColor, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: secColor, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                  SizedBox(height: 7.0,),
+                  SizedBox(
+                    height: 7.0,
+                  ),
                   Center(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           dataText,
-                          style:
-                          TextStyle(color: secColor, fontWeight: FontWeight.normal),
+                          style: TextStyle(
+                              color: secColor, fontWeight: FontWeight.normal),
                         ),
                       ],
                     ),
@@ -253,8 +255,115 @@ settingButton2(String labelText, String dataText, BuildContext context, Widget w
           ))));
 }
 
+whiteTextInDark(String label, double fontSize) {
+  return Text(label, style: TextStyle(color: primaryColor, fontSize: fontSize));
+}
 
+checker(String username, Widget widget) {
+  if (username.length >= 3) {
+    return widget;
+  } else if (username.length < 3) {
+    return CircularProgressIndicator.adaptive();
+  } else {
+    return Text('Error');
+  }
+}
 
+rating(double Rating) {
+  return RatingBar.builder(
+    initialRating: Rating,
+    minRating: 0,
+    direction: Axis.horizontal,
+    allowHalfRating: true,
+    itemCount: 5,
+    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+    itemBuilder: (context, _) => Icon(
+      Icons.star,
+      color: Colors.amber,
+    ),
+    onRatingUpdate: (rating) {
+      print(rating);
+    },
+  );
+}
 
-whiteTextInDark(String label,double fontSize){return Text(label, style: TextStyle(color: primaryColor, fontSize: fontSize));}
+roundedContainerWithBackground(String label, Color backgroundColor,
+    [double radius = 45]) {
+  return Container(
+    margin: EdgeInsets.all(2),
+    padding: const EdgeInsets.all(5),
+    child: FittedBox(
+      child: Text(
+        label,
+        style: TextStyle(
+            color: primaryColor, fontSize: 14, fontWeight: FontWeight.bold),
+      ),
+    ),
+    decoration: BoxDecoration(
+      color: backgroundColor,
+      borderRadius: BorderRadius.circular(radius),
+      border: Border.all(color: backgroundColor),
+    ),
+  );
+}
 
+portfolioContainer(String label, String imageLink) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Container(
+        height: 90,
+        width: 90,
+        decoration: BoxDecoration(
+            color: secColor,
+            borderRadius: BorderRadius.zero,
+            border: Border.all(color: secColor),
+            image: DecorationImage(
+                image: NetworkImage(imageLink), fit: BoxFit.cover)),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      FittedBox(
+        child: Text(label,
+            style: TextStyle(color: secColor, fontSize: 13, letterSpacing: 1)),
+      )
+    ],
+  );
+}
+
+hireButton(String label, Color backgroundColor, IconData icon, Color iconColor,
+    [double radius = 45]) {
+  return FittedBox(
+    child: Container(
+      margin: EdgeInsets.all(2),
+      padding: const EdgeInsets.all(5),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FittedBox(
+              child: Text(
+                label,
+                style: TextStyle(
+                    color: primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Icon(
+              icon,
+              color: iconColor,
+            )
+          ],
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(radius),
+        border: Border.all(color: backgroundColor),
+      ),
+    ),
+  );
+}
