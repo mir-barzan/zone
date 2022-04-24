@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:zone/screens/auth/user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:zone/Services/UModel.dart' as model;
+import 'package:zone/widgets/AdditionalWidgets.dart';
 
 class FireAuth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,6 +16,8 @@ class FireAuth {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+//Update All
 
   //ULI
   Future<String> signInUser({
@@ -57,6 +62,7 @@ class FireAuth {
           email: email,
           password: password,
           uid: cred.user!.uid,
+          username: fname + RandomStr,
         );
         await _firestore.collection('users').doc(cred.user!.uid).set(
               user.toJson(),
@@ -69,3 +75,9 @@ class FireAuth {
     return result;
   }
 }
+
+int random(min, max) {
+  return min + Random().nextInt(max - min);
+}
+
+String RandomStr = random(1000, 9999).toString();

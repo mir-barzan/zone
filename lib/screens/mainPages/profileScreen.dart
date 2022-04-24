@@ -21,15 +21,30 @@ class profileScreen extends StatefulWidget {
 class _profileScreenState extends State<profileScreen> {
   @override
   String username = "";
+  String fname = "";
   String lname = "";
+  String rank = "";
+  var userData = {};
 
   void initState() {
     // TODO: implement initState
     super.initState();
     getUserName();
+    getUserFName();
     getUserLName();
+    getUserData();
+    // getData();
   }
 
+// getData() async{
+//     try{
+//       var snap = await FirebaseFirestore.instance.collection('users').doc().get();
+//       userData = snap.data()!;
+//       setState(() {
+//         username = userData['username'];
+//       });
+//     }catch(e){showSnackBar(context, e.toString());}
+// }
   // Stream<String> _clock() async* {
   //   // This loop will run forever because _running is always true
   //   await getUserName();
@@ -43,7 +58,29 @@ class _profileScreenState extends State<profileScreen> {
         .get();
 
     setState(() {
-      username = (snap.data() as Map<String, dynamic>)['fname'];
+      username = (snap.data() as Map<String, dynamic>)['username'];
+    });
+  }
+
+  getUserFName() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      fname = (snap.data() as Map<String, dynamic>)['fname'];
+    });
+  }
+
+  getUserData() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      rank = (snap.data() as Map<String, dynamic>)['rank'];
     });
   }
 
@@ -190,8 +227,7 @@ class _profileScreenState extends State<profileScreen> {
                                                                   .center,
                                                           children: [
                                                             whiteTextInDark(
-                                                                "$username",
-                                                                20),
+                                                                "$fname", 20),
                                                             whiteTextInDark(
                                                                 " ", 20),
                                                             whiteTextInDark(
@@ -352,7 +388,7 @@ class _profileScreenState extends State<profileScreen> {
                                     thickness: 1,
                                   ),
                                   Text(
-                                    "Pro Zoner",
+                                    rank,
                                     style: TextStyle(
                                         color: Colors.amber,
                                         fontSize: 16,
