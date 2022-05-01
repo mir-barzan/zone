@@ -42,6 +42,9 @@ falseSnackBar(BuildContext context, String text, Widget widget) {
 navigateTo(BuildContext context, Widget widget) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => widget));
 }
+navigatePop(BuildContext context, Widget widget) {
+  Navigator.of(context).pop();
+}
 
 navigateToWithoutBack(BuildContext context, Widget widget) {
   Navigator.of(context)

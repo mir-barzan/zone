@@ -17,6 +17,8 @@ class profileSettingsScreen extends StatefulWidget {
 
 class _profileSettingsScreenState extends State<profileSettingsScreen> {
   @override
+  List<String> ex5 = [];
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -31,8 +33,98 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
         backgroundColor: primaryColor,
       ),
       body: Center(
-        child: Text("Profile settings")
+        child: ListView(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Text(
+                "Change Profile Picture",
+                style: TextStyle(
+                    color: secColor, fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
+            SizedBox(
+              height: 18,
+            ),
+            Center(
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 64,
+                    backgroundImage: NetworkImage(
+                        'https://firebasestorage.googleapis.com/v0/b/zone-b3608.appspot.com/o/profileAvatar.png?alt=media&token=19b38fea-2248-4e61-a886-13d4f4a27caa'),
+                  ),
+                  Positioned(
+                      bottom: -10,
+                      left: 80,
+                      child: IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.upload_sharp,
+                            color: secColor,
+                          )))
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Divider(),
+            SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Text(
+                "Choose skills",
+                style: TextStyle(
+                    color: secColor, fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
+            SizedBox(
+              height: 18,
+            ),
+            RaisedButton(
+              onPressed: () {
+                //TODO: working here
+    showDialog(context: context, builder: (BuildContext context) => errorDialog(context,widget));
+              },
+            ),
+            Divider(),
+          ],
+        ),
       ),
     );
   }
+}
+Dialog errorDialog(context, widget) {
+  return Dialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+    //this right here
+    child: Container(
+      height: 300.0,
+      width: 300.0,
+
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Text('Cool', style: TextStyle(color: Colors.red),),
+          ),
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Text('Awesome', style: TextStyle(color: Colors.red),),
+          ),
+          Padding(padding: EdgeInsets.only(top: 50.0)),
+          TextButton(onPressed: () {
+            navigatePop(context, widget);
+          },
+              child: Text('Got It!',
+                style: TextStyle(color: Colors.purple, fontSize: 18.0),))
+        ],
+      ),
+    ),
+  );
 }
