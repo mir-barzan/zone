@@ -316,9 +316,9 @@ portfolioContainer(String label, String imageLink) {
         height: 90,
         width: 90,
         decoration: BoxDecoration(
-            color: secColor,
+            color: rankColor,
             borderRadius: BorderRadius.zero,
-            border: Border.all(color: secColor),
+            border: Border.all(color: rankColor, width: 3),
             image: DecorationImage(
                 image: NetworkImage(imageLink), fit: BoxFit.cover)),
       ),

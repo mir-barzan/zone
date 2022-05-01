@@ -101,8 +101,6 @@ class _profileScreenState extends State<profileScreen> {
         backgroundColor: primaryColor,
         appBar: AppBar(
           leadingWidth: 110,
-          leading: hireButton("Start a Project", Colors.green,
-              Icons.location_history_outlined, primaryColor, 10),
           elevation: 0,
           backgroundColor: primaryColor,
           title: Text(
@@ -180,7 +178,7 @@ class _profileScreenState extends State<profileScreen> {
                                           topLeft: Radius.circular(40.0),
                                           bottomRight: Radius.circular(40.0),
                                           bottomLeft: Radius.circular(40.0)),
-                                      color: Colors.amber,
+                                      color: rankColor,
                                     ),
                                   ),
                                 ),
@@ -204,8 +202,7 @@ class _profileScreenState extends State<profileScreen> {
                                                 children: [
                                                   CircleAvatar(
                                                     radius: 55,
-                                                    backgroundColor:
-                                                        primaryColor,
+                                                    backgroundColor: rankColor,
                                                     child: CircleAvatar(
                                                       backgroundImage: NetworkImage(
                                                           'https://images.unsplash.com/photo-1650476371091-c84969271dbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
@@ -238,7 +235,7 @@ class _profileScreenState extends State<profileScreen> {
                                                             border: Border(
                                                                 bottom: BorderSide(
                                                                     color:
-                                                                        primaryColor))),
+                                                                        rankColor))),
                                                       ),
                                                     )
                                                   ],
@@ -254,23 +251,40 @@ class _profileScreenState extends State<profileScreen> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Container(
+                                                width: 230,
                                                 margin: EdgeInsets.all(2),
                                                 padding:
                                                     const EdgeInsets.all(5),
-                                                child: Text(
-                                                  "I am a professional Programmer",
-                                                  style: TextStyle(
-                                                      color: secColor,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                child: FittedBox(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      FittedBox(
+                                                        child: Text(
+                                                          "Start a Project with $fname",
+                                                          style: TextStyle(
+                                                              color: primaryColor,
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ),
+                                                      Icon(
+                                                        Icons.touch_app_outlined,
+                                                        color: primaryColor,
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color: primaryColor,
+                                                  color: Colors.green,
                                                   borderRadius:
                                                       BorderRadius.circular(45),
                                                   border: Border.all(
-                                                      color: primaryColor),
+                                                      color: Colors.green),
                                                 ),
                                               ),
                                             ],
@@ -284,7 +298,7 @@ class _profileScreenState extends State<profileScreen> {
                                           topLeft: Radius.circular(40.0),
                                           bottomRight: Radius.circular(40.0),
                                           bottomLeft: Radius.circular(40.0)),
-                                      color: secColor.withOpacity(0.2),
+                                      color: secColor,
                                     ),
                                   ),
                                 ),
@@ -319,7 +333,7 @@ class _profileScreenState extends State<profileScreen> {
                                   Text(
                                     "0",
                                     style: TextStyle(
-                                        color: secColor.withOpacity(0.4),
+                                        color: rankColor,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -327,9 +341,8 @@ class _profileScreenState extends State<profileScreen> {
                               ),
                               decoration: BoxDecoration(
                                 border: Border(
-                                    right: BorderSide(
-                                        color: secColor.withOpacity(0.4),
-                                        width: 2)),
+                                    right:
+                                        BorderSide(color: rankColor, width: 2)),
                               ),
                             ),
                           ],
@@ -353,7 +366,7 @@ class _profileScreenState extends State<profileScreen> {
                                   Text(
                                     "0",
                                     style: TextStyle(
-                                        color: secColor.withOpacity(0.4),
+                                        color: rankColor,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -361,9 +374,8 @@ class _profileScreenState extends State<profileScreen> {
                               ),
                               decoration: BoxDecoration(
                                 border: Border(
-                                    right: BorderSide(
-                                        color: secColor.withOpacity(0.4),
-                                        width: 2)),
+                                    right:
+                                        BorderSide(color: rankColor, width: 2)),
                               ),
                             ),
                           ],
@@ -390,7 +402,7 @@ class _profileScreenState extends State<profileScreen> {
                                   Text(
                                     rank,
                                     style: TextStyle(
-                                        color: Colors.amber,
+                                        color: rankColor,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 1),
@@ -407,7 +419,7 @@ class _profileScreenState extends State<profileScreen> {
                         ),
                       ],
                     ),
-                    Divider(thickness: 2, color: secColor.withOpacity(0.4)),
+                    Divider(thickness: 2, color: rankColor),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -424,6 +436,11 @@ class _profileScreenState extends State<profileScreen> {
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: secColor),
+                        ),
+                        Icon(
+                          Icons.school,
+                          color: rankColor,
+                          size: 22,
                         )
                       ],
                     ),
@@ -438,45 +455,63 @@ class _profileScreenState extends State<profileScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               roundedContainerWithBackground(
-                                  "Prgramming", Colors.green.shade500),
+                                  "Prgramming", rankColor),
                               SizedBox(
                                 height: 20,
                               ),
                               roundedContainerWithBackground(
-                                  "Programming", Colors.green.shade500)
+                                  "Programming", rankColor)
                             ],
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               roundedContainerWithBackground(
-                                  "Programming", Colors.green.shade500),
+                                  "Programming", rankColor),
                             ],
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               roundedContainerWithBackground(
-                                  "Programming", Colors.green.shade500),
+                                  "Programming", rankColor),
                               SizedBox(
                                 height: 20,
                               ),
                               roundedContainerWithBackground(
-                                  "Programming", Colors.green.shade500)
+                                  "Programming", rankColor)
                             ],
                           ),
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "",
-                          style: TextStyle(
-                              color: secColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "About me",
+                              style: TextStyle(
+                                  color: secColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 1,
+                            ),
+                            Icon(
+                              Icons.boy_sharp,
+                              color: rankColor,
+                              size: 25,
+                            ),
+                          ],
                         ),
                         Center(
                           child: Container(
@@ -498,7 +533,7 @@ class _profileScreenState extends State<profileScreen> {
                         ),
                       ],
                     ),
-                    Divider(thickness: 2, color: secColor.withOpacity(0.4)),
+                    Divider(thickness: 2, color: rankColor),
                     SizedBox(
                       height: 15,
                     ),
