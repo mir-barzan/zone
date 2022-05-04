@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:zone/widgets/text_field_input.dart';
 import '../additional/colors.dart';
 
 showSnackBar(BuildContext context, String text) {
@@ -370,3 +371,74 @@ hireButton(String label, Color backgroundColor, IconData icon, Color iconColor,
     ),
   );
 }
+
+Dialog SettingsDialog(context, widget, TextEditingController skill1, String label, String hintText) {
+
+  return Dialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+    //this right here
+    child: Padding(
+      child: Container(
+        height: 300.0,
+        width: 300.0,
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            SizedBox(height: 10,),
+            Text(label, style: TextStyle(color: secColor),),
+            TextFieldInput(textEditingController: skill1, hintText: hintText, textInputType: TextInputType.text),
+            SizedBox(height: 10,),
+
+
+
+
+            Padding(padding: EdgeInsets.only(top: 10.0)),
+            TextButton(onPressed: () {
+              navigatePop(context, widget);
+            },
+                child: Text('Sumbit!',
+                  style: TextStyle(color: Colors.green, fontSize: 18.0),))
+          ],
+        ),
+      ),
+      padding: EdgeInsets.all(20),
+    ),
+  );}
+
+Dialog SettingsDialog2(context, widget, TextEditingController skill1,TextEditingController skill2, String label, String hintText,String label2, String hintText2) {
+
+  return Dialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+    //this right here
+    child: Padding(
+      child: Container(
+        height: 300.0,
+        width: 300.0,
+
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            SizedBox(height: 10,),
+            Text(label, style: TextStyle(color: secColor),),
+            TextFieldInput(textEditingController: skill1, hintText: hintText, textInputType: TextInputType.text),
+            SizedBox(height: 10,),
+            Text(label2, style: TextStyle(color: secColor),),
+            TextFieldInput(textEditingController: skill2, hintText: hintText2, textInputType: TextInputType.text),
+            SizedBox(height: 10,),
+
+
+
+
+            Padding(padding: EdgeInsets.only(top: 10.0)),
+            TextButton(onPressed: () {
+              navigatePop(context, widget);
+            },
+                child: Text('Sumbit!',
+                  style: TextStyle(color: Colors.green, fontSize: 18.0),))
+          ],
+        ),
+      ),
+      padding: EdgeInsets.all(20),
+    ),
+  );}
