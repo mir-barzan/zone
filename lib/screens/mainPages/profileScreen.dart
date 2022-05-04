@@ -244,7 +244,7 @@ class _profileScreenState extends State<profileScreen> {
                                             ],
                                           ),
                                           SizedBox(
-                                            height: 10,
+                                            height: 7,
                                           ),
                                           Column(
                                             mainAxisAlignment:
