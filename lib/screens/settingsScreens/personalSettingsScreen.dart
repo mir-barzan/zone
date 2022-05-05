@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,7 @@ final TextEditingController _fNameController = TextEditingController();
 final TextEditingController _lNameController = TextEditingController();
 final TextEditingController _emailController = TextEditingController();
 final TextEditingController _phoneNumber = TextEditingController();
-final TextEditingController _securityQuestionController =
-    TextEditingController();
+final TextEditingController _securityWordController = TextEditingController();
 
 class _personalSettingsScreenState extends State<personalSettingsScreen> {
   String username = "";
@@ -28,7 +28,7 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
   String lname = "";
   String phoneNumber = "";
   String email = "";
-  String securityQuestion = "";
+  String securityWord = "";
   var userData = {};
   bool _isLoading = false;
   String res = "";
@@ -42,16 +42,22 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
     // getUserData();
     getUserEmail();
     // getData();
+    getEmail();
+    getphoneNumber();
+    getSecurityWord();
   }
 
-  updateUserName() async {
+  updateSecurityWord() async {
     setState(() {
       _isLoading = true;
     });
+
     String result = await FireAuth()
-        .updateCred(oldCred: 'username', newCred: _userNameController.text);
+        .updateCred(
+        oldCred: 'securityWord', newCred: _securityWordController.text);
     try {
       if (result != 'success') {
+        falseSnackBar(context, result, widget);
         showAlertDialog(
             context,
             "Error!",
@@ -73,14 +79,143 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
               color: Colors.green,
             ));
         navigatePop(context, widget);
+        trueSnackBar(context, widget);
       }
       setState(() {
         _isLoading = false;
       });
     } catch (e) {
       print(e.toString());
+      falseSnackBar(context, e.toString(), widget);
     }
   }
+
+  updatePhoneNumber() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String result = await FireAuth()
+        .updateCred(oldCred: 'phone', newCred: _phoneNumber.text);
+    try {
+      if (result != 'success') {
+        falseSnackBar(context, result, widget);
+        showAlertDialog(
+            context,
+            "Error!",
+            result,
+            Icon(
+              Icons.error,
+              color: Colors.red,
+            ));
+      } else {
+        setState(() {
+          res = "success";
+        });
+        showAlertDialog(
+            context,
+            "",
+            "Success",
+            Icon(
+              Icons.check,
+              color: Colors.green,
+            ));
+        navigatePop(context, widget);
+        trueSnackBar(context, widget);
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      print(e.toString());
+      falseSnackBar(context, e.toString(), widget);
+    }
+  }
+
+  updateFNameandLName() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String result1 = await FireAuth()
+        .updateCred(oldCred: 'fname', newCred: _fNameController.text);
+    String result2 = await FireAuth()
+        .updateCred(oldCred: 'lname', newCred: _lNameController.text);
+    try {
+      if (result1 != 'success') {
+        falseSnackBar(context, result1, widget);
+        showAlertDialog(
+            context,
+            "Error!",
+            result1 + " " + result2,
+            Icon(
+              Icons.error,
+              color: Colors.red,
+            ));
+      } else {
+        setState(() {
+          res = "success";
+        });
+        showAlertDialog(
+            context,
+            "",
+            "Success",
+            Icon(
+              Icons.check,
+              color: Colors.green,
+            ));
+        navigatePop(context, widget);
+        trueSnackBar(context, widget);
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      print(e.toString());
+      falseSnackBar(context, e.toString(), widget);
+    }
+  }
+
+  updateUserName() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String result = await FireAuth()
+        .updateCred(oldCred: 'username', newCred: _userNameController.text);
+    try {
+      if (result != 'success') {
+        falseSnackBar(context, result, widget);
+        showAlertDialog(
+            context,
+            "Error!",
+            result,
+            Icon(
+              Icons.error,
+              color: Colors.red,
+            ));
+      } else {
+        setState(() {
+          res = "success";
+        });
+        showAlertDialog(
+            context,
+            "",
+            "Success",
+            Icon(
+              Icons.check,
+              color: Colors.green,
+            ));
+        navigatePop(context, widget);
+        trueSnackBar(context, widget);
+      }
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      print(e.toString());
+      falseSnackBar(context, e.toString(), widget);
+    }
+  }
+
   updateEmail() async {
     setState(() {
       _isLoading = true;
@@ -97,6 +232,7 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
               Icons.error,
               color: Colors.red,
             ));
+        falseSnackBar(context, result, widget);
       } else {
         setState(() {
           res = "success";
@@ -110,6 +246,7 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
               color: Colors.green,
             ));
         navigatePop(context, widget);
+        trueSnackBar(context, widget);
       }
       setState(() {
         _isLoading = false;
@@ -127,6 +264,36 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
 
     setState(() {
       username = (snap.data() as Map<String, dynamic>)['username'];
+    });
+  }
+  getphoneNumber() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      phoneNumber = (snap.data() as Map<String, dynamic>)['phone'];
+    });
+  }
+  getEmail() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      email = (snap.data() as Map<String, dynamic>)['email'];
+    });
+  }
+  getSecurityWord() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      securityWord = (snap.data() as Map<String, dynamic>)['securityWord'];
     });
   }
 
@@ -199,14 +366,14 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
                       height: 10,
                     ),
                     settingButton2(
-                        "Username",
+                        "Username:",
                         username,
                         context,
                         usernameSettingDialog(
                           context,
                           widget,
                           _userNameController,
-                          "username",
+                          "Username:",
                           username,
                           _isLoading,
                         )),
@@ -239,9 +406,13 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
                         )),
                     Divider(),
                     settingButton2(
-                        "Phone Number:", "   05338548187", context, widget),
+                        "Phone Number:", phoneNumber, context,
+                        phoneNumberDialog(
+                            context, widget, _phoneNumber, "Phone Number",
+                            phoneNumber, _isLoading)),
                     Divider(),
-                    settingButton2("Security Question:", "   ...", context, widget),
+                    settingButton2("Security Word:",securityWord, context, securityQuestionDialog(
+                        context, widget, _securityWordController, "Security Word", securityWord, _isLoading)),
                   ],
                 )),
           ),
@@ -250,14 +421,12 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
     );
   }
 
-  Dialog usernameSettingDialog(
-    context,
-    widget,
-    TextEditingController skill1,
-    String label,
-    String hintText,
-    bool IsLoading,
-  ) {
+  Dialog usernameSettingDialog(context,
+      widget,
+      TextEditingController skill1,
+      String label,
+      String hintText,
+      bool IsLoading,) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       //this right here
@@ -298,7 +467,79 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
                       onPressed: () {
                         updateUserName();
                         navigatePop(context, widget);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                super.widget));
+                      },
+                      child: Text(
+                        'Change',
+                        style: TextStyle(color: Colors.green, fontSize: 18.0),
+                      ))
+                ],
+              )
+            ],
+          ),
+        ),
+        padding: EdgeInsets.all(20),
+      ),
+    );
+  }
 
+  Dialog emailSettingDialog(context,
+      widget,
+      TextEditingController skill1,
+      String label,
+      String hintText,
+      bool IsLoading,) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      //this right here
+      child: Padding(
+        child: Container(
+          height: 300.0,
+          width: 300.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                label,
+                style: TextStyle(color: secColor),
+              ),
+              TextFieldInput(
+                textEditingController: skill1,
+                hintText: hintText,
+                textInputType: TextInputType.emailAddress,
+              ),
+
+              SizedBox(
+                height: 10,
+              ),
+              Padding(padding: EdgeInsets.only(top: 10.0)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        navigatePop(context, widget);
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.green, fontSize: 18.0),
+                      )),
+                  TextButton(
+                      onPressed: () {
+                        updateEmail();
+                        navigatePop(context, widget);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                super.widget));
                       },
                       child: Text(
                         'Submit',
@@ -313,14 +554,15 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
       ),
     );
   }
-  Dialog emailSettingDialog(
-      context,
+
+  Dialog SettingsDialog2(context,
       widget,
       TextEditingController skill1,
+      TextEditingController skill2,
       String label,
       String hintText,
-      bool IsLoading,
-      ) {
+      String label2,
+      String hintText2) {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       //this right here
@@ -345,6 +587,17 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
               SizedBox(
                 height: 10,
               ),
+              Text(
+                label2,
+                style: TextStyle(color: secColor),
+              ),
+              TextFieldInput(
+                  textEditingController: skill2,
+                  hintText: hintText2,
+                  textInputType: TextInputType.text),
+              SizedBox(
+                height: 10,
+              ),
               Padding(padding: EdgeInsets.only(top: 10.0)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -359,9 +612,149 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
                       )),
                   TextButton(
                       onPressed: () {
-                        updateEmail();
+                        updateFNameandLName();
                         navigatePop(context, widget);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                super.widget));
+                      },
+                      child: Text(
+                        'Sumbit!',
+                        style: TextStyle(color: Colors.green, fontSize: 18.0),
+                      ))
+                ],
+              )
+            ],
+          ),
+        ),
+        padding: EdgeInsets.all(20),
+      ),
+    );
+  }
 
+  Dialog phoneNumberDialog(context,
+      widget,
+      TextEditingController skill1,
+      String label,
+      String hintText,
+      bool IsLoading,) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      //this right here
+      child: Padding(
+        child: Container(
+          height: 300.0,
+          width: 300.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                label,
+                style: TextStyle(color: secColor),
+              ),
+              TextFieldInput(
+                textEditingController: skill1,
+                hintText: hintText,
+                textInputType: TextInputType.phone,
+              ),
+
+              SizedBox(
+                height: 10,
+              ),
+              Padding(padding: EdgeInsets.only(top: 10.0)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        navigatePop(context, widget);
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.green, fontSize: 18.0),
+                      )),
+                  TextButton(
+                      onPressed: () {
+                        updatePhoneNumber();
+                        navigatePop(context, widget);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                super.widget));
+                      },
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.green, fontSize: 18.0),
+                      ))
+                ],
+              )
+            ],
+          ),
+        ),
+        padding: EdgeInsets.all(20),
+      ),
+    );
+  }
+
+  Dialog securityQuestionDialog(context,
+      widget,
+      TextEditingController skill1,
+      String label,
+      String hintText,
+      bool IsLoading,) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      //this right here
+      child: Padding(
+        child: Container(
+          height: 300.0,
+          width: 300.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                label,
+                style: TextStyle(color: secColor),
+              ),
+              TextFieldInput(
+                textEditingController: skill1,
+                hintText: hintText,
+                textInputType: TextInputType.visiblePassword,
+              ),
+
+              SizedBox(
+                height: 10,
+              ),
+              Padding(padding: EdgeInsets.only(top: 10.0)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        navigatePop(context, widget);
+                      },
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: Colors.green, fontSize: 18.0),
+                      )),
+                  TextButton(
+                      onPressed: () {
+                        updateSecurityWord();
+                        navigatePop(context, widget);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                super.widget));
                       },
                       child: Text(
                         'Submit',
@@ -377,3 +770,5 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
     );
   }
 }
+
+

@@ -170,7 +170,7 @@ class _profileScreenState extends State<profileScreen> {
                               children: [
                                 ClipRect(
                                   child: Container(
-                                    height: 180 + 15,
+                                    height: 180 + 20,
                                     width: width + 15,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.only(
@@ -184,7 +184,7 @@ class _profileScreenState extends State<profileScreen> {
                                 ),
                                 ClipRect(
                                   child: Container(
-                                    height: 180,
+                                    height: 185,
                                     width: width,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
