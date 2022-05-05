@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
@@ -621,7 +622,7 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
                                 super.widget));
                       },
                       child: Text(
-                        'Sumbit!',
+                        'Change',
                         style: TextStyle(color: Colors.green, fontSize: 18.0),
                       ))
                 ],
@@ -689,7 +690,7 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
                                 super.widget));
                       },
                       child: Text(
-                        'Submit',
+                        'Change',
                         style: TextStyle(color: Colors.green, fontSize: 18.0),
                       ))
                 ],
@@ -757,7 +758,7 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
                                 super.widget));
                       },
                       child: Text(
-                        'Submit',
+                        'Change',
                         style: TextStyle(color: Colors.green, fontSize: 18.0),
                       ))
                 ],
@@ -769,6 +770,7 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
       ),
     );
   }
+
 }
 
 

@@ -59,7 +59,7 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
               child: Stack(
                 children: [
                   CircleAvatar(
-                    radius: 64,
+                    radius: 70,
                     backgroundImage: NetworkImage(
                         'https://firebasestorage.googleapis.com/v0/b/zone-b3608.appspot.com/o/profileAvatar.png?alt=media&token=19b38fea-2248-4e61-a886-13d4f4a27caa'),
                   ),
