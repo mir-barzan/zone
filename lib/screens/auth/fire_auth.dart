@@ -17,7 +17,25 @@ class FireAuth {
     await _auth.signOut();
   }
 
+
 //Update All
+  updateCred(
+      {required String oldCred, required String newCred}) async {
+    String result = "Error";
+    try {
+      if (oldCred.isNotEmpty && newCred.isNotEmpty) {
+        var collection = FirebaseFirestore.instance.collection('users');
+        collection.doc(FirebaseAuth.instance.currentUser!.uid).update(
+            {oldCred: newCred}).then((value) => print('updated')).catchError((
+            error) => print('Update failed: $error'));
+      }
+      result = "success";
+    }catch(e){
+      result = e.toString();
+    }
+
+    return result;
+  }
 
   //ULI
   Future<String> signInUser({
@@ -65,8 +83,8 @@ class FireAuth {
           username: fname + RandomStr,
         );
         await _firestore.collection('users').doc(cred.user!.uid).set(
-              user.toJson(),
-            );
+          user.toJson(),
+        );
         result = "success";
       }
     } catch (err) {

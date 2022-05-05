@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ falseSnackBar(BuildContext context, String text, Widget widget) {
 navigateTo(BuildContext context, Widget widget) {
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => widget));
 }
+
 navigatePop(BuildContext context, Widget widget) {
   Navigator.of(context).pop();
 }
@@ -372,8 +374,17 @@ hireButton(String label, Color backgroundColor, IconData icon, Color iconColor,
   );
 }
 
-Dialog SettingsDialog(context, widget, TextEditingController skill1, String label, String hintText) {
 
+
+Dialog SettingsDialog2(
+    context,
+    widget,
+    TextEditingController skill1,
+    TextEditingController skill2,
+    String label,
+    String hintText,
+    String label2,
+    String hintText2) {
   return Dialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
     //this right here
@@ -381,64 +392,108 @@ Dialog SettingsDialog(context, widget, TextEditingController skill1, String labe
       child: Container(
         height: 300.0,
         width: 300.0,
-
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            SizedBox(height: 10,),
-            Text(label, style: TextStyle(color: secColor),),
-            TextFieldInput(textEditingController: skill1, hintText: hintText, textInputType: TextInputType.text),
-            SizedBox(height: 10,),
-
-
-
-
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              label,
+              style: TextStyle(color: secColor),
+            ),
+            TextFieldInput(
+                textEditingController: skill1,
+                hintText: hintText,
+                textInputType: TextInputType.text),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              label2,
+              style: TextStyle(color: secColor),
+            ),
+            TextFieldInput(
+                textEditingController: skill2,
+                hintText: hintText2,
+                textInputType: TextInputType.text),
+            SizedBox(
+              height: 10,
+            ),
             Padding(padding: EdgeInsets.only(top: 10.0)),
-            TextButton(onPressed: () {
-              navigatePop(context, widget);
-            },
-                child: Text('Sumbit!',
-                  style: TextStyle(color: Colors.green, fontSize: 18.0),))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                    onPressed: () {
+                      navigatePop(context, widget);
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.green, fontSize: 18.0),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      navigatePop(context, widget);
+                    },
+                    child: Text(
+                      'Sumbit!',
+                      style: TextStyle(color: Colors.green, fontSize: 18.0),
+                    ))
+              ],
+            )
           ],
         ),
       ),
       padding: EdgeInsets.all(20),
     ),
-  );}
+  );
+}
 
-Dialog SettingsDialog2(context, widget, TextEditingController skill1,TextEditingController skill2, String label, String hintText,String label2, String hintText2) {
-
-  return Dialog(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-    //this right here
-    child: Padding(
-      child: Container(
-        height: 300.0,
-        width: 300.0,
-
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            SizedBox(height: 10,),
-            Text(label, style: TextStyle(color: secColor),),
-            TextFieldInput(textEditingController: skill1, hintText: hintText, textInputType: TextInputType.text),
-            SizedBox(height: 10,),
-            Text(label2, style: TextStyle(color: secColor),),
-            TextFieldInput(textEditingController: skill2, hintText: hintText2, textInputType: TextInputType.text),
-            SizedBox(height: 10,),
-
-
-
-
-            Padding(padding: EdgeInsets.only(top: 10.0)),
-            TextButton(onPressed: () {
-              navigatePop(context, widget);
-            },
-                child: Text('Sumbit!',
-                  style: TextStyle(color: Colors.green, fontSize: 18.0),))
-          ],
-        ),
-      ),
-      padding: EdgeInsets.all(20),
-    ),
-  );}
+errorOrSuccess(String result) {
+  if (result == "success") {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Container(
+            child: Row(
+              children: [
+                Text("Success"),
+                SizedBox(
+                  width: 5,
+                ),
+                Icon(
+                  Icons.check_circle_rounded,
+                  color: Colors.green,
+                )
+              ],
+            ),
+            height: 300.0,
+            width: 300.0,
+          )),
+    );
+  } else{
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      child: Padding(
+          padding: EdgeInsets.all(20),
+          child: Container(
+            child: Row(
+              children: [
+                Text("Error"),
+                SizedBox(
+                  width: 5,
+                ),
+                Icon(
+                  Icons.error_outlined,
+                  color: Colors.red,
+                )
+              ],
+            ),
+            height: 300.0,
+            width: 300.0,
+          )),
+    );
+  }
+}
