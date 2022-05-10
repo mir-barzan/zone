@@ -36,6 +36,36 @@ class FireAuth {
 
     return result;
   }
+  updatePassword(
+      {required String newCred}) async {
+    String result = "Error";
+    try {
+      if (newCred.isNotEmpty) {
+        var FirebaseUser = await _auth.currentUser!;
+        FirebaseUser.updatePassword(newCred);
+      }
+      result = "success";
+    }catch(e){
+      result = e.toString();
+    }
+
+    return result;
+  }
+  updateEmail(
+      {required String newCred}) async {
+    String result = "Error";
+    try {
+      if (newCred.isNotEmpty) {
+        var FirebaseUser = await _auth.currentUser!;
+        FirebaseUser.updateEmail(newCred);
+      }
+      result = "success";
+    }catch(e){
+      result = e.toString();
+    }
+
+    return result;
+  }
 
   //ULI
   Future<String> signInUser({

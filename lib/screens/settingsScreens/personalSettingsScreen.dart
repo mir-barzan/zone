@@ -222,9 +222,10 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
       _isLoading = true;
     });
     String result = await FireAuth()
-        .updateCred(oldCred: 'email', newCred: _emailController.text);
+        .updateEmail( newCred: _emailController.text);
+
     try {
-      if (result != 'success') {
+      if (result != 'success'   ) {
         showAlertDialog(
             context,
             "Error!",

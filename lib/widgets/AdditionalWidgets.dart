@@ -217,7 +217,7 @@ settingButton2(
           height: 50.0,
           child: Expanded(
               child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 width: 20,
@@ -237,20 +237,9 @@ settingButton2(
                     ],
                   ),
                   SizedBox(
-                    height: 7.0,
+                    height: 5.0,
                   ),
-                  Center(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          dataText,
-                          style: TextStyle(
-                              color: secColor, fontWeight: FontWeight.normal),
-                        ),
-                      ],
-                    ),
-                  )
+
                 ],
               )))),
               Icon(
@@ -266,9 +255,9 @@ whiteTextInDark(String label, double fontSize) {
 }
 
 checker(String username, Widget widget) {
-  if (username.length >= 3) {
+  if (username.length >= 1) {
     return widget;
-  } else if (username.length < 3) {
+  } else if (username.length < 1) {
     return CircularProgressIndicator.adaptive();
   } else {
     return Text('Error');
