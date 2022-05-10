@@ -25,7 +25,7 @@ class User {
       this.rank = "Zoner",
       this.bio = "",
       required this.username,
-      this.profilePhotoUrl = ""});
+      this.profilePhotoUrl = "https://firebasestorage.googleapis.com/v0/b/zone-b3608.appspot.com/o/207-2074624_white-gray-circle-avatar-png-transparent-png.png?alt=media&token=b4ed042a-93cd-44fe-930d-98aad2bfb8cf"});
 
   Map<String, dynamic> toJson() =>
       {

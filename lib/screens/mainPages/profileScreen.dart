@@ -24,6 +24,7 @@ class _profileScreenState extends State<profileScreen> {
   String fname = "";
   String lname = "";
   String rank = "";
+  String profilePhotoUrl = "";
   var userData = {};
 
   void initState() {
@@ -92,6 +93,16 @@ class _profileScreenState extends State<profileScreen> {
 
     setState(() {
       lname = (snap.data() as Map<String, dynamic>)['lname'];
+    });
+  }
+  getProfilePhoto() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      profilePhotoUrl = (snap.data() as Map<String, dynamic>)['profilePhotoUrl'];
     });
   }
 
@@ -205,7 +216,7 @@ class _profileScreenState extends State<profileScreen> {
                                                     backgroundColor: rankColor,
                                                     child: CircleAvatar(
                                                       backgroundImage: NetworkImage(
-                                                          'https://images.unsplash.com/photo-1650476371091-c84969271dbe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'),
+                                                          profilePhotoUrl),
                                                       radius: 50,
                                                     ),
                                                   ),

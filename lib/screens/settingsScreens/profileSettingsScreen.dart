@@ -1,5 +1,10 @@
+import 'dart:typed_data';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:zone/Services/storageSettings.dart';
 import 'package:zone/screens/settingsScreens/personalSettingsScreen.dart';
 import 'package:zone/screens/settingsScreens/portfolioScreen.dart';
 import 'package:zone/screens/settingsScreens/securityScreens.dart';
@@ -25,7 +30,26 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
   final TextEditingController _skill4 = TextEditingController();
   final TextEditingController _skill5 = TextEditingController();
   final TextEditingController _aboutMe = TextEditingController();
+  Uint8List? _image;
+  void selectFile()async{
+    Uint8List Photo = await selectImage(ImageSource.gallery);
+    setState(() {
+        _image = Photo;
+    });
+  }
 
+  
+  String profilePhotoUrl = await storageMeth().uploadImageFileToFirebaseStorage('profilePics', _image, false, false);
+  getProfilePhoto() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    setState(() {
+      profilePhotoUrl = (snap.data() as Map<String, dynamic>)['profilePhotoUrl'];
+    });
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -61,13 +85,15 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
                   CircleAvatar(
                     radius: 70,
                     backgroundImage: NetworkImage(
-                        'https://firebasestorage.googleapis.com/v0/b/zone-b3608.appspot.com/o/profileAvatar.png?alt=media&token=19b38fea-2248-4e61-a886-13d4f4a27caa'),
+                        profilePhotoUrl),
                   ),
                   Positioned(
                       bottom: -10,
                       left: 80,
                       child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            selectFile();
+                          },
                           icon: Icon(
                             Icons.upload_sharp,
                             color: secColor,

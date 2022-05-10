@@ -4,9 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
 import 'package:zone/widgets/text_field_input.dart';
 import '../additional/colors.dart';
-
+import 'package:image_picker/image_picker.dart';
 showSnackBar(BuildContext context, String text) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -413,4 +414,13 @@ errorOrSuccess(String result) {
           )),
     );
   }
+}
+selectImage(ImageSource source)async{
+  final ImagePicker _imagePicker = ImagePicker();
+  XFile? _file = await _imagePicker.pickImage(source: source);
+
+  if(_file != null){
+    return _file.readAsBytes();
+  }
+  print('no file selected');
 }
