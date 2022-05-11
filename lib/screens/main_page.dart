@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/signup.dart';
+import 'package:zone/screens/mainPages/addOfferScreen.dart';
+import 'package:zone/screens/mainPages/addProjectScreen.dart';
 import 'package:zone/screens/mainPages/dashboard.dart';
 import 'package:zone/screens/mainPages/offersScreen.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
 import 'package:zone/screens/mainPages/projectsScreen.dart';
+import 'package:zone/widgets/AdditionalWidgets.dart';
 
 class mainPage extends StatefulWidget {
   const mainPage({Key? key}) : super(key: key);
@@ -27,6 +31,8 @@ class _mainPageState extends State<mainPage> {
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = dashboard();
 
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +43,9 @@ class _mainPageState extends State<mainPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          currentTab = 2;
+          navigateTo(context, postScreen());
           currentScreen = postScreen();
+          currentTab = 0;
         },
         backgroundColor: Colors.lightBlue[800],
       ),
@@ -57,7 +64,7 @@ class _mainPageState extends State<mainPage> {
                 children: [
                   MaterialButton(
                     minWidth: 40,
-                    onPressed: ()  {
+                    onPressed: () {
                       setState(() {
                         currentScreen = dashboard();
                         currentTab = 0;

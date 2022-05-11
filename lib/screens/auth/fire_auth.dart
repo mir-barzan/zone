@@ -33,6 +33,7 @@ class FireAuth {
       result = "success";
     }catch(e){
       result = e.toString();
+      print(e);
     }
 
     return result;
