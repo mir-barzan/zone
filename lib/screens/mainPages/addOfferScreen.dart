@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:zone/screens/mainPages/addOfferMain/imageAndConfigure.dart';
+import 'package:zone/screens/mainPages/addOfferMain/information.dart';
+import 'package:zone/screens/mainPages/addOfferMain/priceList.dart';
+import 'package:zone/screens/mainPages/addOfferMain/reviewAndSubmit.dart';
+import 'package:zone/screens/mainPages/offersScreen.dart';
 
 import '../../additional/colors.dart';
 import '../../widgets/AdditionalWidgets.dart';
@@ -11,33 +16,158 @@ class addOfferScreen extends StatefulWidget {
 }
 
 class _addOfferScreenState extends State<addOfferScreen> {
+  int currentTab = 0;
+  final List<Widget> screens = [
+    informationScreen(),
+    imageAndConfigureScreen(),
+    priceList(),
+    reviewAndSubmit()
+  ];
+
+  final PageStorageBucket bucket = PageStorageBucket();
+  Widget currentScreen = informationScreen();
+
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryColor,
-        appBar: AppBar(
-          leading: Icon(
-            Icons.close,
-            color: primaryColor,
-          ),
-          backgroundColor: primaryColor,
-          elevation: 0,
-          actions: [
-            Padding(
-              child: IconButton(
-                icon: Icon(
-                  Icons.close,
-                  size: 25,
-                  color: secColor,
-                ),
-                onPressed: () {
-                  navigatePop(context, widget);
-                },
+      body: PageStorage(
+        child: currentScreen,
+        bucket: bucket,
+      ),
+
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 10,
+        child: Container(
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currentScreen = informationScreen();
+                        currentTab = 0;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.text_snippet_rounded,
+                          color: currentTab == 0
+                              ? offersColor
+                              : Colors.grey,
+                        ),
+                        Text(
+                          'Info',
+                          style: TextStyle(
+                            color: currentTab == 0
+                                ? offersColor
+                                : Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currentScreen = imageAndConfigureScreen();
+                        currentTab = 1;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(
+                          Icons.upload_sharp,
+                          color: currentTab == 1
+                              ? offersColor
+                              : Colors.grey,
+                        ),
+                        Text(
+                          'Upload',
+                          style: TextStyle(
+                            color: currentTab == 1
+                                ? offersColor
+                                : Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currentScreen = priceList();
+                        currentTab = 2;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.local_offer,
+                          color: currentTab == 2
+                              ? offersColor
+                              : Colors.grey,
+                        ),
+                        Text(
+                          'Price',
+                          style: TextStyle(
+                            color: currentTab == 2
+                                ? offersColor
+                                : Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  MaterialButton(
+                    minWidth: 40,
+                    onPressed: () {
+                      setState(() {
+                        currentScreen = reviewAndSubmit();
+                        currentTab = 3;
+                      });
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.subdirectory_arrow_right,
+                          color: currentTab == 3
+                              ? offersColor
+                              : Colors.grey,
+                        ),
+                        Text(
+                          'Submit',
+                          style: TextStyle(
+                            color: currentTab == 3
+                                ? offersColor
+                                : Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
-              padding: EdgeInsets.all(8),
-            )
-          ],
+
+            ],
+          ),
         ),
-        body: Center(child: Text("This is add offer screen")));
+      ),
+    );
   }
 }
