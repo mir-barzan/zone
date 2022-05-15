@@ -4,7 +4,7 @@ import 'package:zone/screens/mainPages/addOfferMain/information.dart';
 import 'package:zone/screens/mainPages/addOfferMain/priceList.dart';
 import 'package:zone/screens/mainPages/addOfferMain/reviewAndSubmit.dart';
 import 'package:zone/screens/mainPages/offersScreen.dart';
-
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import '../../additional/colors.dart';
 import '../../widgets/AdditionalWidgets.dart';
 
@@ -13,9 +13,11 @@ class addOfferScreen extends StatefulWidget {
 
   @override
   State<addOfferScreen> createState() => _addOfferScreenState();
+
 }
 
 class _addOfferScreenState extends State<addOfferScreen> {
+
   int currentTab = 0;
   final List<Widget> screens = [
     informationScreen(),
@@ -24,17 +26,27 @@ class _addOfferScreenState extends State<addOfferScreen> {
     reviewAndSubmit()
   ];
 
-  final PageStorageBucket bucket = PageStorageBucket();
+  final PageStorageBucket _bucket = PageStorageBucket();
   Widget currentScreen = informationScreen();
-
+  changeScreen(int x){
+    if(x==0){
+      currentScreen = informationScreen();
+    }else if(x==1){
+      currentScreen = imageAndConfigureScreen();
+    }else if(x==2){
+      currentScreen = priceList();
+    }else if(x==3){
+      currentScreen = reviewAndSubmit();
+    }
+  }
   bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageStorage(
-        child: currentScreen,
-        bucket: bucket,
+      body: IndexedStack(
+        index: currentTab,
+        children: screens,
       ),
 
       bottomNavigationBar: BottomAppBar(
@@ -117,7 +129,7 @@ class _addOfferScreenState extends State<addOfferScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.local_offer,
+                          Icons.attach_money_sharp,
                           color: currentTab == 2
                               ? offersColor
                               : Colors.grey,
@@ -145,7 +157,7 @@ class _addOfferScreenState extends State<addOfferScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.subdirectory_arrow_right,
+                          Icons.check_circle_rounded,
                           color: currentTab == 3
                               ? offersColor
                               : Colors.grey,
@@ -170,4 +182,5 @@ class _addOfferScreenState extends State<addOfferScreen> {
       ),
     );
   }
+
 }

@@ -36,9 +36,9 @@ class _mainPageState extends State<mainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageStorage(
-        child: currentScreen,
-        bucket: bucket,
+      body: IndexedStack(
+        index: currentTab,
+        children: screens,
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
