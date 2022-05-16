@@ -450,3 +450,6 @@ DetailsInformation(String label) {
   );
 }
 
+moneyString(x){
+  return x.toString();
+}
