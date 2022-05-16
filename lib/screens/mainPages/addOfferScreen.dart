@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zone/Services/changeScreenProvider.dart';
 import 'package:zone/screens/mainPages/addOfferMain/imageAndConfigure.dart';
 import 'package:zone/screens/mainPages/addOfferMain/information.dart';
 import 'package:zone/screens/mainPages/addOfferMain/priceList.dart';
@@ -11,14 +13,16 @@ import '../../widgets/AdditionalWidgets.dart';
 class addOfferScreen extends StatefulWidget {
   const addOfferScreen({Key? key}) : super(key: key);
 
+
   @override
-  State<addOfferScreen> createState() => _addOfferScreenState();
+  State<addOfferScreen> createState() => addOfferScreenState();
 
 }
 
-class _addOfferScreenState extends State<addOfferScreen> {
-
+class addOfferScreenState extends State<addOfferScreen> {
   int currentTab = 0;
+  Widget currentScreen = informationScreen();
+
   final List<Widget> screens = [
     informationScreen(),
     imageAndConfigureScreen(),
@@ -27,22 +31,18 @@ class _addOfferScreenState extends State<addOfferScreen> {
   ];
 
   final PageStorageBucket _bucket = PageStorageBucket();
-  Widget currentScreen = informationScreen();
-  changeScreen(int x){
-    if(x==0){
-      currentScreen = informationScreen();
-    }else if(x==1){
-      currentScreen = imageAndConfigureScreen();
-    }else if(x==2){
-      currentScreen = priceList();
-    }else if(x==3){
-      currentScreen = reviewAndSubmit();
-    }
-  }
   bool _isLoading = false;
-
+  //  changeScreen(){
+  //    setState(() {
+  //      currentScreen = imageAndConfigureScreen();
+  //      currentTab = 1;
+  //    });
+  //
+  // }
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       body: IndexedStack(
         index: currentTab,
@@ -181,6 +181,7 @@ class _addOfferScreenState extends State<addOfferScreen> {
         ),
       ),
     );
+
   }
 
 }

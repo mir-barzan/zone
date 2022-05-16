@@ -425,3 +425,28 @@ selectImage(ImageSource source)async{
   print('no file selected');
 }
 
+DetailsInformation(String label) {
+  return Wrap(
+    children: [
+      Container(
+        height: 5,
+      ),
+      Center(
+        child: Icon(
+          Icons.info_outline,
+          color: Colors.grey,
+        ),
+      ),
+      Center(
+        child: Text(
+          "  $label.",
+          style: TextStyle(color: Colors.grey, fontSize: 10),
+        ),
+      ),
+      Container(
+        height: 5,
+      ),
+    ],
+  );
+}
+

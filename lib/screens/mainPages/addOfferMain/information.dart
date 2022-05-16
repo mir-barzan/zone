@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zone/Services/changeScreenProvider.dart';
+import 'package:zone/screens/mainPages/addOfferMain/imageAndConfigure.dart';
 import 'package:zone/screens/mainPages/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/main_page.dart';
@@ -18,15 +21,16 @@ class informationScreen extends StatefulWidget {
 }
 
 class _informationScreenState extends State<informationScreen> {
+  addOfferScreen addScreen = new addOfferScreen();
   TextEditingController _field1 = TextEditingController();
   TextEditingController _fQuestion = TextEditingController();
   TextEditingController _fAnswer = TextEditingController();
   TextEditingController _IWill = TextEditingController();
   TextEditingController _Details = TextEditingController();
-changeScreen2(int x){
-  addOfferScreen A = new addOfferScreen();
 
-}
+  // _getAndSetIndex(x){
+  //   Provider.of<ChangeScreenProvider>(context, listen: false).getAndSetIndex();
+  // }
   int eIndex = 0;
   Color QuestionColor = Colors.red;
   List<ExpansionTileCard> questions = [];
@@ -45,6 +49,26 @@ changeScreen2(int x){
     }
     print(questionsChecker);
   }
+
+  final List<String> categoryItems = [
+    'Category',
+    'Business',
+    'Data',
+    'Digital Marketing',
+    'Graphics & Design',
+    'Lifestyle',
+    'Music & Audio',
+    'Programming & Tech',
+    'Video & Animation',
+    'Writing & Translation'
+  ];
+
+  String? selectedValue;
+
+  String? value;
+
+  final _formKey = GlobalKey<FormState>();
+  String categoryValue = "Category";
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +102,7 @@ changeScreen2(int x){
           "New Offer",
           style: TextStyle(fontSize: 34, color: offersColor),
         ),
-        actions: [ButtonChoice()],
+        actions: [],
         centerTitle: true,
         backgroundColor: primaryColor,
         elevation: 0,
@@ -161,6 +185,45 @@ changeScreen2(int x){
               height: 50,
               thickness: 1,
             ),
+            DetailsInformation("Category helps your offer to be in the correct place for the user search"),
+            Container(height: 5,),
+            Text(
+              "Please choose a Category",
+              style: TextStyle(fontSize: 20),
+            ),
+            Container(height: 10,),
+
+            Container(
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration.collapsed(
+                    hintText: "",
+                  ),
+                  value: categoryValue,
+                  hint: Text("Please choose a Category"),
+                  items: categoryItems.map((sugar) {
+                    return DropdownMenuItem(
+                      value: sugar,
+                      child: Text('$sugar '),
+                    );
+                  }).toList(),
+                  onChanged: (sugar) => setState(() => categoryValue = sugar!),
+                ),
+                //todo DropdownButton
+              ),
+              decoration: BoxDecoration(
+                border: Border.all(color: offersColor, width: 1.0),
+                borderRadius: BorderRadius.all(Radius.circular(
+                        5.0) //                 <--- border radius here
+                    ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            Divider(
+              height: 50,
+              thickness: 1,
+            ),
             FittedBox(
               child: Row(
                 children: [
@@ -177,7 +240,7 @@ changeScreen2(int x){
               ),
             ),
             SizedBox(
-              height: 80,
+              height: 60,
             ),
             DetailsInformation(
                 "FAQs enable you to deal with specific queries that your customers have about your business. They also represent another way to reach out and connect with your target audience. Therefore, it is one of the most important elements of your strategy. Like this one for example"),
@@ -424,29 +487,6 @@ changeScreen2(int x){
     });
   }
 
-  DetailsInformation(String label) {
-    return Wrap(
-      children: [
-        Container(
-          height: 5,
-        ),
-        Center(
-          child: Icon(
-            Icons.info_outline,
-            color: Colors.grey,
-          ),
-        ),
-        Text(
-          "  $label.",
-          style: TextStyle(color: Colors.grey, fontSize: 10),
-        ),
-        Container(
-          height: 5,
-        ),
-      ],
-    );
-  }
-
   PageState() {
     if (_IWill.text.isNotEmpty ||
         _Details.text.isNotEmpty ||
@@ -460,43 +500,47 @@ changeScreen2(int x){
     print(totalState);
   }
 
-  ButtonChoice() {
-    if (totalState == true) {
-      return Container(
-        height: 5,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            onPressed: () {
-              //todo create the questions
-            },
-            child: Text("Next"),
-            style: ElevatedButton.styleFrom(
-                shape: StadiumBorder(), primary: offersColor),
-          ),
-        ),
-      );
-    } else {
-      return SizedBox(
-        height: 5,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            onPressed: () {
-              //todo create the questions
-              changeScreen()
-
-
-
-            },
-            child: Text("Next"),
-            style: ElevatedButton.styleFrom(
-                shape: StadiumBorder(), primary: Colors.grey),
-          ),
-        ),
-      );
-    }
-  }
+  // ButtonChoice() {
+  //   if (totalState == true) {
+  //     return Container(
+  //       height: 5,
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: ElevatedButton(
+  //           onPressed: () {
+  //             //todo create the questions
+  //             //X
+  //
+  //
+  //
+  //           },
+  //           child: Text("Next"),
+  //           style: ElevatedButton.styleFrom(
+  //               shape: StadiumBorder(), primary: offersColor),
+  //         ),
+  //       ),
+  //     );
+  //   } else {
+  //     return SizedBox(
+  //       height: 5,
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: ElevatedButton(
+  //           onPressed: () {
+  //             //todo create the questions
+  //             //unactive(null) button
+  //
+  //
+  //
+  //           },
+  //           child: Text("Next"),
+  //           style: ElevatedButton.styleFrom(
+  //               shape: StadiumBorder(), primary: Colors.grey),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
 
   CancelIcon() {
     return IconButton(
@@ -513,21 +557,18 @@ changeScreen2(int x){
                         onPressed: () {
                           navigatePop(context, widget);
                         },
-                        child:
-                            Text(
-                              "Cancel",
-                              style: TextStyle(color: offersColor),
-                            )
-                          ),
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(color: offersColor),
+                        )),
                     TextButton(
                         onPressed: () {
-navigateToWithoutBack(context, mainPage());                        },
-                        child:
-                        Text(
+                          navigateToWithoutBack(context, mainPage());
+                        },
+                        child: Text(
                           "Ok",
                           style: TextStyle(color: offersColor),
-                        )
-                    ),
+                        )),
                   ],
                 );
                 ;
