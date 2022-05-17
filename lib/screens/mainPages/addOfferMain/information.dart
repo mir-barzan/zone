@@ -46,6 +46,7 @@ class informationScreenState extends State<informationScreen> {
       detailsChecker = false,
       titleChecker = false,
       totalState = false;
+  int maxLines = 100;
 
   qChecker() {
     if (eIndex < 5) {
@@ -114,9 +115,7 @@ class informationScreenState extends State<informationScreen> {
             ),Container(
                 height: 50,
                 width: 50,
-                child: SvgPicture.asset(
-                  'assets/images/offerIllustrate.svg',
-                )),
+                child: Icon(Icons.local_offer, color: offersColor,)),
             ]),
         actions: [],
         centerTitle: true,
@@ -170,35 +169,38 @@ class informationScreenState extends State<informationScreen> {
             ),
             DetailsInformation(
                 "Writing in a nice way that provide the customer with many details, why you, and how you are special will increase the probability of buying your offer"),
-            Container(
-              height: 250,
-              child: Column(
-                children: [
-                  Text(
-                    "Details about your offer",
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                      cursorColor: offersColor,
-                      maxLines: 7,
-                      maxLength: 400,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: offersColor, width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.grey, width: 2.0),
-                        ),
-                      )),
-                ],
+            Stack(
+              children:[ Container(
+
+                child: Column(
+                  children: [
+                    Text(
+                      "Details about your offer",
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextField(
+                        cursorColor: offersColor,
+                        maxLines: maxLines,
+                        minLines: 5,
+                        maxLength: 1500,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: offersColor, width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 2.0),
+                          ),
+                        )),
+                  ],
+                ),
               ),
-            ),
+            ]),
             Divider(
               height: 50,
               thickness: 1,
@@ -518,47 +520,7 @@ class informationScreenState extends State<informationScreen> {
     print(totalState);
   }
 
-  // ButtonChoice() {
-  //   if (totalState == true) {
-  //     return Container(
-  //       height: 5,
-  //       child: Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: ElevatedButton(
-  //           onPressed: () {
-  //             //todo create the questions
-  //             //X
-  //
-  //
-  //
-  //           },
-  //           child: Text("Next"),
-  //           style: ElevatedButton.styleFrom(
-  //               shape: StadiumBorder(), primary: offersColor),
-  //         ),
-  //       ),
-  //     );
-  //   } else {
-  //     return SizedBox(
-  //       height: 5,
-  //       child: Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: ElevatedButton(
-  //           onPressed: () {
-  //             //todo create the questions
-  //             //unactive(null) button
-  //
-  //
-  //
-  //           },
-  //           child: Text("Next"),
-  //           style: ElevatedButton.styleFrom(
-  //               shape: StadiumBorder(), primary: Colors.grey),
-  //         ),
-  //       ),
-  //     );
-  //   }
-  // }
+
 
   CancelIcon() {
     return IconButton(

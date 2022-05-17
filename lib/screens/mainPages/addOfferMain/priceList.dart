@@ -51,9 +51,7 @@ class _priceListState extends State<priceList> {
             ),Container(
                 height: 50,
                 width: 50,
-                child: SvgPicture.asset(
-                  'assets/images/offerIllustrate.svg',
-                )),
+                child: Icon(Icons.local_offer, color: offersColor,)),
             ]),
         actions: [],
         centerTitle: true,
@@ -73,39 +71,7 @@ class _priceListState extends State<priceList> {
               Container(
                 height: 15,
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //
-              //     Container(
-              //       padding: EdgeInsets.only(top: 20),
-              //       child: TextField(
-              //
-              //
-              //         keyboardType: TextInputType.number,
-              //         cursorColor: offersColor,
-              //         obscureText: false,
-              //         decoration: InputDecoration(
-              //           fillColor: offersColor,
-              //           hintText: "",
-              //           enabledBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: Colors.grey),
-              //           ),
-              //           focusedBorder: UnderlineInputBorder(
-              //             borderSide: BorderSide(color: offersColor),
-              //           ),
-              //         ),
-              //         maxLength: 5,
-              //         style: TextStyle(fontSize: 20),
-              //       ),
-              //       width: 60,
-              //       height: 80,
-              //     ),Text(
-              //       " \$ ",
-              //       style: TextStyle(fontSize: 30, color: offersColor),
-              //     ),
-              //   ],
-              // ),
+
               Text("Price", style: TextStyle(fontSize: 20),),
               Container(height: 4,),
               Row(mainAxisAlignment: MainAxisAlignment.center,
