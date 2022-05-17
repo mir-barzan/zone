@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:zone/screens/mainPages/addOfferMain/reviewAndSubmit.dart';
 import 'package:zone/screens/mainPages/offersScreen.dart';
 
 import '../../../additional/colors.dart';
@@ -42,14 +44,21 @@ class _priceListState extends State<priceList> {
       backgroundColor: primaryColor,
       appBar: AppBar(
         leading: CancelIcon(),
-        title: Text(
-          "New Offer",
-          style: TextStyle(fontSize: 34, color: offersColor),
-        ),
+        title: Wrap(
+            children:[ Text(
+              "New Offer",
+              style: TextStyle(fontSize: 34, color: offersColor),
+            ),Container(
+                height: 50,
+                width: 50,
+                child: SvgPicture.asset(
+                  'assets/images/offerIllustrate.svg',
+                )),
+            ]),
         actions: [],
         centerTitle: true,
         backgroundColor: primaryColor,
-        elevation: 0,
+        elevation: 1,
       ),
       body: ListView(children: [
         Center(
@@ -126,6 +135,7 @@ class _priceListState extends State<priceList> {
                               if (counter > minValue) {
                                 counter--;
                               }
+                              reviewAndSubmit.newPrice.value = counter;
                             });
                           },
                         ),
@@ -163,6 +173,7 @@ class _priceListState extends State<priceList> {
                               if (counter < maxValue) {
                                 counter++;
                               }
+                              reviewAndSubmit.newPrice.value = counter;
                               _moneyController.text = moneyString(counter);
                             });
                           },

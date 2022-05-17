@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:zone/Services/changeScreenProvider.dart';
+import 'package:zone/Services/sharedPrefs.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/login.dart';
 import 'package:zone/screens/auth/listner.dart';
@@ -19,8 +20,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await sharedprefs.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
+
     runApp(new MyApp());
   });
 }

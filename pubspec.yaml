@@ -47,6 +47,8 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   image_picker: ^0.8.5+1
   expansion_tile_card: ^2.0.0
+  shared_preferences: ^2.0.15
+  multi_value_listenable_builder: ^0.0.2
 
 
 dev_dependencies:

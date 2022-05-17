@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
@@ -20,14 +21,21 @@ class _imageAndConfigureScreenState extends State<imageAndConfigureScreen> {
       backgroundColor: primaryColor,
       appBar: AppBar(
         leading: CancelIcon(),
-        title: Text(
-          "New Offer",
-          style: TextStyle(fontSize: 34, color: offersColor),
-        ),
+        title: Wrap(
+            children:[ Text(
+              "New Offer",
+              style: TextStyle(fontSize: 34, color: offersColor),
+            ),Container(
+                height: 50,
+                width: 50,
+                child: SvgPicture.asset(
+                  'assets/images/offerIllustrate.svg',
+                )),
+            ]),
         actions: [],
         centerTitle: true,
         backgroundColor: primaryColor,
-        elevation: 0,
+        elevation: 1,
       ),
       body: Center(
           child: Padding(
@@ -56,6 +64,20 @@ class _imageAndConfigureScreenState extends State<imageAndConfigureScreen> {
             ),
 
           ),
+            Container(height: 10,),
+            Container(
+              height: 50,
+              width: 220,
+              child: ElevatedButton(
+                onPressed: () {
+                  //todo validation
+
+                },
+                child: Icon(Icons.check, size: 45,),
+                style: ElevatedButton.styleFrom(
+                    shape: StadiumBorder(), primary: offersColor),
+              ),
+            ),
         ],),
       )),
     );

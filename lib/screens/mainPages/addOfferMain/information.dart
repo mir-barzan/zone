@@ -2,9 +2,13 @@ import 'dart:async';
 
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zone/Services/changeScreenProvider.dart';
+import 'package:zone/Services/sharedPrefs.dart';
 import 'package:zone/screens/mainPages/addOfferMain/imageAndConfigure.dart';
+import 'package:zone/screens/mainPages/addOfferMain/reviewAndSubmit.dart';
 import 'package:zone/screens/mainPages/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/main_page.dart';
@@ -17,16 +21,20 @@ class informationScreen extends StatefulWidget {
   const informationScreen({Key? key}) : super(key: key);
 
   @override
-  State<informationScreen> createState() => _informationScreenState();
+  State<informationScreen> createState() => informationScreenState();
 }
 
-class _informationScreenState extends State<informationScreen> {
+class informationScreenState extends State<informationScreen> {
   addOfferScreen addScreen = new addOfferScreen();
   TextEditingController _field1 = TextEditingController();
   TextEditingController _fQuestion = TextEditingController();
   TextEditingController _fAnswer = TextEditingController();
   TextEditingController _IWill = TextEditingController();
   TextEditingController _Details = TextEditingController();
+  String title="";
+  getTitle(){
+    return _IWill.text;
+  }
 
   // _getAndSetIndex(x){
   //   Provider.of<ChangeScreenProvider>(context, listen: false).getAndSetIndex();
@@ -60,7 +68,8 @@ class _informationScreenState extends State<informationScreen> {
     'Music & Audio',
     'Programming & Tech',
     'Video & Animation',
-    'Writing & Translation'
+    'Writing & Translation',
+    'Other'
   ];
 
   String? selectedValue;
@@ -98,14 +107,21 @@ class _informationScreenState extends State<informationScreen> {
       backgroundColor: primaryColor,
       appBar: AppBar(
         leading: CancelIcon(),
-        title: Text(
-          "New Offer",
-          style: TextStyle(fontSize: 34, color: offersColor),
-        ),
+        title: Wrap(
+            children:[ Text(
+              "New Offer",
+              style: TextStyle(fontSize: 34, color: offersColor),
+            ),Container(
+                height: 50,
+                width: 50,
+                child: SvgPicture.asset(
+                  'assets/images/offerIllustrate.svg',
+                )),
+            ]),
         actions: [],
         centerTitle: true,
         backgroundColor: primaryColor,
-        elevation: 0,
+        elevation: 1,
       ),
       body: Center(
           child: ListView(
@@ -125,6 +141,8 @@ class _informationScreenState extends State<informationScreen> {
                   child: Container(
                     padding: EdgeInsets.only(top: 20),
                     child: TextField(
+                      controller: _IWill,
+                      onChanged: (text){setTitle(title, _IWill.text);},
                       cursorColor: offersColor,
                       obscureText: false,
                       decoration: InputDecoration(
@@ -137,7 +155,7 @@ class _informationScreenState extends State<informationScreen> {
                           borderSide: BorderSide(color: offersColor),
                         ),
                       ),
-                      maxLength: 40,
+                      maxLength: 70,
                       style: TextStyle(fontSize: 18),
                     ),
                     width: 120,
@@ -580,5 +598,23 @@ class _informationScreenState extends State<informationScreen> {
           Icons.close,
           color: Colors.black,
         ));
+  }
+
+  Future<String> loadString(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key) ?? '';
+  }
+   putString(String key, String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, value);
+  }
+  setTitle(x,y){
+    setState(() {
+      x = y;
+      putString("Title", title);
+      reviewAndSubmit.newTitle.value = x;
+      print(x);
+    });
+
   }
 }
