@@ -47,7 +47,7 @@ class _mainPageState extends State<mainPage> {
           currentScreen = postScreen();
           currentTab = 0;
         },
-        backgroundColor: Colors.lightBlue[800],
+        backgroundColor: secColor,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -76,14 +76,14 @@ class _mainPageState extends State<mainPage> {
                         Icon(
                           Icons.dashboard,
                           color: currentTab == 0
-                              ? Colors.lightBlue[900]
+                              ? secColor
                               : Colors.grey,
                         ),
                         Text(
                           'Dashboard',
                           style: TextStyle(
                             color: currentTab == 0
-                                ? Colors.lightBlue[900]
+                                ? secColor
                                 : Colors.grey,
                           ),
                         )
@@ -104,14 +104,14 @@ class _mainPageState extends State<mainPage> {
                         Icon(
                           Icons.work,
                           color: currentTab == 1
-                              ? Colors.lightBlue[900]
+                              ? secColor
                               : Colors.grey,
                         ),
                         Text(
                           'Projects',
                           style: TextStyle(
                             color: currentTab == 1
-                                ? Colors.lightBlue[900]
+                                ? secColor
                                 : Colors.grey,
                           ),
                         )
@@ -138,14 +138,14 @@ class _mainPageState extends State<mainPage> {
                         Icon(
                           Icons.local_offer,
                           color: currentTab == 3
-                              ? Colors.lightBlue[900]
+                              ? secColor
                               : Colors.grey,
                         ),
                         Text(
                           'Offers',
                           style: TextStyle(
                             color: currentTab == 3
-                                ? Colors.lightBlue[900]
+                                ? secColor
                                 : Colors.grey,
                           ),
                         )
@@ -166,14 +166,14 @@ class _mainPageState extends State<mainPage> {
                         Icon(
                           Icons.person,
                           color: currentTab == 4
-                              ? Colors.lightBlue[900]
+                              ? secColor
                               : Colors.grey,
                         ),
                         Text(
                           'Profile',
                           style: TextStyle(
                             color: currentTab == 4
-                                ? Colors.lightBlue[900]
+                                ? secColor
                                 : Colors.grey,
                           ),
                         )

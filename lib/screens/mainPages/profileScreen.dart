@@ -152,22 +152,7 @@ class _profileScreenState extends State<profileScreen> {
                 ListView(
                   padding: EdgeInsets.all(20),
                   children: [
-                    Center(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        rating(4.2),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              "(1000)",
-                              style: TextStyle(color: secColor),
-                            )
-                          ],
-                        )
-                      ],
-                    )),
+
                     SizedBox(
                       height: 10.0,
                     ),

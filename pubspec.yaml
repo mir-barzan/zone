@@ -49,6 +49,7 @@ dependencies:
   expansion_tile_card: ^2.0.0
   shared_preferences: ^2.0.15
   multi_value_listenable_builder: ^0.0.2
+  percent_indicator: ^4.0.1
 
 
 dev_dependencies:
