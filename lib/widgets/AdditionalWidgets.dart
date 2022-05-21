@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:zone/widgets/text_field_input.dart';
 import '../additional/colors.dart';
@@ -452,4 +453,8 @@ DetailsInformation(String label) {
 
 moneyString(x){
   return x.toString();
+}
+
+Widget badge(String assetName, double width, double height){
+  return SvgPicture.asset('assets/images/$assetName', width: width, height: height);
 }
