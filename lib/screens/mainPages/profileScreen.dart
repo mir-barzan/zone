@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/login.dart';
@@ -95,6 +96,7 @@ class _profileScreenState extends State<profileScreen> {
       lname = (snap.data() as Map<String, dynamic>)['lname'];
     });
   }
+
   getProfilePhoto() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -102,7 +104,8 @@ class _profileScreenState extends State<profileScreen> {
         .get();
 
     setState(() {
-      profilePhotoUrl = (snap.data() as Map<String, dynamic>)['profilePhotoUrl'];
+      profilePhotoUrl =
+          (snap.data() as Map<String, dynamic>)['profilePhotoUrl'];
     });
   }
 
@@ -152,153 +155,175 @@ class _profileScreenState extends State<profileScreen> {
                 ListView(
                   padding: EdgeInsets.all(20),
                   children: [
-
                     SizedBox(
                       height: 10.0,
                     ),
                     Center(
-                      child: Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          alignment: Alignment.center,
                           children: [
-                            Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                ClipRect(
-                                  child: Container(
-                                    height: 180 + 20,
-                                    width: width + 15,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(40.0),
-                                          topLeft: Radius.circular(40.0),
-                                          bottomRight: Radius.circular(40.0),
-                                          bottomLeft: Radius.circular(40.0)),
-                                      color: rankColor,
+                            ClipRect(
+                              child: Container(
+                                height: 350,
+                                width: width,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 5,
+                                      height: 120,
+                                      decoration: BoxDecoration(
+                                          color: primaryColor,
+                                          border:
+                                              Border.all(color: primaryColor)),
                                     ),
-                                  ),
-                                ),
-                                ClipRect(
-                                  child: Container(
-                                    height: 185,
-                                    width: width,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                          top: 10,
-                                          bottom: 6),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  CircleAvatar(
-                                                    radius: 55,
-                                                    backgroundColor: rankColor,
-                                                    child: CircleAvatar(
-                                                      backgroundImage: NetworkImage(
-                                                          profilePhotoUrl),
-                                                      radius: 50,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Expanded(
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            whiteTextInDark(
-                                                                "$fname", 20),
-                                                            whiteTextInDark(
-                                                                " ", 20),
-                                                            whiteTextInDark(
-                                                                "$lname", 20),
-                                                          ],
-                                                        ),
-                                                        decoration: BoxDecoration(
-                                                            border: Border(
-                                                                bottom: BorderSide(
-                                                                    color:
-                                                                        rankColor))),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 7,
-                                          ),
+                                    Container(
+                                      child: Expanded(
+                                        child: Row(mainAxisAlignment: MainAxisAlignment.center,children: [
                                           Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+
                                             children: [
-                                              Container(
-                                                width: 230,
-                                                margin: EdgeInsets.all(2),
-                                                padding:
-                                                    const EdgeInsets.all(5),
-                                                child: FittedBox(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      FittedBox(
-                                                        child: Text(
-                                                          "Start a Project with $fname",
-                                                          style: TextStyle(
-                                                              color: primaryColor,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons.touch_app_outlined,
+                                              Text('$fname $lname', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: offersColor),),
+                                              Text(' @$username', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: offersColor),),
+
+                                            ],
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                          ),
+
+                                        ],),
+                                      ),
+                                      
+
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                          color: primaryColor,
+                                          border:
+                                          Border.all(color: primaryColor)),
+                                    ),
+
+                                    Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,crossAxisAlignment: CrossAxisAlignment.center,children: [
+                                      Column(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, bottom: 8, top: 15, right: 8),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Offers",
+                                                  style: new TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      color: primaryColor,
+                                                      fontSize: 18.0),
+                                                ),
+                                                Container(height: 5,),
+                                                CircularPercentIndicator(
+                                                  circularStrokeCap: CircularStrokeCap.butt,
+                                                  backgroundColor: Colors.white,
+                                                  progressColor: Colors.grey.shade400,
+                                                  radius: 36.0,
+                                                  animation: true,
+                                                  animationDuration: 2000,
+                                                  lineWidth: 6.0,
+                                                  percent: 55 / 100,
+                                                  center: Text(
+                                                    "0",
+                                                    style: new TextStyle(
+                                                        fontWeight: FontWeight.bold,
                                                         color: primaryColor,
-                                                      )
-                                                    ],
+                                                        fontSize: 15.0),
                                                   ),
                                                 ),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.green,
-                                                  borderRadius:
-                                                      BorderRadius.circular(45),
-                                                  border: Border.all(
-                                                      color: Colors.green),
-                                                ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(40.0),
-                                          topLeft: Radius.circular(40.0),
-                                          bottomRight: Radius.circular(40.0),
-                                          bottomLeft: Radius.circular(40.0)),
-                                      color: secColor,
-                                    ),
-                                  ),
+                                      Container(
+                                        width: 5,
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                            color: primaryColor,
+                                            border:
+                                            Border.all(color: primaryColor)),
+                                      ),
+                                      Column(
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, bottom: 8, top: 15, right: 8),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text(
+                                                          "Title",
+                                                          style: new TextStyle(
+                                                              fontWeight: FontWeight.bold,
+                                                              color: primaryColor,
+                                                              fontSize: 18.0),
+                                                        ),
+                                                        Container(height: 5,),
+                                                        CircularPercentIndicator(
+                                                          circularStrokeCap: CircularStrokeCap.butt,
+                                                          backgroundColor: Colors.white,
+                                                          progressColor: Colors.grey.shade400,
+                                                          radius: 36.0,
+                                                          animation: true,
+                                                          animationDuration: 2000,
+                                                          lineWidth: 6.0,
+                                                          percent: 55 / 100,
+                                                          center: Text(
+                                                            "Junior",
+                                                            style: new TextStyle(
+                                                                fontWeight: FontWeight.bold,
+                                                                color: primaryColor,
+                                                                fontSize: 15.0),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+
+                                          ),
+                                        ],
+                                      ),
+                                    ],)
+                                  ],
                                 ),
-                              ],
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(40.0),
+                                      topLeft: Radius.circular(40.0),
+                                      bottomRight: Radius.circular(40.0),
+                                      bottomLeft: Radius.circular(40.0)),
+                                  color: secColor,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 280,
+                              child: CircleAvatar(
+                                radius: 54,
+                                backgroundColor: primaryColor,
+                                child: CircleAvatar(
+                                  backgroundImage:
+                                      NetworkImage(profilePhotoUrl),
+                                  radius: 50,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -308,41 +333,8 @@ class _profileScreenState extends State<profileScreen> {
                       height: 10.0,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.only(
-                                  left: 8, bottom: 8, top: 15, right: 8),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Projects",
-                                    style: TextStyle(
-                                        color: secColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1),
-                                  ),
-                                  Divider(),
-                                  Text(
-                                    "0",
-                                    style: TextStyle(
-                                        color: rankColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                    right:
-                                        BorderSide(color: rankColor, width: 2)),
-                              ),
-                            ),
-                          ],
-                        ),
                         Column(
                           children: [
                             Container(
@@ -358,7 +350,9 @@ class _profileScreenState extends State<profileScreen> {
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 1),
                                   ),
-                                  Divider(),
+                                  Divider(
+                                    thickness: 1,
+                                  ),
                                   Text(
                                     "0",
                                     style: TextStyle(
@@ -367,11 +361,6 @@ class _profileScreenState extends State<profileScreen> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                    right:
-                                        BorderSide(color: rankColor, width: 2)),
                               ),
                             ),
                           ],
@@ -392,7 +381,6 @@ class _profileScreenState extends State<profileScreen> {
                                         letterSpacing: 1),
                                   ),
                                   Divider(
-                                    color: Colors.grey,
                                     thickness: 1,
                                   ),
                                   Text(
@@ -415,7 +403,7 @@ class _profileScreenState extends State<profileScreen> {
                         ),
                       ],
                     ),
-                    Divider(thickness: 2, color: rankColor),
+                    Divider(thickness: 2),
                     SizedBox(
                       height: 10.0,
                     ),
@@ -435,7 +423,7 @@ class _profileScreenState extends State<profileScreen> {
                         ),
                         Icon(
                           Icons.school,
-                          color: rankColor,
+                          color: offersColor,
                           size: 22,
                         )
                       ],
@@ -451,35 +439,41 @@ class _profileScreenState extends State<profileScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               roundedContainerWithBackground(
-                                  "Prgramming", rankColor),
+                                  "Prgramming", offersColor),
                               SizedBox(
                                 height: 20,
                               ),
                               roundedContainerWithBackground(
-                                  "Programming", rankColor)
+                                  "Programming", offersColor)
                             ],
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               roundedContainerWithBackground(
-                                  "Programming", rankColor),
+                                  "Programming", offersColor),
                             ],
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               roundedContainerWithBackground(
-                                  "Programming", rankColor),
+                                  "Programming", offersColor),
                               SizedBox(
                                 height: 20,
                               ),
                               roundedContainerWithBackground(
-                                  "Programming", rankColor)
+                                  "Programming", offersColor)
                             ],
                           ),
                         ],
                       ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Divider(
+                      thickness: 2,
                     ),
                     SizedBox(
                       height: 20,
@@ -504,7 +498,7 @@ class _profileScreenState extends State<profileScreen> {
                             ),
                             Icon(
                               Icons.boy_sharp,
-                              color: rankColor,
+                              color: offersColor,
                               size: 25,
                             ),
                           ],
@@ -514,13 +508,20 @@ class _profileScreenState extends State<profileScreen> {
                             padding: EdgeInsets.all(20),
                             child: Wrap(
                               children: [
-                                Text(
-                                  "Hi, I am a professional Developer. I graduated from Cyprus international university in 2022 and I am working as a Zoner in The Zone",
-                                  style: TextStyle(
-                                    color: secColor.withOpacity(0.8),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1,
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: offersColor, width: 1)),
+                                  child: Text(
+                                    "Hi, I am a professional Developer. I graduated from Cyprus international university in 2022 and I am working as a Zoner in The Zone",
+                                    style: TextStyle(
+                                      color: secColor.withOpacity(0.8),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -529,7 +530,9 @@ class _profileScreenState extends State<profileScreen> {
                         ),
                       ],
                     ),
-                    Divider(thickness: 2, color: rankColor),
+                    Divider(
+                      thickness: 2,
+                    ),
                     SizedBox(
                       height: 15,
                     ),
@@ -548,7 +551,7 @@ class _profileScreenState extends State<profileScreen> {
                           height: 20,
                         ),
                         GridView.count(
-                          crossAxisCount: 3,
+                          crossAxisCount: 2,
                           mainAxisSpacing: 13,
                           crossAxisSpacing: 10,
                           physics: NeverScrollableScrollPhysics(),

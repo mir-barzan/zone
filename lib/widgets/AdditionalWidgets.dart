@@ -309,12 +309,12 @@ portfolioContainer(String label, String imageLink) {
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Container(
-        height: 90,
-        width: 90,
+        height: 100,
+        width: 150,
         decoration: BoxDecoration(
-            color: rankColor,
-            borderRadius: BorderRadius.zero,
-            border: Border.all(color: rankColor, width: 3),
+            color: offersColor,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: offersColor, width: 3),
             image: DecorationImage(
                 image: NetworkImage(imageLink), fit: BoxFit.cover)),
       ),
@@ -323,7 +323,7 @@ portfolioContainer(String label, String imageLink) {
       ),
       FittedBox(
         child: Text(label,
-            style: TextStyle(color: secColor, fontSize: 13, letterSpacing: 1)),
+            style: TextStyle(color: secColor, fontSize: 13,fontWeight: FontWeight.bold, letterSpacing: 1)),
       )
     ],
   );

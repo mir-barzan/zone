@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zone/additional/colors.dart';
 import '../../widgets/AdditionalWidgets.dart';
@@ -14,13 +15,16 @@ class dashboard extends StatefulWidget {
 }
 
 class _dashboardState extends State<dashboard> {
-  int profit = 4, cost = 23, verification = 44, stints = 55, overAllRating = 0;
+  int profit = 4, cost = 23, verification = 44, stints = 55, overAllRating =1;
+  double rateCount = 0.2;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: primaryColor,
         appBar: AppBar(
+          centerTitle: true,
+          title: Expanded(child: SvgPicture.asset('assets/images/zoneLogo.svg', color: primaryColor,width: 180,)),
           backgroundColor: offersColor,
           elevation: 0,
         ),
@@ -44,7 +48,7 @@ class _dashboardState extends State<dashboard> {
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      rating(4.2),
+                      rating(rateCount),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
