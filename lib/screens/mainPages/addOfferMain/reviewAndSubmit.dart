@@ -1,11 +1,14 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zone/Services/FireStoreSettings.dart';
 import 'package:zone/Services/sharedPrefs.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/mainPages/addOfferMain/offerCard.dart';
@@ -16,9 +19,12 @@ class reviewAndSubmit extends StatefulWidget {
   const reviewAndSubmit({Key? key}) : super(key: key);
 
   static ValueNotifier<String> newTitle = ValueNotifier('');
-  static ValueNotifier<int> newPrice = ValueNotifier(0);
+  static ValueNotifier<String> newPrice = ValueNotifier('');
   static ValueNotifier<Uint8List?> newImage = ValueNotifier(Uint8List(127));
-  static ValueNotifier<String> category = ValueNotifier('Other');
+  static ValueNotifier<List> category = ValueNotifier([]);
+  static ValueNotifier<List> faq = ValueNotifier([]);
+  static ValueNotifier<String> newDiscription = ValueNotifier('');
+  static ValueNotifier<String> newtimeNeeded = ValueNotifier('');
 
   @override
   State<reviewAndSubmit> createState() => _reviewAndSubmitState();
@@ -27,7 +33,101 @@ class reviewAndSubmit extends StatefulWidget {
 class _reviewAndSubmitState extends State<reviewAndSubmit> {
   @override
   String title = "";
+  bool _isLoading = false;
+  String fname = '';
+  String lname = '';
+  String uid = '';
+  String rank = '';
+  String ratinga = '';
+  String username = '';
 
+  getUsername() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    username = (snap.data() as Map<String, dynamic>)['username'];
+  }
+  getUserfname() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    fname = (snap.data() as Map<String, dynamic>)['fname'];
+  }
+  getUserlname() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    lname = (snap.data() as Map<String, dynamic>)['lname'];
+  }
+  getUserid() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    uid = (snap.data() as Map<String, dynamic>)['uid'];
+  }
+  getUserrank() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    rank = (snap.data() as Map<String, dynamic>)['rank'];
+  }
+  getUserrating() async {
+    DocumentSnapshot snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    ratinga = (snap.data() as Map<String, dynamic>)['rating'];
+  }
+
+  void postOffer(
+      categoryTags, title, description, price, file, faq, timeNeeded) async {
+    try {
+      String result = await FireStoreSettings().uploadOffer(
+          _isLoading,
+          faq,
+          title,
+          description,
+          uid,
+          price,
+          file,
+          fname,
+          lname,
+          username,
+          ratinga,
+          rank,
+          timeNeeded,
+          categoryTags);
+      if (result == 'success') {
+        showSnackBar(context, 'posted');
+      } else {
+        showAlertDialog(context, 'errorText', result,Icon(Icons.error));
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserfname();
+    getUserlname();
+    getUsername();
+    getUserrank();
+    getUserrating();
+    getUserid();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,15 +200,14 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                   // Get the updated value of each listenable
                   // in values list.
                   return Container(
-                          width: 350,
-                          height: 400,
-                          child: OfferCard(
-                                  title: values.elementAt(0),
-                                  price: values.elementAt(1),
-                                  image: values.elementAt(2))
-                              .makeCard(),
+                    width: 350,
+                    height: 400,
+                    child: OfferCard(
+                            title: values.elementAt(0),
+                            price: values.elementAt(1),
+                            image: values.elementAt(2))
+                        .makeCard(),
                   );
-
                 },
               ),
             ),
@@ -122,17 +221,34 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
             Container(
               height: 50,
               width: 220,
-              child: ElevatedButton(
-                onPressed: () {
-                  //todo validation
-                },
-                child: Icon(
-                  Icons.check,
-                  size: 45,
-                ),
-                style: ElevatedButton.styleFrom(
-                    shape: StadiumBorder(), primary: offersColor),
-              ),
+              child: MultiValueListenableBuilder(
+                  valueListenables: [
+                    reviewAndSubmit.faq,
+                    reviewAndSubmit.category,
+                    reviewAndSubmit.newDiscription,
+                    reviewAndSubmit.newImage,
+                    reviewAndSubmit.newPrice,
+                    reviewAndSubmit.newtimeNeeded,
+                    reviewAndSubmit.newTitle,
+                  ],
+                  builder: (context, values, child) {
+                    return ElevatedButton(
+                      child: Text("next"),
+                      onPressed: () {
+                        setState(() {
+                          postOffer(
+                              values.elementAt(1),
+                              values.elementAt(6),
+                              values.elementAt(2),
+                              values.elementAt(4),
+                              values.elementAt(3),
+                              values.elementAt(0),
+                              values.elementAt(5));
+
+                        });
+                      },
+                    );
+                  }),
             ),
             Container(
               height: 20,

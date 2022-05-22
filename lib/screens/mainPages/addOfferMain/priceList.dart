@@ -101,7 +101,7 @@ class _priceListState extends State<priceList> {
                               if (counter > minValue) {
                                 counter--;
                               }
-                              reviewAndSubmit.newPrice.value = counter;
+                              reviewAndSubmit.newPrice.value = counter.toString();
                             });
                           },
                         ),
@@ -139,7 +139,7 @@ class _priceListState extends State<priceList> {
                               if (counter < maxValue) {
                                 counter++;
                               }
-                              reviewAndSubmit.newPrice.value = counter;
+                              reviewAndSubmit.newPrice.value = counter.toString();
                               _moneyController.text = moneyString(counter);
                             });
                           },
@@ -194,6 +194,8 @@ class _priceListState extends State<priceList> {
                 isPressedList[5] = false;
                 isPressedList[4] = false;
                 isPressedList[3] = false;
+                reviewAndSubmit.newtimeNeeded.value = 'less than or 1 day';
+
               });
             },
             child: ChoiceButton(
@@ -213,6 +215,8 @@ class _priceListState extends State<priceList> {
                 isPressedList[1] = true;
                 isPressedList[4] = false;
                 isPressedList[3] = false;
+                reviewAndSubmit.newtimeNeeded.value = '2 days to 3 days';
+
               });
             },
             child: ChoiceButton(
@@ -224,6 +228,7 @@ class _priceListState extends State<priceList> {
 
           GestureDetector(
             onTap: (){
+
               setState(() {
                 isPressedList[0] = false;
                 isPressedList[1] = false;
@@ -231,6 +236,8 @@ class _priceListState extends State<priceList> {
                 isPressedList[2] = true;
                 isPressedList[4] = false;
                 isPressedList[3] = false;
+              reviewAndSubmit.newtimeNeeded.value = '4 days to 5 days';
+
               });
             },
             child: ChoiceButton(
@@ -249,6 +256,7 @@ class _priceListState extends State<priceList> {
                 isPressedList[3] = true;
                 isPressedList[4] = false;
                 isPressedList[5] = false;
+                reviewAndSubmit.newtimeNeeded.value = '6 days to week';
 
               });
             },
@@ -268,6 +276,8 @@ class _priceListState extends State<priceList> {
                 isPressedList[4] = true;
                 isPressedList[3] = false;
                 isPressedList[5] = false;
+                reviewAndSubmit.newtimeNeeded.value = 'more than a week';
+
               });
             },
             child: ChoiceButton(
@@ -286,6 +296,8 @@ class _priceListState extends State<priceList> {
                 isPressedList[5] = true;
                 isPressedList[4] = false;
                 isPressedList[3] = false;
+                reviewAndSubmit.newtimeNeeded.value = 'more than a month';
+
               });
             },
             child: ChoiceButton(

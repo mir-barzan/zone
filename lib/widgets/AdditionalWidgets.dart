@@ -70,15 +70,13 @@ showAlertDialog(
   AlertDialog alert = AlertDialog(
     title: Text(errorText),
     content: Container(
-      child: Row(
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(45)),
+      child: Wrap(
         children: [
           icon,
           Flexible(
             child: Text(
               text,
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.fade,
             ),
           )
         ],

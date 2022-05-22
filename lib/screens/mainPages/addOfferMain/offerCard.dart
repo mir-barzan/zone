@@ -8,12 +8,12 @@ import 'package:zone/screens/mainPages/addOfferMain/information.dart';
 
 class OfferCard {
   String title;
-  int price;
+  String price;
   String rate;
   Uint8List? image;
 
   OfferCard(
-      {required this.title,  this.price = 0, this.rate = '0', this.image});
+      {required this.title,  this.price = "0", this.rate = '0', this.image});
 
   makeCard() {
 
@@ -22,7 +22,7 @@ class OfferCard {
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            this.image!.lengthInBytes > 10 ? Container(
+            image! != null ? Container(
                 child: ClipRect(
                     child: Image(
               alignment: Alignment.center,

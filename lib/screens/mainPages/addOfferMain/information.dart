@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:js_util/js_util_wasm.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -31,8 +31,10 @@ class informationScreenState extends State<informationScreen> {
   TextEditingController _fAnswer = TextEditingController();
   TextEditingController _IWill = TextEditingController();
   TextEditingController _Details = TextEditingController();
-  String title="";
-  getTitle(){
+  TextEditingController _controller = TextEditingController();
+  String title = "";
+
+  getTitle() {
     return _IWill.text;
   }
 
@@ -59,25 +61,40 @@ class informationScreenState extends State<informationScreen> {
     print(questionsChecker);
   }
 
-  final List<String> categoryItems = [
-    'Business',
-    'Data',
-    'Digital Marketing',
-    'Graphics & Design',
-    'Lifestyle',
-    'Music & Audio',
-    'Programming & Tech',
-    'Video & Animation',
-    'Writing & Translation',
-    'Other'
-  ];
-
   String? selectedValue;
-
+  final _formKey = GlobalKey<FormState>();
   String? value;
 
-  final _formKey = GlobalKey<FormState>();
   String categoryValue = "Category";
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
+
+  final List<CategoryTag> _category = <CategoryTag>[];
+
+  Iterable<Widget> get actorWidgets {
+    return _category.map((CategoryTag tags) {
+      return Padding(
+        padding: const EdgeInsets.all(                                                                      4.0),
+        child: Chip(
+          backgroundColor: Colors.grey.shade200,
+          deleteIconColor: Colors.grey,
+          label: Text(tags.name, style: TextStyle(color: offersColor),),
+          onDeleted: () {
+            setState(() {
+              _category.removeWhere((CategoryTag entry) {
+                return entry.name == tags.name;
+              });
+            });
+          },
+        ),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,15 +124,19 @@ class informationScreenState extends State<informationScreen> {
       backgroundColor: primaryColor,
       appBar: AppBar(
         leading: CancelIcon(),
-        title: Wrap(
-            children:[ Text(
-              "New Offer",
-              style: TextStyle(fontSize: 34, color: offersColor),
-            ),Container(
-                height: 50,
-                width: 50,
-                child: Icon(Icons.local_offer, color: offersColor,)),
-            ]),
+        title: Wrap(children: [
+          Text(
+            "New Offer",
+            style: TextStyle(fontSize: 34, color: offersColor),
+          ),
+          Container(
+              height: 50,
+              width: 50,
+              child: Icon(
+                Icons.local_offer,
+                color: offersColor,
+              )),
+        ]),
         actions: [],
         centerTitle: true,
         backgroundColor: primaryColor,
@@ -127,7 +148,7 @@ class informationScreenState extends State<informationScreen> {
         children: [
           Wrap(children: [
             DetailsInformation(
-                "Write a title for what you offer without 'I will' as its built-in your words "),
+                "Write a title for what you offer without 'I will' as it is built-in with your words "),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -140,7 +161,9 @@ class informationScreenState extends State<informationScreen> {
                     padding: EdgeInsets.only(top: 20),
                     child: TextField(
                       controller: _IWill,
-                      onChanged: (text){setTitle(title, _IWill.text);},
+                      onChanged: (text) {
+                        setTitle(title, _IWill.text);
+                      },
                       cursorColor: offersColor,
                       obscureText: false,
                       decoration: InputDecoration(
@@ -168,9 +191,8 @@ class informationScreenState extends State<informationScreen> {
             ),
             DetailsInformation(
                 "Writing in a nice way that provide the customer with many details, why you, and how you are special will increase the probability of buying your offer"),
-            Stack(
-              children:[ Container(
-
+            Stack(children: [
+              Container(
                 child: Column(
                   children: [
                     Text(
@@ -181,6 +203,11 @@ class informationScreenState extends State<informationScreen> {
                       height: 10,
                     ),
                     TextField(
+                      onChanged: (value){
+                        setState(() {
+                          reviewAndSubmit.newDiscription.value = value;
+                        });
+                      },
                         cursorColor: offersColor,
                         maxLines: maxLines,
                         minLines: 5,
@@ -204,38 +231,68 @@ class informationScreenState extends State<informationScreen> {
               height: 50,
               thickness: 1,
             ),
-            DetailsInformation("Category helps your offer to be in the correct place for the user search"),
-            Container(height: 5,),
+            DetailsInformation(
+                "Category helps your offer to be in the correct place for the user search"),
+            Container(
+              height: 5,
+            ),
             Text(
-              "Please choose a Category",
+              "Please choose a Category tag",
               style: TextStyle(fontSize: 20),
             ),
-            Container(height: 10,),
-
             Container(
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration.collapsed(
-                    hintText: "",
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Wrap(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        height: 50,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: offersColor)),
+                        child: TextField(
+                          controller: _controller,
+                          cursorColor: offersColor,
+                          decoration: InputDecoration(
+                              focusColor: offersColor,
+                              hoverColor: offersColor,
+                              border: InputBorder.none),
+                          onChanged: (value) {
+                            setState(() {
+                              reviewAndSubmit.category.value = _category.map((e) => );
+                            });
+                          },\
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if(_category.length==5){
+                            setState(() {
+                              showAlertDialog(context, "", "Cannot add more than 5 Category tags !", Icon(Icons.error, color: Colors.red,));
+
+                            });
+                          }else{
+                            setState(() {
+                              _category.add(CategoryTag(_controller.text));
+                              _controller.clear();
+                            });
+                          }
+                          print(_category.length);
+                        },
+                        child: Text("Add"),
+                        style: ElevatedButton.styleFrom(
+                            shape: StadiumBorder(), primary: offersColor),
+                      ),
+                    ],
                   ),
-                  value: categoryValue,
-                  hint: Text("Please choose a Category"),
-                  items: categoryItems.map((sugar) {
-                    return DropdownMenuItem(
-                      value: sugar,
-                      child: Text('$sugar '),
-                    );
-                  }).toList(),
-                  onChanged: (sugar) => setState(() => categoryValue = sugar!),
-                ),
-                //todo DropdownButton
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(color: offersColor, width: 1.0),
-                borderRadius: BorderRadius.all(Radius.circular(
-                        5.0) //                 <--- border radius here
-                    ),
+                  Wrap(
+                    children: actorWidgets.toList(),
+                  )
+                ],
               ),
             ),
             const SizedBox(height: 30),
@@ -389,6 +446,9 @@ class informationScreenState extends State<informationScreen> {
                         //todo create the questions
                         checkQuestionField();
                         PageState();
+                        setState(() {
+                          reviewAndSubmit.faq.value = questions;
+                        });
                       },
                       child: Text("Add"),
                       style: ElevatedButton.styleFrom(
@@ -519,8 +579,6 @@ class informationScreenState extends State<informationScreen> {
     print(totalState);
   }
 
-
-
   CancelIcon() {
     return IconButton(
         onPressed: () {
@@ -565,17 +623,23 @@ class informationScreenState extends State<informationScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? '';
   }
-   putString(String key, String value) async {
+
+  putString(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);
   }
-  setTitle(x,y){
+
+  setTitle(x, y) {
     setState(() {
       x = y;
-      putString("Title", title);
       reviewAndSubmit.newTitle.value = x;
       print(x);
     });
-
   }
+}
+
+class CategoryTag {
+  const CategoryTag(this.name);
+
+  final String name;
 }
