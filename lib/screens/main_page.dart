@@ -43,8 +43,8 @@ class _mainPageState extends State<mainPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          navigateTo(context, postScreen());
-          currentScreen = postScreen();
+          navigateTo(context, addOfferScreen());
+          currentScreen = addOfferScreen();
           currentTab = 0;
         },
         backgroundColor: secColor,

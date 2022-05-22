@@ -18,6 +18,7 @@ class reviewAndSubmit extends StatefulWidget {
   static ValueNotifier<String> newTitle = ValueNotifier('');
   static ValueNotifier<int> newPrice = ValueNotifier(0);
   static ValueNotifier<Uint8List?> newImage = ValueNotifier(Uint8List(127));
+  static ValueNotifier<String> category = ValueNotifier('Other');
 
   @override
   State<reviewAndSubmit> createState() => _reviewAndSubmitState();

@@ -91,7 +91,7 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
 
         profilePho = await storageMeth()
             .uploadImageFileToFirebaseStorage(
-            'profilePics', _image!, false, false);
+            'profilePics', _image!, false);
 
 
       }catch(e){

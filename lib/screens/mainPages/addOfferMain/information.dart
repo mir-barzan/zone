@@ -60,7 +60,6 @@ class informationScreenState extends State<informationScreen> {
   }
 
   final List<String> categoryItems = [
-    'Category',
     'Business',
     'Data',
     'Digital Marketing',
