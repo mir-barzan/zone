@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:js_util/js_util_wasm.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -75,6 +74,9 @@ class informationScreenState extends State<informationScreen> {
   }
 
   final List<CategoryTag> _category = <CategoryTag>[];
+  List<String> tagss = [];
+  List faqQuestion = [];
+  List faqAnswer = [];
 
   Iterable<Widget> get actorWidgets {
     return _category.map((CategoryTag tags) {
@@ -86,6 +88,9 @@ class informationScreenState extends State<informationScreen> {
           label: Text(tags.name, style: TextStyle(color: offersColor),),
           onDeleted: () {
             setState(() {
+              tagss = _category.map((v) => v.name).toList();
+              reviewAndSubmit.category.value = tagss;
+
               _category.removeWhere((CategoryTag entry) {
                 return entry.name == tags.name;
               });
@@ -263,21 +268,27 @@ class informationScreenState extends State<informationScreen> {
                               border: InputBorder.none),
                           onChanged: (value) {
                             setState(() {
-                              reviewAndSubmit.category.value = _category.map((e) => );
+                              tagss = _category.map((v) => v.name).toList();
+                              reviewAndSubmit.category.value = tagss;
+                              print(reviewAndSubmit.category.value);
+
                             });
-                          },\
+                          },
                         ),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           if(_category.length==5){
                             setState(() {
+
                               showAlertDialog(context, "", "Cannot add more than 5 Category tags !", Icon(Icons.error, color: Colors.red,));
 
                             });
                           }else{
                             setState(() {
                               _category.add(CategoryTag(_controller.text));
+                              tagss = _category.map((v) => v.name).toList();
+                              reviewAndSubmit.category.value = tagss;
                               _controller.clear();
                             });
                           }
@@ -286,7 +297,7 @@ class informationScreenState extends State<informationScreen> {
                         child: Text("Add"),
                         style: ElevatedButton.styleFrom(
                             shape: StadiumBorder(), primary: offersColor),
-                      ),
+                      ), Container(margin: EdgeInsets.all(2),padding: EdgeInsets.all(5),child: Text('Example: Programming or Python', style: TextStyle(color: Colors.grey.shade500),)),
                     ],
                   ),
                   Wrap(
@@ -447,7 +458,11 @@ class informationScreenState extends State<informationScreen> {
                         checkQuestionField();
                         PageState();
                         setState(() {
-                          reviewAndSubmit.faq.value = questions;
+                          reviewAndSubmit.faqAnswer.value = faqAnswer;
+                          reviewAndSubmit.faqQuestion.value = faqQuestion;
+
+
+
                         });
                       },
                       child: Text("Add"),
@@ -502,6 +517,11 @@ class informationScreenState extends State<informationScreen> {
                         onPressed: () {
                           setState(() {
                             questions.removeLast();
+                            faqQuestion.removeLast();
+                            faqAnswer.removeLast();
+                            reviewAndSubmit.faqAnswer.value = faqAnswer;
+                            reviewAndSubmit.faqQuestion.value = faqQuestion;
+
                             if (eIndex != 0) {
                               eIndex -= 1;
                             }
@@ -563,6 +583,8 @@ class informationScreenState extends State<informationScreen> {
       _fAnswer.clear();
       qChecker();
       PageState();
+      faqQuestion.add(question.toString());
+      faqAnswer.add(answer.toString());
     });
   }
 

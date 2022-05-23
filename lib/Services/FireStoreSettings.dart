@@ -15,13 +15,13 @@ class FireStoreSettings{
 
   Future<String> uploadOffer(
       bool isLoading,
-      List faq,
+      List faqQuestions,
     String title,
     String description,
      uid,
     String price,
     Uint8List file,
-    fname, lname, username ,rating, rank, timeNeeded, categoryTags) async{
+    fname, lname, username ,rating, rank, timeNeeded, List categoryTags, List faqAnswers) async{
     String result = "Error!";
         try{
           isLoading = true;
@@ -41,8 +41,9 @@ class FireStoreSettings{
             timeNeeded: timeNeeded,
             price: price,
             offerId: offerId,
-            categoryTags: [],
-            faq: []
+            categoryTags: categoryTags,
+            faqQuestion: faqQuestions,
+              faqAnswer: faqAnswers
 
 
 

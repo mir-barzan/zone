@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,20 +12,47 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zone/Services/FireStoreSettings.dart';
 import 'package:zone/Services/sharedPrefs.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/screens/mainPages/addOfferMain/information.dart';
 import 'package:zone/screens/mainPages/addOfferMain/offerCard.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 import '../../main_page.dart';
+import '../personalOffersScreen.dart';
 
 class reviewAndSubmit extends StatefulWidget {
   const reviewAndSubmit({Key? key}) : super(key: key);
 
   static ValueNotifier<String> newTitle = ValueNotifier('');
   static ValueNotifier<String> newPrice = ValueNotifier('');
-  static ValueNotifier<Uint8List?> newImage = ValueNotifier(Uint8List(127));
+  static ValueNotifier<Uint8List?> newImage = ValueNotifier(Uint8List(0));
   static ValueNotifier<List> category = ValueNotifier([]);
-  static ValueNotifier<List> faq = ValueNotifier([]);
+  static ValueNotifier<List> faqAnswer = ValueNotifier([]);
+  static ValueNotifier<List> faqQuestion = ValueNotifier([]);
   static ValueNotifier<String> newDiscription = ValueNotifier('');
   static ValueNotifier<String> newtimeNeeded = ValueNotifier('');
+  static ValueNotifier<Color> titleColor = ValueNotifier(Colors.red);
+  static ValueNotifier<Color> descriptionColor = ValueNotifier(Colors.red);
+  static ValueNotifier<Color> tagsColor = ValueNotifier(Colors.red);
+  static ValueNotifier<Color> faqColor = ValueNotifier(Colors.red);
+  static ValueNotifier<Color> imageColor = ValueNotifier(Colors.red);
+  static ValueNotifier<Color> priceColor = ValueNotifier(Colors.red);
+  static ValueNotifier<Color> neededTimeColor = ValueNotifier(Colors.red);
+
+  checker() {
+    bool x = false;
+    if ((newTitle.value.length >= 10) &
+        (int.parse(newPrice.value) >= 5) &
+        (newImage.value!.isNotEmpty) &
+        (category.value.isNotEmpty) &
+        (faqAnswer.value.length >= 5) &
+        (faqQuestion.value.length >= 5) &
+        (newDiscription.value.length >= 100) &
+        (newtimeNeeded.value.isNotEmpty)) {
+      x = true;
+    }
+
+
+    return x;
+  }
 
   @override
   State<reviewAndSubmit> createState() => _reviewAndSubmitState();
@@ -34,13 +62,27 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
   @override
   String title = "";
   bool _isLoading = false;
+  bool _everyThingIsFine = false;
+  bool correctTitle = false;
   String fname = '';
   String lname = '';
   String uid = '';
   String rank = '';
   String ratinga = '';
   String username = '';
+  Color titleColor = Colors.red,descriptionColor = Colors.red, categoryColor = Colors.red, faqColor = Colors.red, priceColor = Colors.red, timeColor = Colors.red;
+  checkTitle(){
+   bool x = false;
+    if (reviewAndSubmit.newTitle.value.length >= 10) {
+      setState((){
+        x = true;
+      });
+    }
+    print(x);
+    return x;
 
+
+  }
   getUsername() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -49,6 +91,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
 
     username = (snap.data() as Map<String, dynamic>)['username'];
   }
+
   getUserfname() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -57,6 +100,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
 
     fname = (snap.data() as Map<String, dynamic>)['fname'];
   }
+
   getUserlname() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -65,6 +109,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
 
     lname = (snap.data() as Map<String, dynamic>)['lname'];
   }
+
   getUserid() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -73,6 +118,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
 
     uid = (snap.data() as Map<String, dynamic>)['uid'];
   }
+
   getUserrank() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -81,6 +127,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
 
     rank = (snap.data() as Map<String, dynamic>)['rank'];
   }
+
   getUserrating() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -90,34 +137,46 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     ratinga = (snap.data() as Map<String, dynamic>)['rating'];
   }
 
-  void postOffer(
-      categoryTags, title, description, price, file, faq, timeNeeded) async {
+  void postOffer(categoryTags, title, description, price, file, timeNeeded,
+      faqQuestion, faqAnswer) async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       String result = await FireStoreSettings().uploadOffer(
-          _isLoading,
-          faq,
-          title,
-          description,
-          uid,
-          price,
-          file,
-          fname,
-          lname,
-          username,
-          ratinga,
-          rank,
-          timeNeeded,
-          categoryTags);
+        _isLoading,
+        faqQuestion,
+        title,
+        description,
+        uid,
+        price,
+        file,
+        fname,
+        lname,
+        username,
+        ratinga,
+        rank,
+        timeNeeded,
+        categoryTags,
+        faqAnswer,
+      );
       if (result == 'success') {
+        setState(() {
+          _isLoading = false;
+        });
         showSnackBar(context, 'posted');
       } else {
-        showAlertDialog(context, 'errorText', result,Icon(Icons.error));
+        setState(() {
+          _isLoading = false;
+        });
+        showAlertDialog(context, 'errorText', result, Icon(Icons.error));
       }
     } catch (e) {
       showSnackBar(context, e.toString());
     }
   }
-@override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -127,7 +186,14 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     getUserrank();
     getUserrating();
     getUserid();
+    Timer timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
+      setState(() {
+        _everyThingIsFine = reviewAndSubmit().checker();
+
+      });
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,7 +223,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
             child: Column(
           children: [
             Container(
-              height: 10,
+              height: 19,
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -173,42 +239,72 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
             Container(
               height: 10,
             ),
-            Column(
-              children: [
-                Text(
-                  "Your Offer",
-                  style: TextStyle(fontSize: 30, color: offersColor),
-                ),
-                Container(
-                  height: 10,
-                ),
-                Icon(
-                  Icons.arrow_downward,
-                  size: 50,
-                  color: offersColor,
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            "Your Offer",
+                            style:
+                                TextStyle(fontSize: 25, color: offersColor),
+                          ),
+                          Icon(
+                            Icons.arrow_downward_outlined,
+                            size: 30,
+                            color: offersColor,
+                          ),
+                          Container(
+                            height: 10,
+                          ),
+
+                          Container(
+                            height: 8,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                ],
+              ),
             ),
             Container(
-              child: MultiValueListenableBuilder(
-                valueListenables: [
-                  reviewAndSubmit.newTitle,
-                  reviewAndSubmit.newPrice,
-                  reviewAndSubmit.newImage
-                ],
-                builder: (context, values, child) {
-                  // Get the updated value of each listenable
-                  // in values list.
-                  return Container(
-                    width: 350,
-                    height: 400,
-                    child: OfferCard(
-                            title: values.elementAt(0),
-                            price: values.elementAt(1),
-                            image: values.elementAt(2))
-                        .makeCard(),
-                  );
-                },
+              padding: EdgeInsets.all(4),
+              height: 410,
+              width: 360,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(40))),
+              child: Container(
+                child: MultiValueListenableBuilder(
+                  valueListenables: [
+                    reviewAndSubmit.newTitle,
+                    reviewAndSubmit.newPrice,
+                    reviewAndSubmit.newImage
+                  ],
+                  builder: (context, values, child) {
+                    // Get the updated value of each listenable
+                    // in values list.
+                    return Container(
+                      width: 350,
+                      height: 400,
+                      child: new OfferCard(
+                              title: values.elementAt(0),
+                              price: values.elementAt(1),
+                              image: values.elementAt(2))
+                          .makeCard(),
+                    );
+                  },
+                ),
               ),
             ),
             Container(
@@ -223,31 +319,59 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
               width: 220,
               child: MultiValueListenableBuilder(
                   valueListenables: [
-                    reviewAndSubmit.faq,
+                    reviewAndSubmit.faqQuestion,
                     reviewAndSubmit.category,
                     reviewAndSubmit.newDiscription,
                     reviewAndSubmit.newImage,
                     reviewAndSubmit.newPrice,
                     reviewAndSubmit.newtimeNeeded,
                     reviewAndSubmit.newTitle,
+                    reviewAndSubmit.faqAnswer
                   ],
                   builder: (context, values, child) {
                     return ElevatedButton(
-                      child: Text("next"),
-                      onPressed: () {
-                        setState(() {
-                          postOffer(
-                              values.elementAt(1),
-                              values.elementAt(6),
-                              values.elementAt(2),
-                              values.elementAt(4),
-                              values.elementAt(3),
-                              values.elementAt(0),
-                              values.elementAt(5));
-
-                        });
-                      },
-                    );
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                _everyThingIsFine
+                                    ? Colors.green
+                                    : Colors.grey)),
+                        child: _isLoading
+                            ? CircularProgressIndicator(
+                                color: primaryColor,
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Wrap(
+                                  children: [
+                                    Text(
+                                      'Submit',
+                                      style: TextStyle(
+                                          fontSize: 26, color: primaryColor),
+                                    ),
+                                    Icon(
+                                      Icons.check,
+                                      color: primaryColor,
+                                      size: 30,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                        onPressed: _everyThingIsFine
+                            ? () => setState(() {
+                                  for(int i = 0; i<= 10; i++){
+                                    postOffer(
+                                        values.elementAt(1),
+                                        values.elementAt(6),
+                                        values.elementAt(2),
+                                        values.elementAt(4),
+                                        values.elementAt(3),
+                                        values.elementAt(5),
+                                        values.elementAt(0),
+                                        values.elementAt(7));
+                                  }
+                                  navigateToWithoutBack(context, personalOffersScreen());
+                                })
+                            : ()=>{showAlertDialog(context, "Error", "You have to fill all the rquirements before submiting your offer !", Icon(Icons.error, color: Colors.red,))});
                   }),
             ),
             Container(
@@ -302,5 +426,34 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
   Future<String> loadString(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? '';
+  }
+
+  makeSure() {
+    bool x = false;
+    MultiValueListenableBuilder(
+        valueListenables: [
+          reviewAndSubmit.faqQuestion,
+          reviewAndSubmit.category,
+          reviewAndSubmit.newDiscription,
+          reviewAndSubmit.newImage,
+          reviewAndSubmit.newPrice,
+          reviewAndSubmit.newtimeNeeded,
+          reviewAndSubmit.newTitle,
+          reviewAndSubmit.faqAnswer
+        ],
+        builder: (context, values, child) {
+          if (values.elementAt(0).isNotEmpty &
+              values.elementAt(1).isNotEmpty &
+              values.elementAt(2).isNotEmpty &
+              values.elementAt(3).isNotEmpty &
+              values.elementAt(4).isNotEmpty &
+              values.elementAt(5).isNotEmpty &
+              values.elementAt(6).isNotEmpty &
+              values.elementAt(7).isNotEmpty) {
+            x = true;
+          }
+          return SnackBar(content: Text('${x.toString()}'));
+        });
+    return x;
   }
 }

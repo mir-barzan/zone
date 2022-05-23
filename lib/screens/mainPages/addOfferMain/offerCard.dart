@@ -13,24 +13,38 @@ class OfferCard {
   Uint8List? image;
 
   OfferCard(
-      {required this.title,  this.price = "0", this.rate = '0', this.image});
+      {required this.title, this.price = "0", this.rate = '0', this.image});
 
   makeCard() {
-
     return Container(
+
       child: Wrap(spacing: 0, children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            image! != null ? Container(
-                child: ClipRect(
-                    child: Image(
-              alignment: Alignment.center,
-              image: MemoryImage(image!),
-              width: double.infinity,
-              height: 220,
-              fit: BoxFit.cover,
-            ))) : Container(color: Colors.deepOrange,height: 219,width: double.infinity,child: Center(child: Icon(Icons.image),),)
+            image!.isNotEmpty
+                ? Container(
+                    child: ClipRect(
+                        child: Image(
+                    alignment: Alignment.center,
+                    image: MemoryImage(image!),
+                    width: 300,
+                    height: 220,
+                    fit: BoxFit.cover,
+                  )))
+                : Container(
+                    color: Colors.grey.shade300,
+                    height: 219,
+                    width: 300,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.image),Text('Your image here')
+                        ],
+                      ),
+                    ),
+                  )
           ],
         ),
         Container(
@@ -80,17 +94,19 @@ class OfferCard {
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: [Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),Icon(
-                          Icons.star,
-                          color: Colors.white,
-                        ),Icon(
-                          Icons.star,
-                          color: Colors.white,
-                        ),
-
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          Icon(
+                            Icons.star,
+                            color: Colors.white,
+                          ),
+                          Icon(
+                            Icons.star,
+                            color: Colors.white,
+                          ),
                           Icon(
                             Icons.star,
                             color: Colors.white,

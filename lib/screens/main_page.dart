@@ -6,6 +6,7 @@ import 'package:zone/screens/mainPages/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/addProjectScreen.dart';
 import 'package:zone/screens/mainPages/dashboard.dart';
 import 'package:zone/screens/mainPages/offersScreen.dart';
+import 'package:zone/screens/mainPages/personalOffersScreen.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
 import 'package:zone/screens/mainPages/projectsScreen.dart';
@@ -24,7 +25,7 @@ class _mainPageState extends State<mainPage> {
     dashboard(),
     projectsScreen(),
     postScreen(),
-    offersScreen(),
+    personalOffersScreen(),
     profileScreen()
   ];
 
@@ -51,6 +52,7 @@ class _mainPageState extends State<mainPage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
+
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
         child: Container(
@@ -128,7 +130,7 @@ class _mainPageState extends State<mainPage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = offersScreen();
+                        currentScreen = personalOffersScreen();
                         currentTab = 3;
                       });
                     },
