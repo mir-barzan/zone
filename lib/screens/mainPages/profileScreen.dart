@@ -379,84 +379,59 @@ class _profileScreenState extends State<profileScreen> {
                             Positioned(
                                 bottom: 260,
                                 right: 200,
-                                child: badge("medal.svg", 90, 90))
+                                child: badge("medal.svg", 90, 90)),
+                            Positioned(
+                                bottom: 260,
+                                left: 182,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    FittedBox(
+                                      child: rating(1.0, true, 20),
+                                    ),
+                                    Container(
+                                      width: 12,
+                                    ),
+                                    Text(
+                                      '(2)',
+                                      style: TextStyle(color: Colors.grey),
+                                    )
+                                  ],
+                                )),
                           ],
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: 10.0,
+                      height: 7.0,
+                    ),
+                    Divider(thickness: 2),
+                    SizedBox(
+                      height: 7.0,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.only(
-                                  left: 8, bottom: 8, top: 15, right: 8),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Offers",
-                                    style: TextStyle(
-                                        color: secColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1),
-                                  ),
-                                  Divider(
-                                    thickness: 1,
-                                  ),
-                                  Text(
-                                    "0",
-                                    style: TextStyle(
-                                        color: rankColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.only(
-                                  left: 8, bottom: 8, top: 15, right: 8),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Title",
-                                    style: TextStyle(
-                                        color: secColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1),
-                                  ),
-                                  Divider(
-                                    thickness: 1,
-                                  ),
-                                  Text(
-                                    rank,
-                                    style: TextStyle(
-                                        color: rankColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1),
-                                  ),
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                color: primaryColor,
-                                borderRadius: BorderRadius.circular(45),
-                                border: Border.all(color: primaryColor),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "Badges",
+                          style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: offersColor,
+                              fontSize: 20.0),
                         ),
                       ],
+                    ),
+                    Container(
+                      height: 5,
+                    ),
+                    Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 2, color: secColor),
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                    SizedBox(
+                      height: 7.0,
                     ),
                     Divider(thickness: 2),
                     SizedBox(

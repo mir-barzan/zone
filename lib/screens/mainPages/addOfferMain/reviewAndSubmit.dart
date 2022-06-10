@@ -36,6 +36,9 @@ class reviewAndSubmit extends StatefulWidget {
   static ValueNotifier<Color> imageColor = ValueNotifier(Colors.red);
   static ValueNotifier<Color> priceColor = ValueNotifier(Colors.red);
   static ValueNotifier<Color> neededTimeColor = ValueNotifier(Colors.red);
+  static ValueNotifier<String> titleCount = ValueNotifier('');
+  static ValueNotifier<String> descriptionCount = ValueNotifier('');
+  static ValueNotifier<String> questionsCount = ValueNotifier('');
 
   checker() {
     bool x = false;
@@ -49,7 +52,6 @@ class reviewAndSubmit extends StatefulWidget {
         (newtimeNeeded.value.isNotEmpty)) {
       x = true;
     }
-
 
     return x;
   }
@@ -70,19 +72,24 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
   String rank = '';
   String ratinga = '';
   String username = '';
-  Color titleColor = Colors.red,descriptionColor = Colors.red, categoryColor = Colors.red, faqColor = Colors.red, priceColor = Colors.red, timeColor = Colors.red;
-  checkTitle(){
-   bool x = false;
+  Color titleColor = Colors.red,
+      descriptionColor = Colors.red,
+      categoryColor = Colors.red,
+      faqColor = Colors.red,
+      priceColor = Colors.red,
+      timeColor = Colors.red;
+
+  checkTitle() {
+    bool x = false;
     if (reviewAndSubmit.newTitle.value.length >= 10) {
-      setState((){
+      setState(() {
         x = true;
       });
     }
     print(x);
     return x;
-
-
   }
+
   getUsername() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -189,7 +196,6 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     Timer timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
       setState(() {
         _everyThingIsFine = reviewAndSubmit().checker();
-
       });
     });
   }
@@ -243,7 +249,6 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -252,8 +257,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                         children: [
                           Text(
                             "Your Offer",
-                            style:
-                                TextStyle(fontSize: 25, color: offersColor),
+                            style: TextStyle(fontSize: 25, color: offersColor),
                           ),
                           Icon(
                             Icons.arrow_downward_outlined,
@@ -263,7 +267,6 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                           Container(
                             height: 10,
                           ),
-
                           Container(
                             height: 8,
                           ),
@@ -271,7 +274,6 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                       ),
                     ],
                   ),
-
                 ],
               ),
             ),
@@ -358,20 +360,29 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                               ),
                         onPressed: _everyThingIsFine
                             ? () => setState(() {
-                                  for(int i = 0; i<= 10; i++){
-                                    postOffer(
-                                        values.elementAt(1),
-                                        values.elementAt(6),
-                                        values.elementAt(2),
-                                        values.elementAt(4),
-                                        values.elementAt(3),
-                                        values.elementAt(5),
-                                        values.elementAt(0),
-                                        values.elementAt(7));
-                                  }
-                                  navigateToWithoutBack(context, personalOffersScreen());
+                                  postOffer(
+                                      values.elementAt(1),
+                                      values.elementAt(6),
+                                      values.elementAt(2),
+                                      values.elementAt(4),
+                                      values.elementAt(3),
+                                      values.elementAt(5),
+                                      values.elementAt(0),
+                                      values.elementAt(7));
+
+                                  navigateToWithoutBack(
+                                      context, personalOffersScreen());
                                 })
-                            : ()=>{showAlertDialog(context, "Error", "You have to fill all the rquirements before submiting your offer !", Icon(Icons.error, color: Colors.red,))});
+                            : () => {
+                                  showAlertDialog(
+                                      context,
+                                      "Error",
+                                      "You have to fill all the rquirements before submiting your offer !",
+                                      Icon(
+                                        Icons.error,
+                                        color: Colors.red,
+                                      ))
+                                });
                   }),
             ),
             Container(
