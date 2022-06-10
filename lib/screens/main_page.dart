@@ -9,7 +9,7 @@ import 'package:zone/screens/mainPages/offersScreen.dart';
 import 'package:zone/screens/mainPages/personalOffersScreen.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
-import 'package:zone/screens/mainPages/projectsScreen.dart';
+import 'package:zone/screens/mainPages/optimizedSearch/projectsScreen.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
 class mainPage extends StatefulWidget {
@@ -104,17 +104,13 @@ class _mainPageState extends State<mainPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.work,
-                          color: currentTab == 1
-                              ? secColor
-                              : Colors.grey,
+                          Icons.select_all,
+                          color: currentTab == 1 ? secColor : Colors.grey,
                         ),
                         Text(
-                          'Projects',
+                          'Search',
                           style: TextStyle(
-                            color: currentTab == 1
-                                ? secColor
-                                : Colors.grey,
+                            color: currentTab == 1 ? secColor : Colors.grey,
                           ),
                         )
                       ],

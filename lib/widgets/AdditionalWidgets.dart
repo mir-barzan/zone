@@ -264,8 +264,11 @@ checker(String username, Widget widget) {
   }
 }
 
-rating(double Rating) {
+rating(double Rating, bool ignoreTabs, double size) {
   return RatingBar.builder(
+    itemSize: size,
+    ignoreGestures: ignoreTabs,
+    glow: true,
     initialRating: Rating,
     minRating: 0,
     direction: Axis.horizontal,

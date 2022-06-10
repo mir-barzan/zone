@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:zone/Services/dataSearch.dart';
 import 'package:zone/additional/colors.dart';
 
 import 'addOfferMain/mainOfferCard.dart';
@@ -19,6 +20,14 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () {
+            //TODO: #######################
+            //TODO: >>>>> Fombad here <<<<<
+            //TODO: #######################
+          },
+          child: Icon(Icons.search),
+        ),
         centerTitle: true,
         title: Expanded(
             child: SvgPicture.asset(
@@ -28,6 +37,44 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
         )),
         backgroundColor: offersColor,
         elevation: 0,
+        actions: [
+          //balance
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  padding: EdgeInsets.all(5),
+                  height: 45,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(35),
+                      color: primaryColor),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FittedBox(
+                          child: Icon(
+                        Icons.monetization_on,
+                        color: offersColor,
+                        size: 30,
+                      )),
+                      FittedBox(
+                        child: Text(
+                          "  0.0 ",
+                          style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: offersColor,
+                              fontSize: 30.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       body: SafeArea(
         child: StreamBuilder(
@@ -43,7 +90,6 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
             return Expanded(
                 child: GridView(
               physics: ScrollPhysics(),
-              shrinkWrap: true,
               padding: EdgeInsets.all(10),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
