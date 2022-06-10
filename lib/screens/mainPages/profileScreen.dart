@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
@@ -117,10 +118,12 @@ class _profileScreenState extends State<profileScreen> {
           leadingWidth: 110,
           elevation: 0,
           backgroundColor: primaryColor,
-          title: Text(
-            "@$username",
-            style: TextStyle(color: secColor),
-          ),
+          title: Expanded(
+              child: SvgPicture.asset(
+            'assets/images/zoneLogo.svg',
+            color: offersColor,
+            width: 180,
+          )),
           centerTitle: true,
           actions: [
             Padding(
