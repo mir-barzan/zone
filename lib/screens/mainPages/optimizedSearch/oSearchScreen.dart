@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/screens/mainPages/optimizedSearch/requirements.dart';
+import 'package:zone/widgets/AdditionalWidgets.dart';
 
-class projectsScreen extends StatefulWidget {
-  const projectsScreen({Key? key}) : super(key: key);
+class searchScreen extends StatefulWidget {
+  const searchScreen({Key? key}) : super(key: key);
 
   @override
-  State<projectsScreen> createState() => _projectsScreenState();
+  State<searchScreen> createState() => _searchScreenState();
 }
 
-class _projectsScreenState extends State<projectsScreen> {
+class _searchScreenState extends State<searchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +45,9 @@ class _projectsScreenState extends State<projectsScreen> {
               Column(
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      navigateTo(context, requirements());
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -69,7 +73,9 @@ class _projectsScreenState extends State<projectsScreen> {
                     height: 20,
                   ),
                   GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        navigateTo(context, requirements());
+                      },
                       child: Icon(
                         Icons.arrow_forward_outlined,
                         size: 35,

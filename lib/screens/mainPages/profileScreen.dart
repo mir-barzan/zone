@@ -161,179 +161,153 @@ class _profileScreenState extends State<profileScreen> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Stack(
-                          clipBehavior: Clip.none,
-                          alignment: Alignment.center,
-                          children: [
-                            ClipRect(
-                              child: Container(
-                                height: 350,
-                                width: width,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 5,
-                                      height: 120,
-                                      decoration: BoxDecoration(
-                                          color: primaryColor,
-                                          border:
-                                              Border.all(color: primaryColor)),
-                                    ),
-                                    Container(
-                                      child: Expanded(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  '$fname $lname',
-                                                  style: TextStyle(
-                                                      fontSize: 24,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: offersColor),
-                                                ),
-                                                Text(
-                                                  ' @$username',
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: offersColor),
-                                                ),
-                                              ],
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                            ),
-                                          ],
-                                        ),
+                    Container(
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            alignment: Alignment.center,
+                            children: [
+                              ClipRect(
+                                child: Container(
+                                  height: 350,
+                                  width: width,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 5,
+                                        height: 120,
+                                        decoration: BoxDecoration(
+                                            color: primaryColor,
+                                            border: Border.all(
+                                                color: primaryColor)),
                                       ),
-                                      height: 80,
-                                      decoration: BoxDecoration(
-                                          color: primaryColor,
-                                          border:
-                                              Border.all(color: primaryColor)),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8,
-                                                  bottom: 8,
-                                                  top: 15,
-                                                  right: 8),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                      Container(
+                                        child: Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Column(
                                                 children: [
                                                   Text(
-                                                    "Offers",
-                                                    style: new TextStyle(
+                                                    '$fname $lname',
+                                                    style: TextStyle(
+                                                        fontSize: 24,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        color: primaryColor,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 4),
+                                                        color: offersColor),
                                                   ),
-                                                  Container(
-                                                    height: 5,
+                                                  Text(
+                                                    ' @$username',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: offersColor),
                                                   ),
-                                                  CircularPercentIndicator(
-                                                    circularStrokeCap:
-                                                        CircularStrokeCap.butt,
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    progressColor:
-                                                        Colors.grey.shade400,
-                                                    radius: 36.0,
-                                                    animation: true,
-                                                    animationDuration: 2000,
-                                                    lineWidth: 6.0,
-                                                    percent: 55 / 100,
-                                                    center: Text(
-                                                      "0",
+                                                ],
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                            color: primaryColor,
+                                            border: Border.all(
+                                                color: primaryColor)),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8,
+                                                    bottom: 8,
+                                                    top: 15,
+                                                    right: 8),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      "Offers",
                                                       style: new TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: primaryColor,
-                                                          fontSize: 15.0),
+                                                          fontSize: 18.0,
+                                                          letterSpacing: 4),
                                                     ),
-                                                  ),
-                                                ],
+                                                    Container(
+                                                      height: 5,
+                                                    ),
+                                                    CircularPercentIndicator(
+                                                      circularStrokeCap:
+                                                          CircularStrokeCap
+                                                              .butt,
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      progressColor:
+                                                          Colors.grey.shade400,
+                                                      radius: 36.0,
+                                                      animation: true,
+                                                      animationDuration: 2000,
+                                                      lineWidth: 6.0,
+                                                      percent: 55 / 100,
+                                                      center: Text(
+                                                        "0",
+                                                        style: new TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: primaryColor,
+                                                            fontSize: 15.0),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          width: 5,
-                                          height: 150,
-                                          decoration: BoxDecoration(
-                                              color: primaryColor,
-                                              border: Border.all(
-                                                  color: primaryColor)),
-                                        ),
-                                        Column(
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8,
-                                                  bottom: 8,
-                                                  top: 15,
-                                                  right: 8),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Text(
-                                                            "Title",
-                                                            style: new TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color:
-                                                                    primaryColor,
-                                                                fontSize: 18.0),
-                                                          ),
-                                                          Container(
-                                                            height: 5,
-                                                          ),
-                                                          CircularPercentIndicator(
-                                                            circularStrokeCap:
-                                                                CircularStrokeCap
-                                                                    .butt,
-                                                            backgroundColor:
-                                                                Colors.white,
-                                                            progressColor:
-                                                                Colors.grey
-                                                                    .shade400,
-                                                            radius: 36.0,
-                                                            animation: true,
-                                                            animationDuration:
-                                                                2000,
-                                                            lineWidth: 6.0,
-                                                            percent: 55 / 100,
-                                                            center: Text(
-                                                              "Junior",
+                                            ],
+                                          ),
+                                          Container(
+                                            width: 5,
+                                            height: 150,
+                                            decoration: BoxDecoration(
+                                                color: primaryColor,
+                                                border: Border.all(
+                                                    color: primaryColor)),
+                                          ),
+                                          Column(
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8,
+                                                    bottom: 8,
+                                                    top: 15,
+                                                    right: 8),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              "Title",
                                                               style: new TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
@@ -341,67 +315,97 @@ class _profileScreenState extends State<profileScreen> {
                                                                   color:
                                                                       primaryColor,
                                                                   fontSize:
-                                                                      15.0),
+                                                                      18.0),
                                                             ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                            Container(
+                                                              height: 5,
+                                                            ),
+                                                            CircularPercentIndicator(
+                                                              circularStrokeCap:
+                                                                  CircularStrokeCap
+                                                                      .butt,
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              progressColor:
+                                                                  Colors.grey
+                                                                      .shade400,
+                                                              radius: 36.0,
+                                                              animation: true,
+                                                              animationDuration:
+                                                                  2000,
+                                                              lineWidth: 6.0,
+                                                              percent: 55 / 100,
+                                                              center: Text(
+                                                                "Junior",
+                                                                style: new TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color:
+                                                                        primaryColor,
+                                                                    fontSize:
+                                                                        15.0),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(40.0),
-                                      topLeft: Radius.circular(40.0),
-                                      bottomRight: Radius.circular(40.0),
-                                      bottomLeft: Radius.circular(40.0)),
-                                  color: secColor,
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(40.0),
+                                        topLeft: Radius.circular(40.0),
+                                        bottomRight: Radius.circular(40.0),
+                                        bottomLeft: Radius.circular(40.0)),
+                                    color: secColor,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              bottom: 280,
-                              child: CircleAvatar(
-                                radius: 54,
-                                backgroundColor: primaryColor,
+                              Positioned(
+                                bottom: 280,
                                 child: CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(profilePhotoUrl),
-                                  radius: 50,
+                                  radius: 54,
+                                  backgroundColor: primaryColor,
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(profilePhotoUrl),
+                                    radius: 50,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                                bottom: 260,
-                                right: 200,
-                                child: badge("medal.svg", 90, 90)),
-                            Positioned(
-                                bottom: 260,
-                                left: 182,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    FittedBox(
-                                      child: rating(1.0, true, 20),
-                                    ),
-                                    Container(
-                                      width: 12,
-                                    ),
-                                    Text(
-                                      '(2)',
-                                      style: TextStyle(color: Colors.grey),
-                                    )
-                                  ],
-                                )),
-                          ],
+                              Positioned(
+                                  bottom: 260,
+                                  right: 200,
+                                  child: badge("medal.svg", 90, 90)),
+                              Positioned(
+                                  bottom: 260,
+                                  left: 182,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      FittedBox(
+                                        child: rating(1.0, true, 20),
+                                      ),
+                                      Container(
+                                        width: 12,
+                                      ),
+                                      Text(
+                                        '(2)',
+                                        style: TextStyle(color: Colors.grey),
+                                      )
+                                    ],
+                                  )),
+                            ],
+                          ),
                         ),
                       ),
                     ),

@@ -9,7 +9,7 @@ import 'package:zone/screens/mainPages/offersScreen.dart';
 import 'package:zone/screens/mainPages/personalOffersScreen.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
-import 'package:zone/screens/mainPages/optimizedSearch/projectsScreen.dart';
+import 'package:zone/screens/mainPages/optimizedSearch/oSearchScreen.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
 class mainPage extends StatefulWidget {
@@ -23,7 +23,7 @@ class _mainPageState extends State<mainPage> {
   int currentTab = 0;
   final List<Widget> screens = [
     dashboard(),
-    projectsScreen(),
+    searchScreen(),
     postScreen(),
     personalOffersScreen(),
     profileScreen()
@@ -96,7 +96,7 @@ class _mainPageState extends State<mainPage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = projectsScreen();
+                        currentScreen = searchScreen();
                         currentTab = 1;
                       });
                     },
