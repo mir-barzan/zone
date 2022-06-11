@@ -208,6 +208,21 @@ class _profileScreenState extends State<profileScreen> {
                                                             FontWeight.bold,
                                                         color: offersColor),
                                                   ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      FittedBox(
+                                                        child: rating(
+                                                            1.0, true, 20),
+                                                      ),
+                                                      Text(
+                                                        '(2)',
+                                                        style: TextStyle(
+                                                            color: Colors.grey),
+                                                      )
+                                                    ],
+                                                  )
                                                 ],
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -256,9 +271,9 @@ class _profileScreenState extends State<profileScreen> {
                                                           CircularStrokeCap
                                                               .butt,
                                                       backgroundColor:
-                                                          Colors.white,
+                                                          Colors.grey,
                                                       progressColor:
-                                                          Colors.grey.shade400,
+                                                          Colors.white,
                                                       radius: 36.0,
                                                       animation: true,
                                                       animationDuration: 2000,
@@ -325,10 +340,9 @@ class _profileScreenState extends State<profileScreen> {
                                                                   CircularStrokeCap
                                                                       .butt,
                                                               backgroundColor:
-                                                                  Colors.white,
+                                                                  Colors.grey,
                                                               progressColor:
-                                                                  Colors.grey
-                                                                      .shade400,
+                                                                  Colors.white,
                                                               radius: 36.0,
                                                               animation: true,
                                                               animationDuration:
@@ -336,7 +350,7 @@ class _profileScreenState extends State<profileScreen> {
                                                               lineWidth: 6.0,
                                                               percent: 55 / 100,
                                                               center: Text(
-                                                                "Junior",
+                                                                "Zoner",
                                                                 style: new TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
@@ -383,27 +397,13 @@ class _profileScreenState extends State<profileScreen> {
                                 ),
                               ),
                               Positioned(
-                                  bottom: 260,
-                                  right: 200,
-                                  child: badge("medal.svg", 90, 90)),
+                                  bottom: 290,
+                                  left: 225,
+                                  child: badge("welcome.svg", 90, 90, true)),
                               Positioned(
-                                  bottom: 260,
-                                  left: 182,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      FittedBox(
-                                        child: rating(1.0, true, 20),
-                                      ),
-                                      Container(
-                                        width: 12,
-                                      ),
-                                      Text(
-                                        '(2)',
-                                        style: TextStyle(color: Colors.grey),
-                                      )
-                                    ],
-                                  )),
+                                  bottom: 290,
+                                  right: 225,
+                                  child: badge("verified.svg", 90, 90, false)),
                             ],
                           ),
                         ),
@@ -432,11 +432,23 @@ class _profileScreenState extends State<profileScreen> {
                       height: 5,
                     ),
                     Container(
-                      height: 60,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 2, color: secColor),
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 2, color: secColor),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          children: [
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  badge("welcome.svg", 60, 60, false),
+                                  badge("verified.svg", 60, 60, false),
+                                  badge("pro.svg", 60, 60, false),
+                                  badge("gold.svg", 60, 60, false),
+                                  badge("star.svg", 60, 60, false),
+                                ])
+                          ],
+                        )),
                     SizedBox(
                       height: 7.0,
                     ),

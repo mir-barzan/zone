@@ -456,6 +456,26 @@ moneyString(x){
   return x.toString();
 }
 
-Widget badge(String assetName, double width, double height){
-  return SvgPicture.asset('assets/images/$assetName', width: width, height: height);
+Widget badge(String assetName, double width, double height, bool active) {
+  return Container(
+    child: Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+            width: width - 12,
+            height: height - 12,
+            decoration: BoxDecoration(
+              color: primaryColor,
+              border: Border.all(color: primaryColor),
+              borderRadius: BorderRadius.circular(90),
+            )),
+        SvgPicture.asset(
+          'assets/images/$assetName',
+          width: width,
+          height: height,
+          color: active ? null : Colors.grey,
+        )
+      ],
+    ),
+  );
 }

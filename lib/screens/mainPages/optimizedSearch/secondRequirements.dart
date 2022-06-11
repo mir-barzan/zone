@@ -50,7 +50,7 @@ class _secondRequirementsState extends State<secondRequirements> {
                     child: Center(
                       child: FittedBox(
                         child: Text(
-                          'Last, choose your requirement limit time.',
+                          'Last, choose your requirement time limit.',
                           maxLines: 2,
                           style: TextStyle(fontSize: 19, color: primaryColor),
                         ),
@@ -74,6 +74,7 @@ class _secondRequirementsState extends State<secondRequirements> {
                 height: 35,
               ),
               Container(
+                margin: const EdgeInsets.all(8.0),
                 padding: const EdgeInsets.all(12.0),
                 child: Wrap(
                   children: [

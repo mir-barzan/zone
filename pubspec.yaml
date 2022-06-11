@@ -83,6 +83,15 @@ flutter:
     - assets/images/
     - assets/images/offerIllustrate.svg
     - assets/images/zoneLogo.svg
+    - assets/images/firstSold.svg
+    - assets/images/gold.svg
+    - assets/images/medal.svg
+    - assets/images/offerIllustrate.svg
+    - assets/images/pro.svg
+    - assets/images/star.svg
+    - assets/images/verified.svg
+    - assets/images/welcome.svg
+    - assets/images/zoneLogo.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

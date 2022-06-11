@@ -40,8 +40,9 @@ class _dashboardState extends State<dashboard> {
           child: SafeArea(
             child: ListView(children: [
               Container(
-                height: 20,
+                height: 15,
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

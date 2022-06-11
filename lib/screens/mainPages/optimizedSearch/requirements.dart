@@ -94,10 +94,12 @@ class _requirementsState extends State<requirements> {
                                 fillColor: offersColor,
                                 hintText: "Describe your requirements",
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 2),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: offersColor),
+                                  borderSide:
+                                      BorderSide(color: offersColor, width: 2),
                                 ),
                               ),
                               maxLength: 70,
@@ -112,7 +114,7 @@ class _requirementsState extends State<requirements> {
                   ],
                 ),
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: offersColor, width: 2),
                     borderRadius: BorderRadius.circular(20)),
               ),
               Container(
