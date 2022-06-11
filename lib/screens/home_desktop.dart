@@ -50,12 +50,14 @@ class _mainPageState extends State<home_desktop> {
         },
         backgroundColor: secColor,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
       appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
+        backgroundColor: secColor,
         centerTitle: false,
-        child: Container(
-          height: 60,
+        shape: CircleBorder(),
+        // ignore: sized_box_for_whitespace
+        title: Container(
+          height: 32,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
