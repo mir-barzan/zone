@@ -17,7 +17,6 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:zone/screens/auth/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:zone/responsive/dimensions.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +40,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static const String _title = 'Welcome To The Zone';
+  static const String _title = 'The Zone';
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +48,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ChangeScreenProvider())
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: _title,
         home: MyStatefulWidget(),
@@ -84,6 +83,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               );
             }
           }
+          // means connection to future hasnt been made yet
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(

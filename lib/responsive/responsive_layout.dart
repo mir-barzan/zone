@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zone/screens/home_desktop.dart';
-import 'dimensions.dart';
 import 'package:zone/screens/main_page.dart';
 
-class ResponsiveLayout extends StatelessWidget {
+/*class ResponsiveLayout extends StatelessWidget {
   final Widget main_page;
   final Widget home_desktop;
 
@@ -22,8 +21,8 @@ class ResponsiveLayout extends StatelessWidget {
     );
   }
 }
-
- /* @override
+*/
+/* @override
   Widget build(BuildContext context){
   return LayoutBuilder(
     builder:(context,constraints){
@@ -49,7 +48,35 @@ class ResponsiveLayout extends StatelessWidget {
     }*/
 }}*/
 
+class ResponsiveLayout extends StatefulWidget {
+  final Widget main_page;
+  final Widget home_desktop;
+  const ResponsiveLayout({
+    Key? key,
+    required this.main_page,
+    required this.home_desktop,
+  }) : super(key: key);
 
+  @override
+  State<ResponsiveLayout> createState() => _ResponsiveLayoutState();
+}
 
+class _ResponsiveLayoutState extends State<ResponsiveLayout> {
+  num get webScreenSize => 600;
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth > webScreenSize) {
+        // 600 can be changed to 900 if you want to display tablet screen with mobile screen layout
+        return widget.home_desktop;
+      }
+      return widget.main_page;
+    });
+  }
+}
