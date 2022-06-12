@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zone/screens/mainPages/addOfferMain/reviewAndSubmit.dart';
-import 'package:zone/screens/mainPages/offersScreen.dart';
 
 import '../../../additional/colors.dart';
 import '../../../widgets/AdditionalWidgets.dart';

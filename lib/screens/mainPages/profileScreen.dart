@@ -14,7 +14,9 @@ import 'package:zone/widgets/AdditionalWidgets.dart';
 import '../settingsScreens/userSettings.dart';
 
 class profileScreen extends StatefulWidget {
-  const profileScreen({Key? key}) : super(key: key);
+  final String uid;
+
+  const profileScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<profileScreen> createState() => _profileScreenState();
@@ -23,91 +25,27 @@ class profileScreen extends StatefulWidget {
 class _profileScreenState extends State<profileScreen> {
   @override
   String username = "";
-  String fname = "";
-  String lname = "";
-  String rank = "";
-  String profilePhotoUrl = "";
+
   var userData = {};
 
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getUserName();
-    getUserFName();
-    getUserLName();
-    getUserData();
+    getData();
     // getData();
   }
 
-// getData() async{
-//     try{
-//       var snap = await FirebaseFirestore.instance.collection('users').doc().get();
-//       userData = snap.data()!;
-//       setState(() {
-//         username = userData['username'];
-//       });
-//     }catch(e){showSnackBar(context, e.toString());}
-// }
-  // Stream<String> _clock() async* {
-  //   // This loop will run forever because _running is always true
-  //   await getUserName();
-  //   await getUserLName();
-  // }
-
-  getUserName() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      username = (snap.data() as Map<String, dynamic>)['username'];
-    });
-  }
-
-  getUserFName() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      fname = (snap.data() as Map<String, dynamic>)['fname'];
-    });
-  }
-
-  getUserData() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      rank = (snap.data() as Map<String, dynamic>)['rank'];
-    });
-  }
-
-  getUserLName() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      lname = (snap.data() as Map<String, dynamic>)['lname'];
-    });
-  }
-
-  getProfilePhoto() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      profilePhotoUrl =
-          (snap.data() as Map<String, dynamic>)['profilePhotoUrl'];
-    });
+  getData() async {
+    try {
+      var snap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
+      userData = snap.data()!;
+      username = userData['username'];
+      setState(() {});
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
   }
 
   Widget build(BuildContext context) {
@@ -193,7 +131,7 @@ class _profileScreenState extends State<profileScreen> {
                                               Column(
                                                 children: [
                                                   Text(
-                                                    '$fname $lname',
+                                                    '${userData['fname']} ${userData['lname']}',
                                                     style: TextStyle(
                                                         fontSize: 24,
                                                         fontWeight:
@@ -201,7 +139,7 @@ class _profileScreenState extends State<profileScreen> {
                                                         color: offersColor),
                                                   ),
                                                   Text(
-                                                    ' @$username',
+                                                    ' @${userData['username']}',
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontWeight:
@@ -390,8 +328,9 @@ class _profileScreenState extends State<profileScreen> {
                                   radius: 54,
                                   backgroundColor: primaryColor,
                                   child: CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(profilePhotoUrl),
+                                    backgroundColor: primaryColor,
+                                    backgroundImage: NetworkImage(
+                                        userData['profilePhotoUrl']),
                                     radius: 50,
                                   ),
                                 ),

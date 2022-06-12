@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zone/Services/changeScreenProvider.dart';
+import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/mainPages/addOfferMain/imageAndConfigure.dart';
 import 'package:zone/screens/mainPages/addOfferMain/information.dart';
 import 'package:zone/screens/mainPages/addOfferMain/priceList.dart';
 import 'package:zone/screens/mainPages/addOfferMain/reviewAndSubmit.dart';
-import 'package:zone/screens/mainPages/offersScreen.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
-import '../../additional/colors.dart';
-import '../../widgets/AdditionalWidgets.dart';
 
 class addOfferScreen extends StatefulWidget {
   const addOfferScreen({Key? key}) : super(key: key);

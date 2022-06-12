@@ -35,12 +35,44 @@ class _searchScreenState extends State<searchScreen> {
               ),
               //TODO: illustrate a well look design explanation about this page
               Container(
-                height: 300,
-                color: offersColor,
-                child: Center(child: Text('here')),
+                padding: const EdgeInsets.all(8.0),
+                height: 200,
+                child: Expanded(
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: "Welcome in the Optimized Search\n",
+                        style: TextStyle(
+                            fontSize: 23,
+                            color: offersColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text:
+                            "\n\n\nHere you can search for your requirements and get the best offers for you using our optimized search algorithm which make life easier and it totally free to use!.\n",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: offersColor,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ]),
+                  ),
+                ),
               ),
               Container(
-                height: 130,
+                height: 250,
+                color: Colors.red,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                        color: Colors.white,
+                        height: 150,
+                        child: Center(
+                          child: Text("TODO: add a GIF animation"),
+                        )),
+                  ],
+                ),
               ),
               Column(
                 children: [

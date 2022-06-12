@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zone/screens/mainPages/addOfferMain/addOfferScreen.dart';
 
 import '../../additional/colors.dart';
 import '../../widgets/AdditionalWidgets.dart';
 import '../main_page.dart';
-import 'addOfferScreen.dart';
 import 'addProjectScreen.dart';
 
 class postScreen extends StatefulWidget {

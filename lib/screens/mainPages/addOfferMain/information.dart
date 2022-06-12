@@ -6,13 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zone/Services/changeScreenProvider.dart';
 import 'package:zone/Services/sharedPrefs.dart';
+import 'package:zone/screens/mainPages/addOfferMain/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/addOfferMain/imageAndConfigure.dart';
 import 'package:zone/screens/mainPages/addOfferMain/reviewAndSubmit.dart';
-import 'package:zone/screens/mainPages/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/main_page.dart';
 import 'package:zone/widgets/text_field_input.dart';
-import 'package:zone/screens/mainPages/addOfferScreen.dart';
 import '../../../additional/colors.dart';
 import '../../../widgets/AdditionalWidgets.dart';
 

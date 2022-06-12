@@ -15,6 +15,12 @@ class personalOffersScreen extends StatefulWidget {
 }
 
 class _personalOffersScreenState extends State<personalOffersScreen> {
+  void initState() {
+    super.initState();
+
+    // getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +37,10 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
         centerTitle: true,
         title: Expanded(
             child: SvgPicture.asset(
-          'assets/images/zoneLogo.svg',
-          color: primaryColor,
-          width: 180,
-        )),
+              'assets/images/zoneLogo.svg',
+              color: primaryColor,
+              width: 180,
+            )),
         backgroundColor: offersColor,
         elevation: 0,
         actions: [
@@ -55,10 +61,10 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                     children: [
                       FittedBox(
                           child: Icon(
-                        Icons.monetization_on,
-                        color: offersColor,
-                        size: 30,
-                      )),
+                            Icons.monetization_on,
+                            color: offersColor,
+                            size: 30,
+                          )),
                       FittedBox(
                         child: Text(
                           "  0.0 ",
@@ -89,35 +95,35 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
 
             return Expanded(
                 child: GridView(
-              physics: ScrollPhysics(),
-              padding: EdgeInsets.all(10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 3 / 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 210,
-              ),
-              children:
+                  physics: ScrollPhysics(),
+                  padding: EdgeInsets.all(10),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 210,
+                  ),
+                  children:
                   List<Widget>.generate(snapshot.data!.docs.length, (index) {
-                        return Container(
-                            child: MainOfferCard(
-                                snap: snapshot.data!.docs[index].data()));
-                      }) +
+                    return Container(
+                        child: MainOfferCard(
+                            snap: snapshot.data!.docs[index].data()));
+                  }) +
                       [
                         Center(
                             child: Wrap(
-                          children: [
-                            Text('You have reached the end. ',
-                                style: TextStyle(fontSize: 14)),
-                            Icon(
-                              Icons.check_circle,
-                              color: offersColor,
-                            )
-                          ],
-                        ))
+                              children: [
+                                Text('You have reached the end. ',
+                                    style: TextStyle(fontSize: 14)),
+                                Icon(
+                                  Icons.check_circle,
+                                  color: offersColor,
+                                )
+                              ],
+                            ))
 
-                ] + [Container(height: 1,)],
-            ));
+                      ] + [Container(height: 1,)],
+                ));
           },
         ),
       ),

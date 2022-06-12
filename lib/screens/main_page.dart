@@ -1,12 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/signup.dart';
-import 'package:zone/screens/mainPages/addOfferScreen.dart';
+import 'package:zone/screens/mainPages/addOfferMain/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/addProjectScreen.dart';
 import 'package:zone/screens/mainPages/dashboard.dart';
-import 'package:zone/screens/mainPages/offersScreen.dart';
-import 'package:zone/screens/mainPages/personalOffersScreen.dart';
+import 'package:zone/screens/mainPages/OffersScreen.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
 import 'package:zone/screens/mainPages/optimizedSearch/oSearchScreen.dart';
@@ -26,7 +27,9 @@ class _mainPageState extends State<mainPage> {
     searchScreen(),
     postScreen(),
     personalOffersScreen(),
-    profileScreen()
+    profileScreen(
+      uid: FirebaseAuth.instance.currentUser!.uid,
+    )
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -154,7 +157,9 @@ class _mainPageState extends State<mainPage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = profileScreen();
+                        currentScreen = profileScreen(
+                          uid: FirebaseAuth.instance.currentUser!.uid,
+                        );
                         currentTab = 4;
                       });
                     },
