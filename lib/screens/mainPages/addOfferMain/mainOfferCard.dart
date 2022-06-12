@@ -8,15 +8,21 @@ import '../../../additional/colors.dart';
 
 class MainOfferCard extends StatelessWidget {
   final snap;
+  final bool isLocal;
 
-  const MainOfferCard({Key? key, required this.snap}) : super(key: key);
+  const MainOfferCard({Key? key, required this.snap, required this.isLocal})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String offerId = snap['offerId'];
     return GestureDetector(
       onTap: () {
-        navigateTo(context, checker(offerId, offerProfile(uid: offerId)));
+        navigateTo(
+            context,
+            offerProfile(
+              uid: snap['offerId'],
+              ownerUid: snap['uid'],
+            ));
       },
       child: Container(
         child: Wrap(spacing: 0, children: [
@@ -38,14 +44,14 @@ class MainOfferCard extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                        ),
-                        placeholder: (context, url) => Container(
-                          color: Colors.grey.shade300,
-                          height: 150,
-                          width: 100,
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                          placeholder: (context, url) => Container(
+                            color: Colors.grey.shade300,
+                            height: 150,
+                            width: 100,
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [Icon(Icons.image), Text('image')],
                               ),
                             ),
@@ -188,9 +194,27 @@ class MainOfferCard extends StatelessWidget {
               ),
             ),
           ),
+          Container(
+            height: 10,
+          ),
+          isLocal
+              ? Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.grey),
+                  padding: EdgeInsets.all(8),
+                  child: Center(
+                      child: Text(
+                    'Edit',
+                    style: TextStyle(fontSize: 20, color: primaryColor),
+                  )),
+                )
+              : Container(),
+          Container(
+            height: 10,
+          ),
         ]),
       ),
     );
-
   }
 }

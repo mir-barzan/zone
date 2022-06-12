@@ -15,8 +15,10 @@ import '../settingsScreens/userSettings.dart';
 
 class profileScreen extends StatefulWidget {
   final String uid;
+  final bool isVisiting;
 
-  const profileScreen({Key? key, required this.uid}) : super(key: key);
+  const profileScreen({Key? key, required this.uid, required this.isVisiting})
+      : super(key: key);
 
   @override
   State<profileScreen> createState() => _profileScreenState();
@@ -33,7 +35,6 @@ class _profileScreenState extends State<profileScreen> {
     getData();
     // getData();
   }
-
   getData() async {
     try {
       var snap = await FirebaseFirestore.instance
@@ -53,7 +54,18 @@ class _profileScreenState extends State<profileScreen> {
     return Scaffold(
         backgroundColor: primaryColor,
         appBar: AppBar(
-          leadingWidth: 110,
+          leading: widget.isVisiting
+              ? IconButton(
+                  icon: Icon(
+                    Icons.adaptive.arrow_back,
+                    color: offersColor,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              : null,
           elevation: 0,
           backgroundColor: primaryColor,
           title: Expanded(
@@ -78,15 +90,17 @@ class _profileScreenState extends State<profileScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  navigateTo(context, const userSettings());
-                },
-                child: Icon(
-                  Icons.settings,
-                  color: secColor,
-                ),
-              ),
+              child: widget.isVisiting
+                  ? null
+                  : GestureDetector(
+                      onTap: () {
+                        navigateTo(context, const userSettings());
+                      },
+                      child: Icon(
+                        Icons.settings,
+                        color: secColor,
+                      ),
+                    ),
             ),
           ],
         ),

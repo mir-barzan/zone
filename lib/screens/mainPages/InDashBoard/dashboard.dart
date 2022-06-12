@@ -6,7 +6,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zone/additional/colors.dart';
-import '../../widgets/AdditionalWidgets.dart';
+import 'package:zone/screens/mainPages/InDashBoard/myOffers.dart';
+import '../../../widgets/AdditionalWidgets.dart';
 
 class dashboard extends StatefulWidget {
   const dashboard({Key? key}) : super(key: key);
@@ -34,44 +35,81 @@ class _dashboardState extends State<dashboard> {
           )),
           backgroundColor: offersColor,
           elevation: 0,
+          actions: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: EdgeInsets.all(5),
+                    height: 45,
+                    width: 100,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(35),
+                        color: primaryColor),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FittedBox(
+                            child: Icon(
+                          Icons.monetization_on,
+                          color: offersColor,
+                          size: 30,
+                        )),
+                        FittedBox(
+                          child: Text(
+                            "  0.0 ",
+                            style: new TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: offersColor,
+                                fontSize: 30.0),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SafeArea(
             child: ListView(children: [
               Container(
-                height: 15,
+                height: 1,
               ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    height: 50,
-                    width: 100,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(35),
-                        color: offersColor),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.monetization_on,
-                          color: primaryColor,
-                          size: 30,
-                        ),
-                        Text(
-                          " $userBalance ",
-                          style: new TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: primaryColor,
-                              fontSize: 30.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Container(
+              //       padding: EdgeInsets.all(5),
+              //       height: 50,
+              //       width: 100,
+              //       decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(35),
+              //           color: offersColor),
+              //       child: Row(
+              //         children: [
+              //           Icon(
+              //             Icons.monetization_on,
+              //             color: primaryColor,
+              //             size: 30,
+              //           ),
+              //           Text(
+              //             " $userBalance ",
+              //             style: new TextStyle(
+              //                 fontWeight: FontWeight.bold,
+              //                 color: primaryColor,
+              //                 fontSize: 30.0),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Container(
                 height: 15,
               ),
@@ -158,43 +196,54 @@ class _dashboardState extends State<dashboard> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Stack(
-                            children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: offersColor,
-                                      borderRadius: BorderRadius.circular(22)),
-                                  height: 120,
-                                  width: 150,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "My offers",
-                                        style: new TextStyle(
-                                            fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            onTap: () {
+                              navigateTo(context, myOffers());
+                            },
+                            child: Container(
+                              child: Stack(
+                                children: [
+                                  Container(
+                                      decoration: BoxDecoration(
+                                          color: offersColor,
+                                          borderRadius:
+                                              BorderRadius.circular(22)),
+                                      height: 120,
+                                      width: 150,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "My offers",
+                                            style: new TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: primaryColor,
+                                                fontSize: 23.0),
+                                          ),
+                                          Icon(
+                                            Icons.local_offer_sharp,
                                             color: primaryColor,
-                                            fontSize: 23.0),
-                                      ),
-                                      Icon(
-                                        Icons.local_offer_sharp,
-                                        color: primaryColor,
-                                        size: 30,
-                                      )
-                                    ],
-                                  )),
-                              Positioned(
-                                top: 5,
-                                left: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: primaryColor),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: 110,
-                                  width: 140,
-                                ),
+                                            size: 30,
+                                          )
+                                        ],
+                                      )),
+                                  Positioned(
+                                    top: 5,
+                                    left: 5,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: primaryColor),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      height: 110,
+                                      width: 140,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           )
                         ],
                       ),
@@ -382,7 +431,7 @@ class _dashboardState extends State<dashboard> {
                                         width: 100,
                                         child: FittedBox(
                                           child: Text(
-                                            "Coming soon...",
+                                            "Favorites",
                                             style: new TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: primaryColor,
@@ -390,6 +439,10 @@ class _dashboardState extends State<dashboard> {
                                           ),
                                         ),
                                       ),
+                                      Icon(
+                                        Icons.bookmark,
+                                        color: primaryColor,
+                                      )
                                     ],
                                   )),
                               Positioned(

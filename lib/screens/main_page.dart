@@ -6,7 +6,7 @@ import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/signup.dart';
 import 'package:zone/screens/mainPages/addOfferMain/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/addProjectScreen.dart';
-import 'package:zone/screens/mainPages/dashboard.dart';
+import 'package:zone/screens/mainPages/InDashBoard/dashboard.dart';
 import 'package:zone/screens/mainPages/OffersScreen.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
@@ -29,6 +29,7 @@ class _mainPageState extends State<mainPage> {
     personalOffersScreen(),
     profileScreen(
       uid: FirebaseAuth.instance.currentUser!.uid,
+      isVisiting: false,
     )
   ];
 
@@ -159,6 +160,7 @@ class _mainPageState extends State<mainPage> {
                       setState(() {
                         currentScreen = profileScreen(
                           uid: FirebaseAuth.instance.currentUser!.uid,
+                          isVisiting: false,
                         );
                         currentTab = 4;
                       });
