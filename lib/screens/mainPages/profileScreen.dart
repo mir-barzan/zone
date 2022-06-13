@@ -36,6 +36,7 @@ class _profileScreenState extends State<profileScreen> {
   String rank = "";
   String userRating = "";
   String userId = "";
+  List skills = [];
   var userData = {};
 
   void initState() {
@@ -56,6 +57,7 @@ class _profileScreenState extends State<profileScreen> {
       rank = userData['rank'];
       userRating = userData['rating'];
       userId = userData['uid'];
+      skills = userData['skills'];
       setState(() {});
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -129,7 +131,11 @@ class _profileScreenState extends State<profileScreen> {
                   ? null
                   : GestureDetector(
                       onTap: () {
-                        navigateTo(context, const userSettings());
+                        navigateTo(
+                            context,
+                            const userSettings(
+                              isAfterChange: false,
+                            ));
                       },
                       child: Icon(
                         Icons.settings,
@@ -508,40 +514,16 @@ class _profileScreenState extends State<profileScreen> {
                       height: 10.0,
                     ),
                     Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 6,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              roundedContainerWithBackground(
-                                  "Prgramming", offersColor),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              roundedContainerWithBackground(
-                                  "Programming", offersColor)
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              roundedContainerWithBackground(
-                                  "Programming", offersColor),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              roundedContainerWithBackground(
-                                  "Programming", offersColor),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              roundedContainerWithBackground(
-                                  "Programming", offersColor)
-                            ],
-                          ),
+                          for (var i in skills!)
+                            (Chip(
+                              labelStyle: TextStyle(color: primaryColor),
+                              label: Text(i.toString()),
+                              backgroundColor: offersColor,
+                            ))
                         ],
                       ),
                     ),
@@ -591,7 +573,7 @@ class _profileScreenState extends State<profileScreen> {
                                       border: Border.all(
                                           color: offersColor, width: 1)),
                                   child: Text(
-                                    "Hi, I am a professional Developer. I graduated from Cyprus international university in 2022 and I am working as a Zoner in The Zone xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                    userData['bio'],
                                     style: TextStyle(
                                       color: secColor.withOpacity(0.8),
                                       fontSize: 12,

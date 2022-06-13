@@ -14,6 +14,10 @@ class User {
   final String rating;
   final String rank;
   final String profilePhotoUrl;
+  final List<String> skills;
+  final String balance;
+  final String ratingCounter;
+  final String soldOffers;
 
   const User(
       {required this.fname,
@@ -25,7 +29,18 @@ class User {
       this.rank = "Zoner",
       this.bio = "",
       required this.username,
-      this.profilePhotoUrl = "https://firebasestorage.googleapis.com/v0/b/zone-b3608.appspot.com/o/207-2074624_white-gray-circle-avatar-png-transparent-png.png?alt=media&token=b4ed042a-93cd-44fe-930d-98aad2bfb8cf"});
+      this.profilePhotoUrl =
+          "https://firebasestorage.googleapis.com/v0/b/zone-b3608.appspot.com/o/207-2074624_white-gray-circle-avatar-png-transparent-png.png?alt=media&token=b4ed042a-93cd-44fe-930d-98aad2bfb8cf",
+      this.skills = const [
+        "no skill",
+        "no skill",
+        "no skill",
+        "no skill",
+        "no skill"
+      ],
+      this.balance = "0",
+      this.ratingCounter = "0",
+      this.soldOffers = "0"});
 
   Map<String, dynamic> toJson() =>
       {
@@ -39,5 +54,9 @@ class User {
         "rank": rank,
         "rating": rating,
         "profilePhotoUrl": profilePhotoUrl,
+        "skills": skills,
+        "balance": balance,
+        "ratingCounter": ratingCounter,
+        "soldOffers": soldOffers,
       };
 }

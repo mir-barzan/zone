@@ -72,6 +72,7 @@ showAlertDialog(
     content: Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(45)),
       child: Wrap(
+        alignment: WrapAlignment.center,
         children: [
           icon,
           Flexible(
