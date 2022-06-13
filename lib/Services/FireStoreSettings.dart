@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 import 'package:zone/Services/storageSettings.dart';
 
 import 'offerModel.dart';
+import 'portfolioModel.dart';
 
 class FireStoreSettings{
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -49,18 +50,41 @@ class FireStoreSettings{
 
 
           );
-          _firestore.collection('Category').doc(offerId).set(offer.toJson());
+      _firestore.collection('Category').doc(offerId).set(offer.toJson());
 
-          result = 'success';
-
-        }catch(e){
-          result = 'Error';
-
-        }
-        isLoading = false;
-        return result;
-
-
+      result = 'success';
+    } catch (e) {
+      result = 'Error';
+    }
+    isLoading = false;
+    return result;
   }
 
+  Future<String> uploadPortfolio(
+      imageList, String title, String description, uid, fname, lname) async {
+    String result = "Error!";
+    try {
+      String portfolioId = Uuid().v1();
+
+      Portfolio portfolio = Portfolio(
+        title: title,
+        fname: fname,
+        lname: lname,
+        uid: uid,
+        description: description,
+        datePublished: DateTime.now(),
+        portfolioId: portfolioId,
+        imageList: imageList,
+      );
+      _firestore
+          .collection('Portfolio')
+          .doc(portfolioId)
+          .set(portfolio.toJson());
+
+      result = 'success';
+    } catch (e) {
+      result = 'Error';
+    }
+    return result;
+  }
 }

@@ -13,7 +13,7 @@ class storageMeth {
       String childName, Uint8List file, bool isOffer) async {
     Reference ref =  _storage.ref().child(childName).child(_auth.currentUser!.uid);
 
-    if(isOffer){
+    if (isOffer) {
       String id = const Uuid().v1();
       ref = ref.child(id);
     }
@@ -22,4 +22,17 @@ class storageMeth {
     String downloadLink = await snap.ref.getDownloadURL();
     return downloadLink;
   }
+// Future<String> uploadImageListFileToFirebaseStorage(
+//     String childName, List<Uint8List> file, bool isOffer) async {
+//   Reference ref =  _storage.ref().child(childName).child(_auth.currentUser!.uid);
+//
+//   if(isOffer){
+//     String id = const Uuid().v1();
+//     ref = ref.child(id);
+//   }
+//   UploadTask uploadTask = ref.putData(file);
+//   TaskSnapshot snap = await uploadTask;
+//   String downloadLink = await snap.ref.getDownloadURL();
+//   return downloadLink;
+// }
 }

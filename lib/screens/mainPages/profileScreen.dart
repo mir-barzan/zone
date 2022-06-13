@@ -213,7 +213,7 @@ class _profileScreenState extends State<profileScreen> {
                                                             20),
                                                       ),
                                                       Text(
-                                                        '(2)',
+                                                        '(${userData['ratingCounter']})',
                                                         style: TextStyle(
                                                             color: Colors.grey),
                                                       )
@@ -567,6 +567,7 @@ class _profileScreenState extends State<profileScreen> {
                             child: Wrap(
                               children: [
                                 Container(
+                                  width: double.infinity,
                                   padding: EdgeInsets.all(20),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),

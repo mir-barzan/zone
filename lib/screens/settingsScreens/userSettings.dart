@@ -9,7 +9,7 @@ import 'package:zone/screens/mainPages/profileScreen.dart';
 import 'package:zone/screens/settingsScreens/aboutUsScreen.dart';
 import 'package:zone/screens/settingsScreens/helpScreen.dart';
 import 'package:zone/screens/settingsScreens/personalSettingsScreen.dart';
-import 'package:zone/screens/settingsScreens/portfolioScreen.dart';
+import 'package:zone/screens/settingsScreens/Portfolio/portfolioScreen.dart';
 import 'package:zone/screens/settingsScreens/profileSettingsScreen.dart';
 import 'package:zone/screens/settingsScreens/securityScreens.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';

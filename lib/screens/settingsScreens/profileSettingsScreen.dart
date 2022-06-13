@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:zone/Services/storageSettings.dart';
 import 'package:zone/screens/mainPages/addOfferMain/information.dart';
 import 'package:zone/screens/settingsScreens/personalSettingsScreen.dart';
-import 'package:zone/screens/settingsScreens/portfolioScreen.dart';
+import 'package:zone/screens/settingsScreens/Portfolio/portfolioScreen.dart';
 import 'package:zone/screens/settingsScreens/securityScreens.dart';
 import 'package:zone/screens/settingsScreens/userSettings.dart';
 import 'package:zone/widgets/text_field_input.dart';
