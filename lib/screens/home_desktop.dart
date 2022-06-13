@@ -16,10 +16,10 @@ class home_desktop extends StatefulWidget {
   const home_desktop({Key? key}) : super(key: key);
 
   @override
-  State<home_desktop> createState() => _mainPageState();
+  State<home_desktop> createState() => _home_desktopState();
 }
 
-class _mainPageState extends State<home_desktop> {
+class _home_desktopState extends State<home_desktop> {
   int currentTab = 0;
   final List<Widget> screens = [
     dashboard(),
@@ -56,7 +56,7 @@ class _mainPageState extends State<home_desktop> {
         centerTitle: false,
         shape: CircleBorder(),
         // ignore: sized_box_for_whitespace
-        title: Container(
+        child: Container(
           height: 32,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
