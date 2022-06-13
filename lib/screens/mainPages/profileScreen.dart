@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/screens/SeeUserOffers.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/login.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
@@ -27,14 +28,23 @@ class profileScreen extends StatefulWidget {
 class _profileScreenState extends State<profileScreen> {
   @override
   String username = "";
-
+  bool isZoner = true;
+  bool isPro = false;
+  bool isGold = false;
+  bool isStar = false;
+  bool isVerified = false;
+  String rank = "";
+  String userRating = "";
+  String userId = "";
   var userData = {};
 
   void initState() {
     super.initState();
     getData();
+    checkRank();
     // getData();
   }
+
   getData() async {
     try {
       var snap = await FirebaseFirestore.instance
@@ -43,9 +53,34 @@ class _profileScreenState extends State<profileScreen> {
           .get();
       userData = snap.data()!;
       username = userData['username'];
+      rank = userData['rank'];
+      userRating = userData['rating'];
+      userId = userData['uid'];
       setState(() {});
     } catch (e) {
       showSnackBar(context, e.toString());
+    }
+  }
+
+  checkRank() {
+    if (rank.toLowerCase() == 'zoner') {
+      isZoner = true;
+      return badge("welcome.svg", 90, 90, isZoner);
+    } else if (rank.toLowerCase() == 'pro') {
+      isZoner = true;
+      isPro = true;
+      return badge('pro.svg', 90, 90, isPro);
+    } else if (rank.toLowerCase() == 'gold') {
+      isZoner = true;
+      isPro = true;
+      isGold = true;
+      return badge('gold.svg', 90, 90, isGold);
+    } else if (rank.toLowerCase() == 'star') {
+      isZoner = true;
+      isPro = true;
+      isGold = true;
+      isStar = true;
+      return badge('star.svg', 90, 90, isStar);
     }
   }
 
@@ -166,7 +201,10 @@ class _profileScreenState extends State<profileScreen> {
                                                     children: [
                                                       FittedBox(
                                                         child: rating(
-                                                            1.0, true, 20),
+                                                            double.parse(
+                                                                userRating),
+                                                            true,
+                                                            20),
                                                       ),
                                                       Text(
                                                         '(2)',
@@ -206,14 +244,20 @@ class _profileScreenState extends State<profileScreen> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    Text(
-                                                      "Offers",
-                                                      style: new TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: primaryColor,
-                                                          fontSize: 18.0,
-                                                          letterSpacing: 4),
+                                                    Container(
+                                                      width: 75,
+                                                      child: FittedBox(
+                                                        child: Text(
+                                                          "Sold Offers",
+                                                          style: new TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  primaryColor,
+                                                              letterSpacing: 1),
+                                                        ),
+                                                      ),
                                                     ),
                                                     Container(
                                                       height: 5,
@@ -223,9 +267,9 @@ class _profileScreenState extends State<profileScreen> {
                                                           CircularStrokeCap
                                                               .butt,
                                                       backgroundColor:
-                                                          Colors.grey,
+                                                          oldRankPercentColor(),
                                                       progressColor:
-                                                          Colors.white,
+                                                          rankPercentColor(),
                                                       radius: 36.0,
                                                       animation: true,
                                                       animationDuration: 2000,
@@ -273,16 +317,23 @@ class _profileScreenState extends State<profileScreen> {
                                                               MainAxisAlignment
                                                                   .center,
                                                           children: [
-                                                            Text(
-                                                              "Title",
-                                                              style: new TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color:
-                                                                      primaryColor,
-                                                                  fontSize:
-                                                                      18.0),
+                                                            Container(
+                                                              width: 40,
+                                                              child: FittedBox(
+                                                                child: Text(
+                                                                  "Rank",
+                                                                  style: new TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color:
+                                                                          primaryColor,
+                                                                      letterSpacing:
+                                                                          1,
+                                                                      fontSize:
+                                                                          18.0),
+                                                                ),
+                                                              ),
                                                             ),
                                                             Container(
                                                               height: 5,
@@ -292,17 +343,18 @@ class _profileScreenState extends State<profileScreen> {
                                                                   CircularStrokeCap
                                                                       .butt,
                                                               backgroundColor:
-                                                                  Colors.grey,
+                                                                  oldRankPercentColor(),
                                                               progressColor:
-                                                                  Colors.white,
+                                                                  rankPercentColor(),
                                                               radius: 36.0,
                                                               animation: true,
                                                               animationDuration:
                                                                   2000,
                                                               lineWidth: 6.0,
-                                                              percent: 55 / 100,
+                                                              percent:
+                                                                  100 / 100,
                                                               center: Text(
-                                                                "Zoner",
+                                                                rank.toUpperCase(),
                                                                 style: new TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
@@ -350,9 +402,7 @@ class _profileScreenState extends State<profileScreen> {
                                 ),
                               ),
                               Positioned(
-                                  bottom: 290,
-                                  left: 225,
-                                  child: badge("welcome.svg", 90, 90, true)),
+                                  bottom: 290, left: 225, child: checkRank()),
                               Positioned(
                                   bottom: 290,
                                   right: 225,
@@ -370,7 +420,7 @@ class _profileScreenState extends State<profileScreen> {
                       height: 7.0,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "Badges",
@@ -378,6 +428,30 @@ class _profileScreenState extends State<profileScreen> {
                               fontWeight: FontWeight.bold,
                               color: offersColor,
                               fontSize: 20.0),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            navigateTo(context, seeUserOffers(uid: userId));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'See user offers',
+                                  style: TextStyle(color: primaryColor),
+                                ),
+                                Icon(
+                                  Icons.local_offer_sharp,
+                                  color: primaryColor,
+                                )
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                                color: offersColor,
+                                borderRadius: BorderRadius.circular(30)),
+                          ),
                         ),
                       ],
                     ),
@@ -394,11 +468,11 @@ class _profileScreenState extends State<profileScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  badge("welcome.svg", 60, 60, false),
-                                  badge("verified.svg", 60, 60, false),
-                                  badge("pro.svg", 60, 60, false),
-                                  badge("gold.svg", 60, 60, false),
-                                  badge("star.svg", 60, 60, false),
+                                  badge("welcome.svg", 60, 60, isZoner),
+                                  badge("verified.svg", 60, 60, isVerified),
+                                  badge("pro.svg", 60, 60, isPro),
+                                  badge("gold.svg", 60, 60, isGold),
+                                  badge("star.svg", 60, 60, isStar),
                                 ])
                           ],
                         )),
@@ -517,7 +591,7 @@ class _profileScreenState extends State<profileScreen> {
                                       border: Border.all(
                                           color: offersColor, width: 1)),
                                   child: Text(
-                                    "Hi, I am a professional Developer. I graduated from Cyprus international university in 2022 and I am working as a Zoner in The Zone",
+                                    "Hi, I am a professional Developer. I graduated from Cyprus international university in 2022 and I am working as a Zoner in The Zone xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
                                     style: TextStyle(
                                       color: secColor.withOpacity(0.8),
                                       fontSize: 12,
@@ -531,6 +605,9 @@ class _profileScreenState extends State<profileScreen> {
                           ),
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     Divider(
                       thickness: 2,
@@ -575,5 +652,29 @@ class _profileScreenState extends State<profileScreen> {
                     ),
                   ],
                 ))));
+  }
+
+  rankPercentColor() {
+    if (rank.toLowerCase() == 'zoner') {
+      return Colors.grey;
+    } else if (rank.toLowerCase() == 'pro') {
+      return Colors.blue;
+    } else if (rank.toLowerCase() == 'gold') {
+      return Colors.amber;
+    } else if (rank.toLowerCase() == 'star') {
+      return offersColor;
+    }
+  }
+
+  oldRankPercentColor() {
+    if (rank.toLowerCase() == 'zoner') {
+      return Colors.grey;
+    } else if (rank.toLowerCase() == 'pro') {
+      return Colors.white;
+    } else if (rank.toLowerCase() == 'gold') {
+      return Colors.amber;
+    } else if (rank.toLowerCase() == 'star') {
+      return offersColor;
+    }
   }
 }
