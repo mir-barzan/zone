@@ -89,6 +89,38 @@ class FireAuth {
     return result;
   }
 
+  //TODO:::: Fix this part
+//verify phone number
+//   Future<String> verifyPhoneNumber({
+//     required String phoneNumber,
+//   }) async {
+//     String result = "Error !";
+//     try {
+//       if (phoneNumber.isNotEmpty) {
+//         await _auth.verifyPhoneNumber(
+//             phoneNumber: phoneNumber,
+//             timeout: Duration(seconds: 60),
+//             verificationCompleted: (AuthCredential credential) async {
+//               await _auth.signInWithCredential(credential);
+//               result = 'success';
+//             },
+//             codeAutoRetrievalTimeout: (String verificationId) {
+//               print(verificationId);
+//             },codeSent: (String verificationId, [int forceResend]) {
+//               print(verificationId);
+//             },
+//             verificationFailed: (exception) {
+//               result = exception.toString();
+//             });
+//       } else {
+//         print("Please fill the fields");
+//       }
+//     } catch (err) {
+//       result = err.toString();
+//     }
+//     return result;
+//   }
+//
   //USU
   Future<String> signUpUser({
     required String fname,
