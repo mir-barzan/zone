@@ -56,7 +56,7 @@ class _home_desktopState extends State<home_desktop> {
         centerTitle: false,
         shape: CircleBorder(),
         // ignore: sized_box_for_whitespace
-        child: Container(
+        title: Container(
           height: 32,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

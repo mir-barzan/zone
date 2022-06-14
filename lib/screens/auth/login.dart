@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/signup.dart';
-import 'package:zone/widgets/AdditionalWidgets.dart';
-import 'package:zone/widgets/text_field_input.dart';
-
+import 'package:zone/widgets/widgets.dart';
+import 'package:zone/components/components.dart';
 import '../main_page.dart';
+import 'package:zone/screens/auth/signup.dart';
 
 class login extends StatefulWidget {
   const login({Key? key}) : super(key: key);
@@ -36,110 +36,137 @@ class _loginState extends State<login> {
     });
     String result = await FireAuth().signInUser(
         email: _emailController.text, password: _passwordController.text);
-    if (result != 'success') {
-      showAlertDialog(
-          context,
-          "Make sure all fields are filled correctly!",
-          result,
-          Icon(
-            Icons.error,
-            color: Colors.red,
-          ));
-    } else {
-      showAlertDialog(
-          context,
-          "",
-          "Success",
-          Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
-      navigateToWithoutBack(context, mainPage());
-    }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Container(),
-              flex: 1,
-            ),
-            const SizedBox(
-              height: 64,
-            ),
-            TextFieldInput(
-                textEditingController: _emailController,
-                hintText: "Enter your email",
-                textInputType: TextInputType.emailAddress),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFieldInput(
-              textEditingController: _passwordController,
-              hintText: "Enter your password",
-              textInputType: TextInputType.text,
-              isPass: true,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: signInUser,
-              child: Container(
-                  child: const Text(
-                    'Login',
-                    style: (TextStyle(color: primaryColor)),
-                  ),
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: const ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4))),
-                    color: secColor,
-                  )),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Flexible(
-              child: Container(),
-              flex: 2,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+    Size size = MediaQuery.of(context).size;
+    return SafeArea(
+      child: Scaffold(
+        body: SizedBox(
+          width: size.width,
+          height: size.height,
+          child: SingleChildScrollView(
+            child: Stack(
               children: [
-                Container(
-                  child: const Text("New Zoner?"),
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                const Upside(
+                  imgUrl: "assets/images/login.png",
                 ),
-                GestureDetector(
-                  onTap: () {
-                    navigateToWithoutBack(context, const signup());
-                  },
+                const PageTitleBar(title: 'Login to your account'),
+                Padding(
+                  padding: const EdgeInsets.only(top: 320.0),
                   child: Container(
-                    child: const Text("   Register",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: secColor)),
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        iconButton(context),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          "or use your email account",
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontFamily: 'OpenSans',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Form(
+                          child: Column(
+                            children: [
+                              const RoundedInputField(
+                                  hintText: "Email", icon: Icons.email),
+                              const RoundedPasswordField(),
+                              switchListTile(),
+                              RoundedButton(
+                                  text: 'LOGIN',
+                                  press: () {
+                                    signInUser;
+                                  }),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              UnderPart(
+                                title: "Don't have an account?",
+                                navigatorText: "Register here",
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignUp()));
+                                },
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              const Text(
+                                'Forgot password?',
+                                style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontFamily: 'OpenSans',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 13),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
-    ));
+    );
+  }
+
+  switchListTile() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 50, right: 40),
+      child: SwitchListTile(
+        dense: true,
+        title: const Text(
+          'Remember Me',
+          style: TextStyle(fontSize: 16, fontFamily: 'OpenSans'),
+        ),
+        value: true,
+        activeColor: kPrimaryColor,
+        onChanged: (val) {},
+      ),
+    );
+  }
+
+  iconButton(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        RoundedIcon(imageUrl: "assets/images/facebook.png"),
+        SizedBox(
+          width: 20,
+        ),
+        RoundedIcon(imageUrl: "assets/images/twitter.png"),
+        SizedBox(
+          width: 20,
+        ),
+        RoundedIcon(imageUrl: "assets/images/google.jpg"),
+      ],
+    );
   }
 }

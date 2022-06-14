@@ -91,7 +91,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ),
             );
           }
-          return const login();
+          return const MaterialApp(
+              debugShowCheckedModeBanner: false, home: login());
         });
   }
 }
