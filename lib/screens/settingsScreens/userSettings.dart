@@ -52,7 +52,11 @@ class _userSettingsState extends State<userSettings> {
         leading: BackButton(
           color: primaryColor,
           onPressed: () {
-            navigateToWithoutBack(context, mainPage());
+            navigateToWithoutBack(
+                context,
+                mainPage(
+                  isFromSettings: true,
+                ));
           },
         ),
         title: Text(

@@ -61,7 +61,11 @@ class _signupState extends State<signup> {
             Icons.check,
             color: Colors.green,
           ));
-      navigateToWithoutBack(context, mainPage());
+      navigateToWithoutBack(
+          context,
+          mainPage(
+            isFromSettings: false,
+          ));
     }
     setState(() {
       _isLoading = false;

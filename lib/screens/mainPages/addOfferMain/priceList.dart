@@ -338,7 +338,11 @@ class _priceListState extends State<priceList> {
                         )),
                     TextButton(
                         onPressed: () {
-                          navigateToWithoutBack(context, mainPage());
+                          navigateToWithoutBack(
+                              context,
+                              mainPage(
+                                isFromSettings: false,
+                              ));
                         },
                         child: Text(
                           "Ok",

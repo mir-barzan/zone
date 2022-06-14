@@ -54,7 +54,11 @@ class _loginState extends State<login> {
             Icons.check,
             color: Colors.green,
           ));
-      navigateToWithoutBack(context, mainPage());
+      navigateToWithoutBack(
+          context,
+          mainPage(
+            isFromSettings: false,
+          ));
     }
     setState(() {
       _isLoading = false;

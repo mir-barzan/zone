@@ -621,7 +621,11 @@ class informationScreenState extends State<informationScreen> {
                         )),
                     TextButton(
                         onPressed: () {
-                          navigateToWithoutBack(context, mainPage());
+                          navigateToWithoutBack(
+                              context,
+                              mainPage(
+                                isFromSettings: false,
+                              ));
                         },
                         child: Text(
                           "Ok",

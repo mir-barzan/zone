@@ -9,6 +9,7 @@ import 'package:zone/Services/sharedPrefs.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/login.dart';
 import 'package:zone/screens/auth/listner.dart';
+import 'package:zone/screens/mainPages/InDashBoard/dashboard.dart';
 import 'package:zone/screens/main_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:zone/screens/auth/signup.dart';
@@ -79,7 +80,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData) {
-              return const mainPage();
+              return const mainPage(
+                isFromSettings: false,
+              );
             } else if (snapshot.hasError) {
               return Center(
                 child: Text('${snapshot.error}'),

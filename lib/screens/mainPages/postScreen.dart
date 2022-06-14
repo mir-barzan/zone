@@ -34,8 +34,12 @@ class _postScreenState extends State<postScreen> {
                 color: secColor,
               ),
               onPressed: () {
-                Navigator.pop(context,
-                    MaterialPageRoute(builder: (context) => mainPage()));
+                Navigator.pop(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => mainPage(
+                              isFromSettings: false,
+                            )));
               },
             ),
             padding: EdgeInsets.all(8),

@@ -14,7 +14,9 @@ import 'package:zone/screens/mainPages/optimizedSearch/oSearchScreen.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
 class mainPage extends StatefulWidget {
-  const mainPage({Key? key}) : super(key: key);
+  final isFromSettings;
+
+  const mainPage({Key? key, required this.isFromSettings}) : super(key: key);
 
   @override
   State<mainPage> createState() => _mainPageState();

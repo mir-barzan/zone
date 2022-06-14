@@ -37,15 +37,8 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getUserName();
-    getUserFName();
-    getUserLName();
-    // getUserData();
-    getUserEmail();
-    // getData();
-    getEmail();
-    getphoneNumber();
-    getSecurityWord();
+
+    getUserData();
   }
 
   updateSecurityWord() async {
@@ -258,167 +251,104 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
     }
   }
 
-  getUserName() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
+  getUserData() async {
+    var snap = await FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
+    userData = snap.data()!;
+    _emailController.text = userData['email'];
+    _fNameController.text = userData['fname'];
+    _lNameController.text = userData['lname'];
+    _userNameController.text = userData['username'];
+    _phoneNumber.text = userData['phone'];
+    _securityWordController.text = userData['securityWord'];
 
-    setState(() {
-      username = (snap.data() as Map<String, dynamic>)['username'];
-    });
-  }
-  getphoneNumber() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      phoneNumber = (snap.data() as Map<String, dynamic>)['phone'];
-    });
-  }
-  getEmail() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      email = (snap.data() as Map<String, dynamic>)['email'];
-    });
-  }
-  getSecurityWord() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      securityWord = (snap.data() as Map<String, dynamic>)['securityWord'];
-    });
-  }
-
-  getUserEmail() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      email = (snap.data() as Map<String, dynamic>)['email'];
-    });
-  }
-
-  getUserFName() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      fname = (snap.data() as Map<String, dynamic>)['fname'];
-    });
-  }
-
-  // getUserData() async {
-  //   DocumentSnapshot snap = await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(FirebaseAuth.instance.currentUser!.uid)
-  //       .get();
-  //
-  //   setState(() {
-  //     rank = (snap.data() as Map<String, dynamic>)['rank'];
-  //   });
-  // }
-
-  getUserLName() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    setState(() {
-      lname = (snap.data() as Map<String, dynamic>)['lname'];
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: checker(username,
-        Scaffold(
-          appBar: AppBar(
-            leading: BackButton(
-              color: secColor,
-            ),
-            title: Text(
-              'Personal Settings',
-              style: TextStyle(color: secColor),
-            ),
-            elevation: 0,
-            backgroundColor: primaryColor,
-          ),
-          body: Center(
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    settingButton2(
-                        "Username:",
-                        username,
-                        context,
-                        usernameSettingDialog(
-                          context,
-                          widget,
-                          _userNameController,
-                          "Username:",
-                          username,
-                          _isLoading,
-                        )),
-                    Divider(),
-                    settingButton2(
-                        "Name:",
-                        "   $fname $lname",
-                        context,
-                        SettingsDialog2(
-                            context,
-                            widget,
-                            _fNameController,
-                            _lNameController,
-                            "First Name",
-                            fname,
-                            "Last Name",
-                            lname)),
-                    Divider(),
-                    settingButton2(
-                        "Email:",
-                        "   $email",
-                        context,
-                        emailSettingDialog(
-                          context,
-                          widget,
-                          _emailController,
-                          "Email",
-                          email,
-                          _isLoading,
-                        )),
-                    Divider(),
-                    settingButton2(
-                        "Phone Number:", phoneNumber, context,
-                        phoneNumberDialog(
-                            context, widget, _phoneNumber, "Phone Number",
-                            phoneNumber, _isLoading)),
-                    Divider(),
-                    settingButton2("Security Word:",securityWord, context, securityQuestionDialog(
-                        context, widget, _securityWordController, "Security Word", securityWord, _isLoading)),
-                  ],
-                )),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(
+          color: secColor,
         ),
+        title: Text(
+          'Personal Settings',
+          style: TextStyle(color: secColor),
+        ),
+        elevation: 0,
+        backgroundColor: primaryColor,
+      ),
+      body: Center(
+        child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                settingButton2(
+                    "Username:",
+                    username,
+                    context,
+                    usernameSettingDialog(
+                      context,
+                      widget,
+                      _userNameController,
+                      "Username:",
+                      username,
+                      _isLoading,
+                    )),
+                Divider(),
+                settingButton2(
+                    "Name:",
+                    "   $fname $lname",
+                    context,
+                    SettingsDialog2(
+                        context,
+                        widget,
+                        _fNameController,
+                        _lNameController,
+                        "First Name",
+                        fname,
+                        "Last Name",
+                        lname)),
+                Divider(),
+                settingButton2(
+                    "Email:",
+                    "   $email",
+                    context,
+                    emailSettingDialog(
+                      context,
+                      widget,
+                      _emailController,
+                      "Email",
+                      email,
+                      _isLoading,
+                    )),
+                Divider(),
+                settingButton2(
+                    "Phone Number:",
+                    phoneNumber,
+                    context,
+                    phoneNumberDialog(context, widget, _phoneNumber,
+                        "Phone Number", phoneNumber, _isLoading)),
+                Divider(),
+                settingButton2(
+                    "Security Word:",
+                    securityWord,
+                    context,
+                    securityQuestionDialog(
+                        context,
+                        widget,
+                        _securityWordController,
+                        "Security Word",
+                        securityWord,
+                        _isLoading)),
+              ],
+            )),
       ),
     );
   }
@@ -772,6 +702,7 @@ class _personalSettingsScreenState extends State<personalSettingsScreen> {
     );
   }
 
+  phonenumber() {}
 }
 
 

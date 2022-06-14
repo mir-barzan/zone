@@ -415,7 +415,11 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                         )),
                     TextButton(
                         onPressed: () {
-                          navigateToWithoutBack(context, mainPage());
+                          navigateToWithoutBack(
+                              context,
+                              mainPage(
+                                isFromSettings: false,
+                              ));
                         },
                         child: Text(
                           "Ok",

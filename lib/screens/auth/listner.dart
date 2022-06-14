@@ -11,6 +11,8 @@ class listner extends StatefulWidget {
 class _listnerState extends State<listner> {
   @override
   Widget build(BuildContext context) {
-    return mainPage();
+    return mainPage(
+      isFromSettings: false,
+    );
   }
 }
