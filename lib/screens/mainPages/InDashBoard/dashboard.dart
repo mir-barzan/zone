@@ -26,6 +26,15 @@ class _dashboardState extends State<dashboard> {
     return Scaffold(
         backgroundColor: primaryColor,
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: offersColor,
+            ),
+            onPressed: () {
+              null;
+            },
+          ),
           centerTitle: true,
           title: Expanded(
               child: SvgPicture.asset(
@@ -52,10 +61,10 @@ class _dashboardState extends State<dashboard> {
                       children: [
                         FittedBox(
                             child: Icon(
-                          Icons.monetization_on,
-                          color: offersColor,
-                          size: 30,
-                        )),
+                              Icons.monetization_on,
+                              color: offersColor,
+                              size: 30,
+                            )),
                         FittedBox(
                           child: Text(
                             "  0.0 ",

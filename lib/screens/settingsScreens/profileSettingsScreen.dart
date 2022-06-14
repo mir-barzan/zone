@@ -346,10 +346,11 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
                                 showAlertDialog(
                                     context,
                                     "",
-                                    "Cannot add more than 5 Category tags !",
+                                    "Cannot add more than 5 skills!",
                                     Icon(
                                       Icons.error,
                                       color: Colors.red,
+                                      size: 40,
                                     ));
                               });
                             } else {

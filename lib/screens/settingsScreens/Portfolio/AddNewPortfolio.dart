@@ -90,7 +90,11 @@ class _addNewPortfolioState extends State<addNewPortfolio> {
                   print(x.toString());
                   _isLoading = false;
                 });
-                navigateToWithoutBack(context, portfolioScreen());
+                navigateToWithoutBack(
+                    context,
+                    portfolioScreen(
+                      isAfterAddingANewPortfolio: true,
+                    ));
               } catch (e) {
                 showSnackBar(context, e.toString());
                 setState(() {

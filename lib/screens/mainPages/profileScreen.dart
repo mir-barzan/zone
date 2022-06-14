@@ -10,6 +10,8 @@ import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/SeeUserOffers.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/login.dart';
+import 'package:zone/screens/mainPages/addOfferMain/mainOfferCard.dart';
+import 'package:zone/screens/settingsScreens/Portfolio/MainPortfolioCard.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
 import '../settingsScreens/userSettings.dart';
@@ -38,11 +40,15 @@ class _profileScreenState extends State<profileScreen> {
   String userId = "";
   List skills = [];
   var userData = {};
+  int portLen = 0;
+
+  var sss;
 
   void initState() {
     super.initState();
     getData();
     checkRank();
+
     // getData();
   }
 
@@ -52,6 +58,12 @@ class _profileScreenState extends State<profileScreen> {
           .collection('users')
           .doc(widget.uid)
           .get();
+      var portSnap = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      portLen = portSnap.docs.length;
       userData = snap.data()!;
       username = userData['username'];
       rank = userData['rank'];
@@ -149,16 +161,17 @@ class _profileScreenState extends State<profileScreen> {
             child: checker(
                 username,
                 ListView(
-                  padding: EdgeInsets.all(20),
-                  children: [
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Container(
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Stack(
+            physics: PageScrollPhysics(),
+            padding: EdgeInsets.all(20),
+            children: [
+              SizedBox(
+                height: 10.0,
+              ),
+              Container(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Stack(
                             clipBehavior: Clip.none,
                             alignment: Alignment.center,
                             children: [
@@ -181,7 +194,7 @@ class _profileScreenState extends State<profileScreen> {
                                         child: Expanded(
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                             children: [
                                               Column(
                                                 children: [
@@ -190,7 +203,7 @@ class _profileScreenState extends State<profileScreen> {
                                                     style: TextStyle(
                                                         fontSize: 24,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: offersColor),
                                                   ),
                                                   Text(
@@ -198,12 +211,12 @@ class _profileScreenState extends State<profileScreen> {
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: offersColor),
                                                   ),
                                                   Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.end,
+                                                    MainAxisAlignment.end,
                                                     children: [
                                                       FittedBox(
                                                         child: rating(
@@ -221,7 +234,7 @@ class _profileScreenState extends State<profileScreen> {
                                                   )
                                                 ],
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                MainAxisAlignment.center,
                                               ),
                                             ],
                                           ),
@@ -234,9 +247,9 @@ class _profileScreenState extends State<profileScreen> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                         children: [
                                           Column(
                                             children: [
@@ -248,7 +261,7 @@ class _profileScreenState extends State<profileScreen> {
                                                     right: 8),
                                                 child: Column(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                                   children: [
                                                     Container(
                                                       width: 75,
@@ -257,10 +270,10 @@ class _profileScreenState extends State<profileScreen> {
                                                           "Sold Offers",
                                                           style: new TextStyle(
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              FontWeight
+                                                                  .bold,
                                                               color:
-                                                                  primaryColor,
+                                                              primaryColor,
                                                               letterSpacing: 1),
                                                         ),
                                                       ),
@@ -270,12 +283,12 @@ class _profileScreenState extends State<profileScreen> {
                                                     ),
                                                     CircularPercentIndicator(
                                                       circularStrokeCap:
-                                                          CircularStrokeCap
-                                                              .butt,
+                                                      CircularStrokeCap
+                                                          .butt,
                                                       backgroundColor:
-                                                          oldRankPercentColor(),
+                                                      oldRankPercentColor(),
                                                       progressColor:
-                                                          rankPercentColor(),
+                                                      rankPercentColor(),
                                                       radius: 36.0,
                                                       animation: true,
                                                       animationDuration: 2000,
@@ -285,7 +298,7 @@ class _profileScreenState extends State<profileScreen> {
                                                         "0",
                                                         style: new TextStyle(
                                                             fontWeight:
-                                                                FontWeight.bold,
+                                                            FontWeight.bold,
                                                             color: primaryColor,
                                                             fontSize: 15.0),
                                                       ),
@@ -315,13 +328,13 @@ class _profileScreenState extends State<profileScreen> {
                                                   children: [
                                                     Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                       children: [
                                                         Column(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
+                                                          MainAxisAlignment
+                                                              .center,
                                                           children: [
                                                             Container(
                                                               width: 40,
@@ -330,14 +343,14 @@ class _profileScreenState extends State<profileScreen> {
                                                                   "Rank",
                                                                   style: new TextStyle(
                                                                       fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
+                                                                      FontWeight
+                                                                          .bold,
                                                                       color:
-                                                                          primaryColor,
+                                                                      primaryColor,
                                                                       letterSpacing:
-                                                                          1,
+                                                                      1,
                                                                       fontSize:
-                                                                          18.0),
+                                                                      18.0),
                                                                 ),
                                                               ),
                                                             ),
@@ -346,29 +359,29 @@ class _profileScreenState extends State<profileScreen> {
                                                             ),
                                                             CircularPercentIndicator(
                                                               circularStrokeCap:
-                                                                  CircularStrokeCap
-                                                                      .butt,
+                                                              CircularStrokeCap
+                                                                  .butt,
                                                               backgroundColor:
-                                                                  oldRankPercentColor(),
+                                                              oldRankPercentColor(),
                                                               progressColor:
-                                                                  rankPercentColor(),
+                                                              rankPercentColor(),
                                                               radius: 36.0,
                                                               animation: true,
                                                               animationDuration:
-                                                                  2000,
+                                                              2000,
                                                               lineWidth: 6.0,
                                                               percent:
-                                                                  100 / 100,
+                                                              100 / 100,
                                                               center: Text(
                                                                 rank.toUpperCase(),
                                                                 style: new TextStyle(
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
+                                                                    FontWeight
+                                                                        .bold,
                                                                     color:
-                                                                        primaryColor,
+                                                                    primaryColor,
                                                                     fontSize:
-                                                                        15.0),
+                                                                    15.0),
                                                               ),
                                                             ),
                                                           ],
@@ -472,7 +485,7 @@ class _profileScreenState extends State<profileScreen> {
                           children: [
                             Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                MainAxisAlignment.spaceEvenly,
                                 children: [
                                   badge("welcome.svg", 60, 60, isZoner),
                                   badge("verified.svg", 60, 60, isVerified),
@@ -599,42 +612,66 @@ class _profileScreenState extends State<profileScreen> {
                       height: 15,
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Portfolio",
-                          style: TextStyle(
-                              color: secColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        GridView.count(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 13,
-                          crossAxisSpacing: 10,
-                          physics: NeverScrollableScrollPhysics(),
-                          // to disable GridView's scrolling
-                          shrinkWrap: true,
-                          // You won't see infinite size error
-                          children: <Widget>[
-                            portfolioContainer("Logo for Tesla",
-                                "https://images.unsplash.com/photo-1601158935942-52255782d322?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80"),
-                            portfolioContainer("Logo for Hp",
-                                "https://images.unsplash.com/photo-1589561084283-930aa7b1ce50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8aHB8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"),
-                            portfolioContainer("Logo for Intel",
-                                "https://images.unsplash.com/photo-1616401014465-0e9f6e4695e0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"),
-                            portfolioContainer("Logo for Security Company",
-                                "https://images.unsplash.com/photo-1639327380081-bf86fc57a7a5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80")
-                          ],
-                        ),
-                      ],
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                  "Portfolio",
+                  style: TextStyle(
+                      color: Colors.teal,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ]),
+              Container(
+                height: 10,
+              ),
+              Expanded(
+                  child: FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection('Portfolio')
+                    .where('uid', isEqualTo: widget.uid)
+                    .get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  return Container(
+                    height: ((snapshot.data! as dynamic).docs.length * 320) / 2,
+                    child: GridView.builder(
+                      physics: PageScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: (snapshot.data! as dynamic).docs.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 3 / 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 180,
+                      ),
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot snap =
+                            (snapshot.data! as dynamic).docs[index];
+
+                        return Container(
+                            child: MainPortfolioCard(
+                          snap: snap,
+                          isLocal: false,
+                        ));
+                      },
                     ),
-                  ],
-                ))));
+                  );
+                },
+              )),
+            ],
+          ),
+        )));
   }
 
   rankPercentColor() {

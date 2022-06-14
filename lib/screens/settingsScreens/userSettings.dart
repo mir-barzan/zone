@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/login.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
+import 'package:zone/screens/main_page.dart';
 import 'package:zone/screens/settingsScreens/aboutUsScreen.dart';
 import 'package:zone/screens/settingsScreens/helpScreen.dart';
 import 'package:zone/screens/settingsScreens/personalSettingsScreen.dart';
@@ -51,11 +52,7 @@ class _userSettingsState extends State<userSettings> {
         leading: BackButton(
           color: primaryColor,
           onPressed: () {
-            navigateToWithoutBack(
-                context,
-                profileScreen(
-                    uid: FirebaseAuth.instance.currentUser!.uid,
-                    isVisiting: false));
+            navigateToWithoutBack(context, mainPage());
           },
         ),
         title: Text(
@@ -93,8 +90,13 @@ class _userSettingsState extends State<userSettings> {
                           const SizedBox(
                             height: 12,
                           ),
-                          settingButton("Portfolio", Icons.photo_album_outlined,
-                              context, portfolioScreen()),
+                          settingButton(
+                              "Portfolio",
+                              Icons.photo_album_outlined,
+                              context,
+                              portfolioScreen(
+                                isAfterAddingANewPortfolio: false,
+                              )),
                           const SizedBox(
                             height: 12,
                           ),
@@ -160,8 +162,13 @@ class _userSettingsState extends State<userSettings> {
                           const SizedBox(
                             height: 12,
                           ),
-                          settingButton("Portfolio", Icons.photo_album_outlined,
-                              context, portfolioScreen()),
+                          settingButton(
+                              "Portfolio",
+                              Icons.photo_album_outlined,
+                              context,
+                              portfolioScreen(
+                                isAfterAddingANewPortfolio: false,
+                              )),
                           const SizedBox(
                             height: 12,
                           ),
