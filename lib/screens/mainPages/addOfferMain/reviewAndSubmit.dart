@@ -16,7 +16,7 @@ import 'package:zone/screens/mainPages/addOfferMain/information.dart';
 import 'package:zone/screens/mainPages/addOfferMain/offerCard.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 import '../../main_page.dart';
-import '../personalOffersScreen.dart';
+import '../OffersScreen.dart';
 
 class reviewAndSubmit extends StatefulWidget {
   const reviewAndSubmit({Key? key}) : super(key: key);
@@ -415,7 +415,11 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                         )),
                     TextButton(
                         onPressed: () {
-                          navigateToWithoutBack(context, mainPage());
+                          navigateToWithoutBack(
+                              context,
+                              mainPage(
+                                isFromSettings: false,
+                              ));
                         },
                         child: Text(
                           "Ok",

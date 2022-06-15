@@ -5,6 +5,10 @@ import 'package:zone/additional/colors.dart';
 class PageTitleBar extends StatelessWidget {
   const PageTitleBar({Key? key, required this.title}) : super(key: key);
   final String title;
+<<<<<<< HEAD
+=======
+
+>>>>>>> upstream/master
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -13,7 +17,11 @@ class PageTitleBar extends StatelessWidget {
         width: double.infinity,
         height: MediaQuery.of(context).size.height / 4,
         decoration: const BoxDecoration(
+<<<<<<< HEAD
           color: kPrimaryLightColor,
+=======
+          color: primaryColor,
+>>>>>>> upstream/master
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(50),
             topRight: Radius.circular(50),
@@ -71,7 +79,11 @@ class UnderPart extends StatelessWidget {
           child: Text(
             navigatorText,
             style: const TextStyle(
+<<<<<<< HEAD
                 color: kPrimaryColor,
+=======
+                color: offersColor,
+>>>>>>> upstream/master
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 fontFamily: 'Opensans'),
@@ -94,7 +106,11 @@ class Upside extends StatelessWidget {
         Container(
           width: size.width,
           height: size.height / 2,
+<<<<<<< HEAD
           color: kPrimaryColor,
+=======
+          color: offersColor,
+>>>>>>> upstream/master
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Image.asset(
@@ -104,7 +120,10 @@ class Upside extends StatelessWidget {
             ),
           ),
         ),
+<<<<<<< HEAD
         iconBackButton(context),
+=======
+>>>>>>> upstream/master
         Positioned(
           left: 0,
           top: 175,

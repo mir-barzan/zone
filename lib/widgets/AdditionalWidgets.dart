@@ -72,6 +72,7 @@ showAlertDialog(
     content: Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(45)),
       child: Wrap(
+        alignment: WrapAlignment.center,
         children: [
           icon,
           Flexible(
@@ -456,6 +457,92 @@ moneyString(x){
   return x.toString();
 }
 
-Widget badge(String assetName, double width, double height){
-  return SvgPicture.asset('assets/images/$assetName', width: width, height: height);
+Widget badge(String assetName, double width, double height, bool active) {
+  return Container(
+    child: Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+            width: width - 12,
+            height: height - 12,
+            decoration: BoxDecoration(
+              color: primaryColor,
+              border: Border.all(color: primaryColor),
+              borderRadius: BorderRadius.circular(90),
+            )),
+        SvgPicture.asset(
+          'assets/images/$assetName',
+          width: width,
+          height: height,
+          color: active ? null : Colors.grey,
+        )
+      ],
+    ),
+  );
+}
+
+Widget AllBadges(
+    bool isZoner, bool isVerified, bool isPro, bool isGold, bool isStar) {
+  return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+    badge("welcome.svg", 60, 60, isZoner),
+    badge("verified.svg", 60, 60, isVerified),
+    badge("pro.svg", 60, 60, isPro),
+    badge("gold.svg", 60, 60, isGold),
+    badge("star.svg", 60, 60, isStar),
+  ]);
+}
+
+Widget Ratingbadge(String rating, double width, double height) {
+  return Container(
+    child: Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+            width: width - 30,
+            height: height - 30,
+            decoration: BoxDecoration(
+              color: primaryColor,
+              border: Border.fromBorderSide(BorderSide(color: primaryColor)),
+            )),
+        Row(
+          children: [
+            Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            Text('$rating/5')
+          ],
+        )
+      ],
+    ),
+  );
+}
+
+Widget RatingbadgeUp(String rating, double width, double height) {
+  return Container(
+    child: Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+            width: width - 22,
+            height: height - 25,
+            decoration: BoxDecoration(
+              color: primaryColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(90), topRight: Radius.circular(90)),
+              border: Border.all(color: offersColor, width: 3),
+            )),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            Text('$rating/5')
+          ],
+        )
+      ],
+    ),
+  );
 }

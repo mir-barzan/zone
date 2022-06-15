@@ -11,24 +11,26 @@ class MainOfferCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       child: Wrap(spacing: 0, children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             snap['PhotoUrl'] != null
                 ? Container(
-                    child: ClipRect(
+                child: ClipRect(
                     child: Container(
                       height: 150,
                       width: 100,
+
                       child: CachedNetworkImage(
                         imageUrl: snap['PhotoUrl'],
                         imageBuilder: (context, imageProvider) => Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                                ),
                           ),
                         ),
                         placeholder: (context, url) => Container(
@@ -38,25 +40,30 @@ class MainOfferCard extends StatelessWidget {
                           child: Center(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Icon(Icons.image), Text('image')],
+                              children: [
+                                Icon(Icons.image),Text('image')
+                              ],
                             ),
                           ),
                         ),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),
-                  ))
+
+                    ))
                 : Container(
-                    color: Colors.grey.shade300,
-                    height: 150,
-                    width: 100,
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [Icon(Icons.image), Text('image')],
-                      ),
-                    ),
-                  )
+              color: Colors.grey.shade300,
+              height: 150,
+              width: 100,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.image),Text('image')
+                  ],
+                ),
+              ),
+            )
           ],
         ),
         Container(
@@ -111,28 +118,23 @@ class MainOfferCard extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.star,
-                          color: Colors.amber,
-                          size: 12,
+                          color: Colors.amber, size: 12,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.white,
-                          size: 12,
+                          color: Colors.white,size: 12,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.white,
-                          size: 12,
+                          color: Colors.white,size: 12,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.white,
-                          size: 12,
+                          color: Colors.white,size: 12,
                         ),
                         Icon(
                           Icons.star,
-                          color: Colors.white,
-                          size: 12,
+                          color: Colors.white,size: 12,
                         ),
                         Text(
                           "(${snap['rating']})",
@@ -160,6 +162,7 @@ class MainOfferCard extends StatelessWidget {
                             color: primaryColor,
                           ),
                         ),
+
                       ],
                     ),
                     Column(
@@ -171,6 +174,7 @@ class MainOfferCard extends StatelessWidget {
                             color: primaryColor,
                           ),
                         ),
+
                       ],
                     ),
                   ],
@@ -181,5 +185,6 @@ class MainOfferCard extends StatelessWidget {
         ),
       ]),
     );
+
   }
 }

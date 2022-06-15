@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:zone/Services/UModel.dart' as model;
@@ -70,23 +72,83 @@ class FireAuth {
   }
 
   //ULI
-  Future<String> signInUser({
+  Future<String> signInUser(
+    BuildContext context, {
     required String email,
     required String password,
   }) async {
     String result = "Error !";
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
-        await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-        result = 'success';
+        //make sure that the user email is verified
+
+        bool verified = await _auth.currentUser!.emailVerified;
+        print("########\n#######\n#######");
+        print(verified);
+        print("########\n#######\n#######");
+
+        await _auth.currentUser!.reload();
+        if (verified == true) {
+          await _auth.signInWithEmailAndPassword(
+              email: email, password: password);
+          result = 'success';
+        }
       } else {
-        print("Please fill the fields");
+        showSnackBar(context, "Please fill all fields correctly");
       }
     } catch (err) {
       result = err.toString();
     }
     return result;
+  }
+
+  //TODO:::: Fix this part
+//verify phone number
+//   Future<String> verifyPhoneNumber({
+//     required String phoneNumber,
+//   }) async {
+//     String result = "Error !";
+//     try {
+//       if (phoneNumber.isNotEmpty) {
+//         await _auth.verifyPhoneNumber(
+//             phoneNumber: phoneNumber,
+//             timeout: Duration(seconds: 60),
+//             verificationCompleted: (AuthCredential credential) async {
+//               await _auth.signInWithCredential(credential);
+//               result = 'success';
+//             },
+//             codeAutoRetrievalTimeout: (String verificationId) {
+//               print(verificationId);
+//             },codeSent: (String verificationId, [int forceResend]) {
+//               print(verificationId);
+//             },
+//             verificationFailed: (exception) {
+//               result = exception.toString();
+//             });
+//       } else {
+//         print("Please fill the fields");
+//       }
+//     } catch (err) {
+//       result = err.toString();
+//     }
+//     return result;
+//   }
+//
+  Future<void> sendEmailVerification(BuildContext context) async {
+    try {
+      await _auth.currentUser!.sendEmailVerification();
+      showAlertDialog(
+          context,
+          "E-mail verification code sent you can login after you verify your email",
+          "",
+          Icon(
+            Icons.check_circle,
+            color: offersColor,
+            size: 80,
+          ));
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!);
+    }
   }
 
   //USU
@@ -95,6 +157,7 @@ class FireAuth {
     required String lname,
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
     String result = "";
     try {
@@ -104,6 +167,7 @@ class FireAuth {
           password.isNotEmpty) {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+        await sendEmailVerification(context);
         //add user to the firebase database
         _firestore.collection('users').doc(cred.user!.uid);
         model.User user = model.User(

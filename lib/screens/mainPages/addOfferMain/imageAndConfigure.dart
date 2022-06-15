@@ -150,7 +150,11 @@ class _imageAndConfigureScreenState extends State<imageAndConfigureScreen> {
                         )),
                     TextButton(
                         onPressed: () {
-                          navigateToWithoutBack(context, mainPage());
+                          navigateToWithoutBack(
+                              context,
+                              mainPage(
+                                isFromSettings: false,
+                              ));
                         },
                         child: Text(
                           "Ok",

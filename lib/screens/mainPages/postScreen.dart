@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zone/screens/mainPages/addOfferMain/addOfferScreen.dart';
 
 import '../../additional/colors.dart';
 import '../../widgets/AdditionalWidgets.dart';
 import '../main_page.dart';
-import 'addOfferScreen.dart';
 import 'addProjectScreen.dart';
 
 class postScreen extends StatefulWidget {
@@ -34,8 +34,12 @@ class _postScreenState extends State<postScreen> {
                 color: secColor,
               ),
               onPressed: () {
-                Navigator.pop(context,
-                    MaterialPageRoute(builder: (context) => mainPage()));
+                Navigator.pop(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => mainPage(
+                              isFromSettings: false,
+                            )));
               },
             ),
             padding: EdgeInsets.all(8),

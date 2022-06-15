@@ -53,6 +53,8 @@ dependencies:
   uuid: ^3.0.6
   cached_network_image: ^3.2.1
   carousel_slider: ^4.1.1
+  firebase_app_check: ^0.0.6+13
+  intl_phone_number_input: ^0.7.0+2
 
 
 dev_dependencies:
@@ -83,6 +85,20 @@ flutter:
     - assets/images/
     - assets/images/offerIllustrate.svg
     - assets/images/zoneLogo.svg
+    - assets/images/firstSold.svg
+    - assets/images/gold.svg
+    - assets/images/medal.svg
+    - assets/images/offerIllustrate.svg
+    - assets/images/pro.svg
+    - assets/images/star.svg
+    - assets/images/verified.svg
+    - assets/images/welcome.svg
+    - assets/images/zoneLogo.svg
+    - assets/images/google.jpg
+    - assets/images/facebook.png
+    - assets/images/twitter.png
+    - assets/images/register.png
+    - assets/images/login.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
