@@ -17,39 +17,46 @@ class FireStoreSettings{
   Future<String> uploadOffer(
       bool isLoading,
       List faqQuestions,
-    String title,
-    String description,
-     uid,
-    String price,
-    Uint8List file,
-    fname, lname, username ,rating, rank, timeNeeded, List categoryTags, List faqAnswers) async{
+      String title,
+      String description,
+      uid,
+      String price,
+      Uint8List file,
+      fname,
+      lname,
+      username,
+      rating,
+      rank,
+      timeNeeded,
+      categoryTags,
+      List faqAnswers) async {
     String result = "Error!";
-        try{
-          isLoading = true;
-          String offerId = Uuid().v1();
-          String photoUrl = await storageMeth().uploadImageFileToFirebaseStorage('Offers', file, true);
-          Offer offer = Offer(
-            title: title,
-            fname: fname,
-            lname: lname,
-            username: username,
-            uid: uid,
-            description: description,
-            rating: rating,
-            rank: rank,
-            PhotoUrl: photoUrl,
-            datePublished: DateTime.now(),
-            timeNeeded: timeNeeded,
-            price: price,
-            offerId: offerId,
-            categoryTags: categoryTags,
-            faqQuestion: faqQuestions,
-              faqAnswer: faqAnswers
 
+    try {
+      isLoading = true;
+      String offerId = Uuid().v1();
+      String photoUrl = await storageMeth()
+          .uploadImageFileToFirebaseStorage('Offers', file, true);
 
-
-
-          );
+      Offer offer = Offer(
+        title: title,
+        fname: fname,
+        lname: lname,
+        username: username,
+        uid: uid,
+        description: description,
+        rating: rating,
+        rank: rank,
+        PhotoUrl: photoUrl,
+        datePublished: DateTime.now(),
+        timeNeeded: timeNeeded,
+        price: price,
+        offerId: offerId,
+        categoryTags: categoryTags,
+        faqQuestion: faqQuestions,
+        faqAnswer: faqAnswers,
+        searchKeys: searchKeys(categoryTags),
+      );
       _firestore.collection('Category').doc(offerId).set(offer.toJson());
 
       result = 'success';
@@ -87,4 +94,14 @@ class FireStoreSettings{
     }
     return result;
   }
+}
+
+searchKeys(List<String> c) {
+  List<String> searchKeys = [];
+  for (int i = 0; i < c.length; i++) {
+    for (int x = 1; x < c[i].length + 1; x++) {
+      searchKeys.add(c[i].substring(0, x).toLowerCase());
+    }
+  }
+  return searchKeys;
 }

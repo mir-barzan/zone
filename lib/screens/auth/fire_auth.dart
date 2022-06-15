@@ -82,17 +82,14 @@ class FireAuth {
       if (email.isNotEmpty || password.isNotEmpty) {
         //make sure that the user email is verified
 
-        bool verified = await _auth.currentUser!.emailVerified;
+        bool verified = _auth.currentUser!.emailVerified;
         print("########\n#######\n#######");
         print(verified);
         print("########\n#######\n#######");
 
-        await _auth.currentUser!.reload();
-        if (verified == true) {
-          await _auth.signInWithEmailAndPassword(
-              email: email, password: password);
-          result = 'success';
-        }
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        result = 'success';
       } else {
         showSnackBar(context, "Please fill all fields correctly");
       }
@@ -177,6 +174,7 @@ class FireAuth {
           password: password,
           uid: cred.user!.uid,
           username: fname + RandomStr,
+          dateCreated: DateTime.now().toString(),
         );
         await _firestore.collection('users').doc(cred.user!.uid).set(
           user.toJson(),

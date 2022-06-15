@@ -643,7 +643,8 @@ class _profileScreenState extends State<profileScreen> {
                   }
 
                   return Container(
-                    height: ((snapshot.data! as dynamic).docs.length * 320) / 2,
+                    height:
+                        ((snapshot.data! as dynamic).docs.length * 330) * 0.8,
                     child: GridView.builder(
                       physics: PageScrollPhysics(),
                       shrinkWrap: true,

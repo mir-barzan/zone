@@ -20,6 +20,7 @@ class User {
   final String soldOffers;
   final String boughtOffers;
   final String phoneNumber;
+  final String dateCreated;
 
   const User({
     required this.fname,
@@ -30,8 +31,8 @@ class User {
     this.rating = "0",
     this.rank = "Zoner",
     this.bio = "",
-      required this.username,
-      this.profilePhotoUrl =
+    required this.username,
+    this.profilePhotoUrl =
         "https://firebasestorage.googleapis.com/v0/b/zone-b3608.appspot.com/o/207-2074624_white-gray-circle-avatar-png-transparent-png.png?alt=media&token=b4ed042a-93cd-44fe-930d-98aad2bfb8cf",
     this.skills = const [
       "no skill",
@@ -45,6 +46,7 @@ class User {
     this.soldOffers = "0",
     this.boughtOffers = "0",
     this.phoneNumber = "",
+    required this.dateCreated,
   });
 
   Map<String, dynamic> toJson() =>
@@ -65,5 +67,6 @@ class User {
         "soldOffers": soldOffers,
         "boughtOffers": boughtOffers,
         "phoneNumber": phoneNumber,
+        "dateCreated": dateCreated,
       };
 }

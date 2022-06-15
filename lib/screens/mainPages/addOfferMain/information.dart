@@ -31,7 +31,20 @@ class informationScreenState extends State<informationScreen> {
   TextEditingController _Details = TextEditingController();
   TextEditingController _controller = TextEditingController();
   String title = "";
+  List<String> tempList = [];
 
+// void searchOptions(){
+//
+//     String temp = "";
+//     for(int j = 0; j<tagss.length; j++){
+//       for (int i = 0; i < tagss.elementAt(j).toString().length; i++) {
+//         temp = temp + tagss.elementAt(j)[i];
+//         tempList.add(temp);
+//       }
+//
+//
+//   }
+// }
   getTitle() {
     return _IWill.text;
   }
@@ -287,6 +300,7 @@ class informationScreenState extends State<informationScreen> {
                             setState(() {
                               _category.add(CategoryTag(_controller.text));
                               tagss = _category.map((v) => v.name).toList();
+                              tagss = tagss + tempList;
                               reviewAndSubmit.category.value = tagss;
                               _controller.clear();
                             });

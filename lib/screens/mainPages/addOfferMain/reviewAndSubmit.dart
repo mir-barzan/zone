@@ -117,6 +117,23 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     lname = (snap.data() as Map<String, dynamic>)['lname'];
   }
 
+  Iterable<Iterable<T>> combinations<T>(
+    List<List<T>> lists, [
+    int index = 0,
+    List<T>? prefix,
+  ]) sync* {
+    prefix ??= <T>[];
+
+    if (lists.length == index) {
+      yield prefix;
+    } else {
+      for (final value in lists[index]) {
+        yield* combinations(lists, index + 1, prefix..add(value));
+        prefix.removeLast();
+      }
+    }
+  }
+
   getUserid() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -350,16 +367,22 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                                       style: TextStyle(
                                           fontSize: 26, color: primaryColor),
                                     ),
-                                    Icon(
-                                      Icons.check,
-                                      color: primaryColor,
-                                      size: 30,
-                                    ),
+                                    _isLoading
+                                        ? CircularProgressIndicator(
+                                            color: primaryColor,
+                                          )
+                                        : Icon(
+                                            Icons.check,
+                                            color: primaryColor,
+                                            size: 30,
+                                          ),
                                   ],
                                 ),
                               ),
                         onPressed: _everyThingIsFine
                             ? () => setState(() {
+                                  _isLoading = true;
+
                                   postOffer(
                                       values.elementAt(1),
                                       values.elementAt(6),
@@ -369,6 +392,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                                       values.elementAt(5),
                                       values.elementAt(0),
                                       values.elementAt(7));
+                                  _isLoading = false;
 
                                   navigateToWithoutBack(
                                       context, personalOffersScreen());
