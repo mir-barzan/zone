@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/login.dart';
+import 'package:zone/screens/auth/login1.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
 import 'package:zone/screens/main_page.dart';
 import 'package:zone/screens/settingsScreens/aboutUsScreen.dart';
@@ -190,7 +191,7 @@ class _userSettingsState extends State<userSettings> {
                           InkWell(
                             onTap: () async {
                               await FireAuth().signOut();
-                              navigateToWithoutBack(context, login());
+                              navigateToWithoutBack(context, login1());
                             },
                             child: Container(
                                 child: Text(

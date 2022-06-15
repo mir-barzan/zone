@@ -39,6 +39,7 @@ class _signupState extends State<signup> {
       _isLoading = true;
     });
     String result = await FireAuth().signUpUser(
+        context: context,
         fname: _firstnameController.text,
         lname: _lastnameController.text,
         email: _emailController.text,

@@ -34,7 +34,7 @@ class _loginState extends State<login> {
     setState(() {
       _isLoading = true;
     });
-    String result = await FireAuth().signInUser(
+    String result = await FireAuth().signInUser(context,
         email: _emailController.text, password: _passwordController.text);
     if (result != 'success') {
       showAlertDialog(
