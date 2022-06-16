@@ -124,38 +124,7 @@ class MainOfferCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 12,
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                            size: 12,
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                            size: 12,
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                            size: 12,
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                            size: 12,
-                          ),
-                          Text(
-                            "(${snap['rating']})",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: primaryColor,
-                                fontSize: 11),
-                          ),
+                          rating(double.parse(snap['rating']), true, 11.5)
                         ],
                       ),
                     ],

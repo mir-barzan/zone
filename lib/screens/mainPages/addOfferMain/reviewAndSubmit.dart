@@ -200,6 +200,8 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     }
   }
 
+  Timer? timer;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -210,11 +212,16 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     getUserrank();
     getUserrating();
     getUserid();
-    Timer timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
+    timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
       setState(() {
         _everyThingIsFine = reviewAndSubmit().checker();
       });
     });
+  }
+
+  void dispose() {
+    super.dispose();
+    timer!.cancel();
   }
 
   @override
@@ -393,6 +400,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                                       values.elementAt(0),
                                       values.elementAt(7));
                                   _isLoading = false;
+                                  timer!.cancel();
 
                                   navigateToWithoutBack(
                                       context, personalOffersScreen());
@@ -431,6 +439,8 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                   actions: [
                     TextButton(
                         onPressed: () {
+                          timer!.cancel();
+
                           navigatePop(context, widget);
                         },
                         child: Text(

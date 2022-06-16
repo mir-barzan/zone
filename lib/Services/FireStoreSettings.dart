@@ -1,10 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zone/Services/storageSettings.dart';
+import 'package:zone/screens/mainPages/InDashBoard/chats/chatMsg.dart';
 
 import 'offerModel.dart';
 import 'portfolioModel.dart';
@@ -13,6 +15,24 @@ class FireStoreSettings{
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //post the offer and save it in FireStore database
+  Future<String> openChat(String recieverId) async {
+    String result = "error";
+    String chatId = Uuid().v1();
+    try {
+      Chatt chat = Chatt(
+        chatId: chatId,
+        isActive: true,
+        recieverId: recieverId,
+        senderId: FirebaseAuth.instance.currentUser!.uid,
+      );
+      _firestore.collection("Chats").doc(chatId).set(chat.toJson());
+      result = "success";
+    } catch (e) {
+      print(e.toString());
+      result = 'error';
+    }
+    return result;
+  }
 
   Future<String> uploadOffer(
       bool isLoading,

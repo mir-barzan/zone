@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/screens/mainPages/InDashBoard/chats/chatScreen.dart';
 import 'package:zone/screens/mainPages/InDashBoard/myOffers.dart';
 import '../../../widgets/AdditionalWidgets.dart';
 
@@ -162,43 +163,51 @@ class _dashboardState extends State<dashboard> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Stack(
-                            children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: offersColor,
-                                      borderRadius: BorderRadius.circular(22)),
-                                  height: 120,
-                                  width: 150,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Chat",
-                                        style: new TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: primaryColor,
-                                            fontSize: 25.0),
-                                      ),
-                                      Icon(
-                                        Icons.chat,
-                                        color: primaryColor,
-                                        size: 35,
-                                      )
-                                    ],
-                                  )),
-                              Positioned(
-                                top: 5,
-                                left: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: primaryColor),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: 110,
-                                  width: 140,
+                          GestureDetector(
+                            onTap: () {
+                              navigateTo(context, chatScreen());
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                    decoration: BoxDecoration(
+                                        color: offersColor,
+                                        borderRadius:
+                                            BorderRadius.circular(22)),
+                                    height: 120,
+                                    width: 150,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Chat",
+                                          style: new TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: primaryColor,
+                                              fontSize: 25.0),
+                                        ),
+                                        Icon(
+                                          Icons.chat,
+                                          color: primaryColor,
+                                          size: 35,
+                                        )
+                                      ],
+                                    )),
+                                Positioned(
+                                  top: 5,
+                                  left: 5,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: primaryColor),
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    height: 110,
+                                    width: 140,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           )
                         ],
                       ),
