@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "680267048158",
+    "firebase_url": "https://zone-b3608-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "zone-b3608",
     "storage_bucket": "zone-b3608.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "680267048158-l4j1ut7gm2kaggd6p6mhruf373lcp6hr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "680267048158-30t91i1u7nmcqcpb4pur22nj145v49ug.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zone.appers.zone"
+              }
             }
           ]
         }

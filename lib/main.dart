@@ -37,16 +37,16 @@ void main() async {
   await sharedprefs.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) async {
-    ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
-          backgroundColor: primaryColor,
-          body: Center(
-              child: Container(
-                  height: 50,
-                  width: 50,
-                  child: CircularProgressIndicator(
-                    color: Colors.green,
-                  ))),
-        );
+    // ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
+    //       backgroundColor: primaryColor,
+    //       body: Center(
+    //           child: Container(
+    //               height: 50,
+    //               width: 50,
+    //               child: CircularProgressIndicator(
+    //                 color: Colors.green,
+    //               ))),
+    //     );
     SharedPreferences prefs = await SharedPreferences.getInstance();
     runApp(new MyApp(prefs: prefs));
   });
@@ -100,7 +100,6 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
-    // return listner();
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -122,7 +121,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ),
             );
           }
-          return const login1();
+          return login1();
         });
   }
 }

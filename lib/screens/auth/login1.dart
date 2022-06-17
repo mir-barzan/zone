@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:zone/Services/authProviding.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/signup.dart';
@@ -71,6 +74,20 @@ class _login1State extends State<login1> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    switch (authProvider.status) {
+      case Status.authenticationError:
+        Fluttertoast.showToast(msg: "Sign In Fail");
+        break;
+      case Status.authenticationCanceled:
+        Fluttertoast.showToast(msg: "Sign In Cancelled");
+        break;
+      case Status.authenticated:
+        Fluttertoast.showToast(msg: "Sign In Success");
+        break;
+      default:
+        break;
+    }
     return WillPopScope(
       onWillPop: () async => false,
       child: SafeArea(
@@ -102,7 +119,24 @@ class _login1State extends State<login1> {
                           const SizedBox(
                             height: 15,
                           ),
-                          iconButton(context),
+                          GestureDetector(
+                              onTap: () async {
+                                try {
+                                  bool isSuccess =
+                                      await authProvider.handleSignIn();
+                                  if (isSuccess == true) {
+                                    navigateTo(context,
+                                        mainPage(isFromSettings: false));
+                                    print('Success');
+                                  } else {
+                                    Fluttertoast.showToast(msg: "Didn't work");
+                                    print('Failed');
+                                  }
+                                } catch (e) {
+                                  Fluttertoast.showToast(msg: e.toString());
+                                }
+                              },
+                              child: iconButton(context)),
                           const SizedBox(
                             height: 20,
                           ),
@@ -196,14 +230,6 @@ class _login1State extends State<login1> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [
-        RoundedIcon(imageUrl: "assets/images/facebook.png"),
-        SizedBox(
-          width: 20,
-        ),
-        RoundedIcon(imageUrl: "assets/images/twitter.png"),
-        SizedBox(
-          width: 20,
-        ),
         RoundedIcon(imageUrl: "assets/images/google.jpg"),
       ],
     );
