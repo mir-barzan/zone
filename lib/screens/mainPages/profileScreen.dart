@@ -39,7 +39,6 @@ class _profileScreenState extends State<profileScreen> {
   String userRating = "";
   String userId = "";
   List skills = [];
-  var userData = {};
   int portLen = 0;
 
   var sss;
@@ -51,6 +50,8 @@ class _profileScreenState extends State<profileScreen> {
 
     // getData();
   }
+
+  var userData = {};
 
   getData() async {
     try {

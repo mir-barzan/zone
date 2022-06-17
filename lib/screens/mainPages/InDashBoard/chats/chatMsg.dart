@@ -36,31 +36,42 @@ class Chatt {
 }
 
 class ChatMsg {
-  final String content;
-  final String timeSent;
-  final senderEmail;
-  final recieverEmail;
+  String content;
+  String timeSent;
+  String senderId;
+  String recieverId;
+  int type;
 
-  const ChatMsg(
-      {required this.content,
-      required this.timeSent,
-      required this.senderEmail,
-      required this.recieverEmail});
+  ChatMsg({
+    required this.content,
+    required this.timeSent,
+    required this.senderId,
+    required this.recieverId,
+    required this.type,
+  });
 
-  Map<String, dynamic> toJson() => {
-        "content": content,
-        "timeSent": timeSent,
-        "senderEmail": senderEmail,
-        "recieverEmail": recieverEmail,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      "content": this.content,
+      "timeSent": this.timeSent,
+      "senderEmail": this.senderId,
+      "recieverEmail": this.recieverId,
+      "type": this.type,
+    };
+  }
 
-  static ChatMsg fromSnap(DocumentSnapshot snap) {
-    var snapshot = snap.data() as Map<String, dynamic>;
+  factory ChatMsg.fromDocument(DocumentSnapshot doc) {
+    String content = doc.get('content');
+    String timeSent = doc.get('timeSent');
+    String senderId = doc.get('senderEmail');
+    String recieverId = doc.get('recieverEmail');
+    int type = doc.get('type');
 
     return ChatMsg(
-        content: snapshot['content'],
-        timeSent: snapshot['timeSent'],
-        senderEmail: snapshot['senderEmail'],
-        recieverEmail: snapshot['recieverEmail']);
+        content: content,
+        timeSent: timeSent,
+        senderId: senderId,
+        recieverId: recieverId,
+        type: type);
   }
 }

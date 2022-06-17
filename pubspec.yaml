@@ -55,6 +55,10 @@ dependencies:
   carousel_slider: ^4.1.1
   firebase_app_check: ^0.0.6+13
   intl_phone_number_input: ^0.7.0+2
+  google_sign_in: ^5.3.3
+  firebase_messaging: ^11.4.2
+  flutter_local_notifications: ^9.6.1
+  fluttertoast: ^8.0.9
 
 
 dev_dependencies:
