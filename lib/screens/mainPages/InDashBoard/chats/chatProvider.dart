@@ -40,8 +40,8 @@ class ChatProvider {
         .snapshots();
   }
 
-  void sendMessage(String groupChatId, String content, String senderEmail,
-      String recieverEmail, int type) async {
+  void sendMessage(String groupChatId, String content, String senderId,
+      String recieverId, int type) async {
     await firebaseFirestore
         .collection('chat')
         .doc(groupChatId)
@@ -49,15 +49,15 @@ class ChatProvider {
         .add({
       'content': content,
       'timeSent': DateTime.now().toString(),
-      'senderId': senderEmail,
-      'recieverId': recieverEmail,
+      'senderId': senderId,
+      'recieverId': recieverId,
       'type': type,
     });
     ChatMsg chatMsg = ChatMsg(
       content: content,
       timeSent: DateTime.now().toString(),
-      senderId: senderEmail,
-      recieverId: recieverEmail,
+      senderId: senderId,
+      recieverId: recieverId,
       type: type,
     );
     FirebaseFirestore.instance.runTransaction((transaction) async {

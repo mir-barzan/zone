@@ -36,39 +36,29 @@ class _login1State extends State<login1> {
   bool _isLoading = false;
 
   void signInUser() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String result = await FireAuth().signInUser(context,
-        email: _emailController.text, password: _passwordController.text);
-    if (result != 'success') {
-      showAlertDialog(
-          context,
-          "Make sure all fields are filled correctly or you didn't verify your email!",
-          "",
-          Icon(
-            Icons.error,
-            color: Colors.red,
-            size: 60,
-          ));
-    } else {
-      showAlertDialog(
-          context,
-          "",
-          "Success",
-          Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      await FireAuth().signInUser(context,
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+
+      Fluttertoast.showToast(msg: "Logged In successfully");
       navigateToWithoutBack(
           context,
           mainPage(
             isFromSettings: false,
           ));
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+      setState(() {
+        _isLoading = false;
+      });
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
@@ -164,7 +154,16 @@ class _login1State extends State<login1> {
                                     text: 'LOGIN',
                                     press: () {
                                       // signInUser();
-                                      signInUser();
+                                      try {
+                                        signInUser();
+                                      } catch (e) {
+                                        Fluttertoast.showToast(
+                                            msg: e.toString());
+                                      }
+                                      print("###########################");
+                                      print(_emailController.text);
+                                      print(_passwordController.text);
+                                      print("###########################");
                                     }),
                                 const SizedBox(
                                   height: 10,

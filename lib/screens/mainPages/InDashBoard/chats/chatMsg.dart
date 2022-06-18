@@ -54,8 +54,8 @@ class ChatMsg {
     return {
       "content": this.content,
       "timeSent": this.timeSent,
-      "senderEmail": this.senderId,
-      "recieverEmail": this.recieverId,
+      "senderId": this.senderId,
+      "recieverId": this.recieverId,
       "type": this.type,
     };
   }
@@ -63,8 +63,8 @@ class ChatMsg {
   factory ChatMsg.fromDocument(DocumentSnapshot doc) {
     String content = doc.get('content');
     String timeSent = doc.get('timeSent');
-    String senderId = doc.get('senderEmail');
-    String recieverId = doc.get('recieverEmail');
+    String senderId = doc.get('senderId');
+    String recieverId = doc.get('recieverId');
     int type = doc.get('type');
 
     return ChatMsg(

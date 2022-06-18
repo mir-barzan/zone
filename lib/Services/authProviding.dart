@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -63,12 +65,33 @@ class AuthProvider extends ChangeNotifier {
             .get();
         final List<DocumentSnapshot> document = result.docs;
         if (document.length == 0) {
+          String RandomStr = random(1000, 9999).toString();
           firebaseFirestore.collection('users').doc(firebaseUser.uid).set({
             "fname": firebaseUser.displayName,
             "profilePhotoUrl": firebaseUser.photoURL,
             "uid": firebaseUser.uid,
             "dateCreated": DateTime.now().toString(),
             "RegisteredWith": "Google",
+            "balance": "0",
+            "bio": " ",
+            "boughtOffers": "0",
+            "lname": "",
+            "password": "",
+            "phoneNumber": "",
+            "rank": "Zoner",
+            "rating": "0",
+            "ratingCounter": "0",
+            "skills": [
+              "no skill",
+              "no skill",
+              "no skill",
+              "no skill",
+              "no skill"
+            ],
+            "soldOffers": "0",
+            "username":
+                firebaseUser.displayName! + RandomStr.replaceAll(" ", ""),
+            "email": googleSignIn.currentUser!.email.toString(),
           });
 
           User? currentUser = firebaseUser;
@@ -112,5 +135,9 @@ class AuthProvider extends ChangeNotifier {
     await prefs.clear();
     _status = Status.uninisialized;
     notifyListeners();
+  }
+
+  int random(min, max) {
+    return min + Random().nextInt(max - min);
   }
 }

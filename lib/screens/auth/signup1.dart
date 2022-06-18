@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/login.dart';
@@ -43,20 +44,13 @@ class _signup1State extends State<SignUp1> {
     });
     String result = await FireAuth().signUpUser(
         context: context,
-        fname: _firstnameController.text,
-        lname: _lastnameController.text,
-        email: _emailController.text,
-        password: _passwordController.text);
+        fname: _firstnameController.text.trim(),
+        lname: _lastnameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim());
     navigateToWithoutBack(context, login1());
     if (result != 'success') {
-      showAlertDialog(
-          context,
-          "Make sure all fields are filled correctly!",
-          result,
-          Icon(
-            Icons.error,
-            color: Colors.red,
-          ));
+      Fluttertoast.showToast(msg: "Error, Please try again.");
     }
     setState(() {
       _isLoading = false;

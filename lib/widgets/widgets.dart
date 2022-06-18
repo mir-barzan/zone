@@ -8,13 +8,13 @@ class RoundedButton extends StatelessWidget {
 
   const RoundedButton(
       {Key? key,
-      this.press,
+      required this.press,
       this.textColor = Colors.white,
       required this.text,
       required this.isLoading})
       : super(key: key);
   final text;
-  final press;
+  final VoidCallback? press;
   final Color? textColor;
 
   @override

@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
               firebaseStorage: this.firebaseStorage),
         )
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: _title,
         home: MyStatefulWidget(),

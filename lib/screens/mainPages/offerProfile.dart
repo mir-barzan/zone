@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:zone/screens/mainPages/InDashBoard/chats/chatScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
 
 import '../../additional/colors.dart';
@@ -290,7 +291,14 @@ class _offerProfileState extends State<offerProfile> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              navigateToWithoutBack(
+                  context,
+                  chatScreen(
+                      peerAvatar: userData['profilePhotoUrl'],
+                      peerId: userData['uid'],
+                      peerName: '${userData['fname']} ${userData['lname']}'));
+            },
             child: Container(
               margin: EdgeInsets.all(8),
               decoration: BoxDecoration(

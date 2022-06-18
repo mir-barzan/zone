@@ -36,7 +36,7 @@ class _profileScreenState extends State<profileScreen> {
   bool isStar = false;
   bool isVerified = false;
   String rank = "";
-  String userRating = "";
+  String userRating = "0";
   String userId = "";
   List skills = [];
   int portLen = 0;

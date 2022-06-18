@@ -110,7 +110,7 @@ class chatScreenState extends State<chatScreen> {
   }
 
   bool isLastMessageLeft(int index) {
-    if ((index > 0 && listMsgs[index - 1].get("uid") == currentUserId) ||
+    if ((index > 0 && listMsgs[index - 1].get("senderId") == currentUserId) ||
         index == 0) {
       return true;
     } else {
@@ -119,7 +119,7 @@ class chatScreenState extends State<chatScreen> {
   }
 
   bool isLastMessageRight(int index) {
-    if ((index > 0 && listMsgs[index - 1].get("uid") != currentUserId) ||
+    if ((index > 0 && listMsgs[index - 1].get("recieverId") != currentUserId) ||
         index == 0) {
       return true;
     } else {
@@ -130,8 +130,8 @@ class chatScreenState extends State<chatScreen> {
   void onSendMessage(String content, int type) {
     if (content.trim().isNotEmpty) {
       textEditingController.clear();
-      chatProvider.sendMessage(
-          groupChatId, content, currentUserId, "reciver email here", type);
+      chatProvider.sendMessage(groupChatId, content,
+          FirebaseAuth.instance.currentUser!.uid.toString(), peerId, type);
       listScrollController.animateTo(0,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     } else {
@@ -198,7 +198,7 @@ class chatScreenState extends State<chatScreen> {
     chatProvider.updateDataFirestore(
       'users',
       currentUserId,
-      {'recieverId': null},
+      {'recieverId': peerId},
     );
     Navigator.pop(context);
     return Future.value(false);
@@ -207,6 +207,7 @@ class chatScreenState extends State<chatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: primaryColor,
         appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -221,9 +222,11 @@ class chatScreenState extends State<chatScreen> {
           actions: [],
         ),
         body: WillPopScope(
+          onWillPop: onBackPress,
           child: Stack(
             children: [
               Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   buildListMessage(),
                   Input(),
@@ -232,7 +235,6 @@ class chatScreenState extends State<chatScreen> {
               buildLoading(),
             ],
           ),
-          onWillPop: onBackPress,
         ));
   }
 
@@ -245,7 +247,7 @@ class chatScreenState extends State<chatScreen> {
             child: IconButton(
               icon: Icon(
                 Icons.image,
-                color: primaryColor,
+                color: offersColor,
               ),
               onPressed: getImage,
               color: offersColor,
@@ -259,7 +261,7 @@ class chatScreenState extends State<chatScreen> {
             child: IconButton(
               icon: Icon(
                 Icons.file_open,
-                color: primaryColor,
+                color: offersColor,
               ),
               onPressed: getImage,
               color: offersColor,
@@ -277,7 +279,7 @@ class chatScreenState extends State<chatScreen> {
             controller: textEditingController,
             decoration: InputDecoration.collapsed(
               hintText: 'Type a message...',
-              hintStyle: TextStyle(color: Colors.grey.shade200),
+              hintStyle: TextStyle(color: Colors.grey),
             ),
             focusNode: focusNode,
           ),
@@ -288,7 +290,7 @@ class chatScreenState extends State<chatScreen> {
             child: IconButton(
               icon: Icon(
                 Icons.send,
-                color: primaryColor,
+                color: offersColor,
               ),
               onPressed: () =>
                   onSendMessage(textEditingController.text, TypeMessage.TEXT),
@@ -311,6 +313,7 @@ class chatScreenState extends State<chatScreen> {
       ChatMsg chatMsg = ChatMsg.fromDocument(document);
       if (chatMsg.senderId == currentUserId) {
         return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             chatMsg.type == TypeMessage.TEXT
                 ? Container(
@@ -328,7 +331,7 @@ class chatScreenState extends State<chatScreen> {
                         bottom: isLastMessageRight(index) ? 20.0 : 10.0,
                         right: 10.0),
                   )
-                : chatMsg.senderId == TypeMessage.IMAGE
+                : chatMsg.content == TypeMessage.IMAGE
                     ? Container(
                         child: OutlinedButton(
                           child: Material(
@@ -340,57 +343,57 @@ class chatScreenState extends State<chatScreen> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0),
                                     image: DecorationImage(
-                                      image: NetworkImage(chatMsg.content),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  width: 200,
-                                  height: 200,
-                                  child: Center(
-                                    child: CircularProgressIndicator(
-                                      color: offersColor,
-                                      value:
-                                          progress.expectedTotalBytes != null &&
-                                                  progress.expectedTotalBytes !=
-                                                      null
-                                              ? progress.cumulativeBytesLoaded /
-                                                  progress.expectedTotalBytes!
-                                              : null,
-                                    ),
-                                  ),
-                                );
-                              },
-                              errorBuilder: (context, object, stacktrace) {
-                                return Container(
-                                  color: Colors.grey.shade300,
-                                  width: 200,
-                                  height: 200,
-                                  child: Center(
-                                    child: Text('Error: $object'),
-                                  ),
-                                );
-                              },
-                            ),
+                            image: NetworkImage(chatMsg.content),
+                            fit: BoxFit.cover,
                           ),
-                          onPressed: () {
-                            //image full view
-                          },
                         ),
-                        margin: EdgeInsets.only(
-                            bottom: isLastMessageRight(index) ? 20.0 : 10.0,
-                            right: 10.0),
-                      )
-                    : Container(
-                        child: Image.asset(
-                          'assets/images/${chatMsg.content}.gif',
+                        width: 200,
+                        height: 200,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: offersColor,
+                            value:
+                            progress.expectedTotalBytes != null &&
+                                progress.expectedTotalBytes !=
+                                    null
+                                ? progress.cumulativeBytesLoaded /
+                                progress.expectedTotalBytes!
+                                : null,
+                          ),
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, object, stacktrace) {
+                      return Container(
+                        color: Colors.grey.shade300,
+                        width: 200,
+                        height: 200,
+                        child: Center(
+                          child: Text('Error: $object'),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                onPressed: () {
+                  //image full view
+                },
+              ),
+              margin: EdgeInsets.only(
+                  bottom: isLastMessageRight(index) ? 20.0 : 10.0,
+                  right: 10.0),
+            )
+                : Container(
+              child: Image.network(
+                          chatMsg.content,
                           width: 100,
                           height: 100,
                           fit: BoxFit.cover,
                         ),
-                        margin: EdgeInsets.only(
-                            bottom: isLastMessageRight(index) ? 20 : 10,
-                            right: 10),
-                      )
+              margin: EdgeInsets.only(
+                  bottom: isLastMessageRight(index) ? 20 : 10,
+                  right: 10),
+            )
           ],
         );
       } else {
@@ -436,15 +439,14 @@ class chatScreenState extends State<chatScreen> {
                         ),
                   chatMsg.type == TypeMessage.TEXT
                       ? Container(
-                          child: Text(
+                    child: Text(
                             chatMsg.content,
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(color: primaryColor),
                           ),
                           padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
-                          width: 200.0,
                           decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(8.0)),
+                              color: offersColor,
+                              borderRadius: BorderRadius.circular(14.0)),
                           margin: EdgeInsets.only(left: 10.0),
                         )
                       : chatMsg.type == TypeMessage.IMAGE
@@ -506,8 +508,8 @@ class chatScreenState extends State<chatScreen> {
                                   right: 10.0),
                             )
                           : Container(
-                              child: Image.asset(
-                                'assets/images/${chatMsg.content}.gif',
+                              child: Image.network(
+                                chatMsg.content,
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
@@ -521,7 +523,7 @@ class chatScreenState extends State<chatScreen> {
               isLastMessageLeft(index)
                   ? Container(
                       child: Text(
-                        chatMsg.timeSent,
+                        chatMsg.timeSent.split(".")[0],
                         style: TextStyle(color: Colors.grey.shade200),
                       ),
                     )
