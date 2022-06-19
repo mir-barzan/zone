@@ -23,17 +23,29 @@ class mainPage extends StatefulWidget {
 }
 
 class _mainPageState extends State<mainPage> {
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   int currentTab = 0;
-  final List<Widget> screens = [
-    dashboard(),
-    searchScreen(),
-    postScreen(),
-    personalOffersScreen(),
-    profileScreen(
-      uid: FirebaseAuth.instance.currentUser!.uid,
-      isVisiting: false,
-    )
-  ];
+
+  var CurrentUserData = {};
+
+  getData() async {
+    try {
+      var snap2 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      CurrentUserData = snap2.data()!;
+
+      setState(() {});
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = dashboard();
@@ -42,6 +54,16 @@ class _mainPageState extends State<mainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> screens = [
+      const dashboard(),
+      const searchScreen(),
+      const postScreen(),
+      const personalOffersScreen(),
+      profileScreen(
+        uid: FirebaseAuth.instance.currentUser!.uid,
+        isVisiting: false,
+      )
+    ];
     return Scaffold(
       body: IndexedStack(
         index: currentTab,

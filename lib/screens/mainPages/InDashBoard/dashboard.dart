@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/screens/mainPages/InDashBoard/chats/chat.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chatScreen.dart';
 import 'package:zone/screens/mainPages/InDashBoard/myOffers.dart';
 import '../../../widgets/AdditionalWidgets.dart';
@@ -165,7 +166,7 @@ class _dashboardState extends State<dashboard> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              // navigateTo(context, chatScreen());
+                              navigateTo(context, mainChatsScreen());
                             },
                             child: Stack(
                               children: [

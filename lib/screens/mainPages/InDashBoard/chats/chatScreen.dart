@@ -21,11 +21,14 @@ class chatScreen extends StatefulWidget {
 
   final peerName;
 
+  final userAvatar;
+
   const chatScreen(
       {Key? key,
       required this.peerAvatar,
       required this.peerId,
-      required this.peerName})
+      required this.peerName,
+      required this.userAvatar})
       : super(key: key);
 
   @override
@@ -186,9 +189,9 @@ class chatScreenState extends State<chatScreen> {
           (Route<dynamic> route) => false);
     }
     if (currentUserId.hashCode <= peerId.hashCode) {
-      groupChatId = '$currentUserId-$peerId';
+      groupChatId = '$currentUserId';
     } else {
-      groupChatId = '$peerId-$currentUserId';
+      groupChatId = '$currentUserId';
     }
 
     chatProvider.updateDataFirestore('users', 'uid', {'recevierId': peerId});
@@ -221,19 +224,22 @@ class chatScreenState extends State<chatScreen> {
           elevation: 0,
           actions: [],
         ),
-        body: WillPopScope(
-          onWillPop: onBackPress,
-          child: Stack(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  buildListMessage(),
-                  Input(),
-                ],
-              ),
-              buildLoading(),
-            ],
+        body: Container(
+          margin: EdgeInsets.all(8),
+          child: WillPopScope(
+            onWillPop: onBackPress,
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    buildListMessage(),
+                    Input(),
+                  ],
+                ),
+                buildLoading(),
+              ],
+            ),
           ),
         ));
   }
@@ -551,7 +557,7 @@ class chatScreenState extends State<chatScreen> {
                     return ListView.builder(
                       padding: EdgeInsets.all(10.0),
                       itemBuilder: (context, index) =>
-                          buildItem(index, snapshot.data?.docs[index]),
+                          buildItem(index, snapshot.data!.docs[index]),
                       itemCount: snapshot.data!.docs.length,
                       reverse: true,
                       controller: listScrollController,

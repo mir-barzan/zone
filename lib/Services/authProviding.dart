@@ -88,6 +88,8 @@ class AuthProvider extends ChangeNotifier {
               "no skill",
               "no skill"
             ],
+            "activeContracts": [],
+            "completedContracts": [],
             "soldOffers": "0",
             "username":
                 firebaseUser.displayName! + RandomStr.replaceAll(" ", ""),

@@ -84,13 +84,13 @@ class FireAuth {
 
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
-        bool verified = _auth.currentUser!.emailVerified;
+
         print("########\n#######\n#######");
-        print(verified);
+
         print("########\n#######\n#######");
       }
     } catch (err) {
-      Fluttertoast.showToast(msg: err.toString());
+      Fluttertoast.showToast(msg: 'Error Login');
     }
   }
 
@@ -170,6 +170,8 @@ class FireAuth {
           uid: cred.user!.uid,
           username: fname + RandomStr,
           dateCreated: DateTime.now().toString(),
+          activeContracts: [],
+          completedContracts: [],
         );
         await _firestore.collection('users').doc(cred.user!.uid).set(
           user.toJson(),

@@ -40,21 +40,23 @@ class _login1State extends State<login1> {
       setState(() {
         _isLoading = true;
       });
-      await FireAuth().signInUser(context,
+     String result = await FireAuth().signInUser(context,
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
 
-      Fluttertoast.showToast(msg: "Logged In successfully");
       navigateToWithoutBack(
           context,
-          mainPage(
+          const mainPage(
             isFromSettings: false,
           ));
       setState(() {
         _isLoading = false;
       });
+      Fluttertoast.showToast(msg: "Logged In successfully");
     } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+      Fluttertoast.showToast(
+          msg:
+              "Check the following\n1.Verify your email address\n2.Wrong Credentials was entered");
       setState(() {
         _isLoading = false;
       });

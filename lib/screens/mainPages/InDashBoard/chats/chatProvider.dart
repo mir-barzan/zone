@@ -51,25 +51,27 @@ class ChatProvider {
       'timeSent': DateTime.now().toString(),
       'senderId': senderId,
       'recieverId': recieverId,
+      'stackHolders': [senderId, recieverId],
       'type': type,
     });
-    ChatMsg chatMsg = ChatMsg(
-      content: content,
-      timeSent: DateTime.now().toString(),
-      senderId: senderId,
-      recieverId: recieverId,
-      type: type,
-    );
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      await transaction.set(
-        FirebaseFirestore.instance
-            .collection('chat')
-            .doc(groupChatId)
-            .collection('messages')
-            .doc(DateTime.now().toString()),
-        chatMsg.toJson(),
-      );
-    });
+    // ChatMsg chatMsg = ChatMsg(
+    //   content: content,
+    //   timeSent: DateTime.now().toString(),
+    //   senderId: senderId,
+    //   recieverId: recieverId,
+    //   type: type,
+    //     stackHolders:[senderId,recieverId]
+    // );
+    // FirebaseFirestore.instance.runTransaction((transaction) async {
+    //   await transaction.set(
+    //     FirebaseFirestore.instance
+    //         .collection('chat')
+    //         .doc(groupChatId)
+    //         .collection('messages')
+    //         .doc(DateTime.now().toString()),
+    //     chatMsg.toJson(),
+    //   );
+    // });
   }
 }
 

@@ -37,16 +37,16 @@ void main() async {
   await sharedprefs.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) async {
-    // ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
-    //       backgroundColor: primaryColor,
-    //       body: Center(
-    //           child: Container(
-    //               height: 50,
-    //               width: 50,
-    //               child: CircularProgressIndicator(
-    //                 color: Colors.green,
-    //               ))),
-    //     );
+    ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
+          backgroundColor: primaryColor,
+          body: Center(
+              child: Container(
+                  height: 50,
+                  width: 50,
+                  child: CircularProgressIndicator(
+                    color: Colors.green,
+                  ))),
+        );
     SharedPreferences prefs = await SharedPreferences.getInstance();
     runApp(new MyApp(prefs: prefs));
   });

@@ -40,15 +40,16 @@ class ChatMsg {
   String timeSent;
   String senderId;
   String recieverId;
+  List stackHolders;
   int type;
 
-  ChatMsg({
-    required this.content,
-    required this.timeSent,
-    required this.senderId,
-    required this.recieverId,
-    required this.type,
-  });
+  ChatMsg(
+      {required this.content,
+      required this.timeSent,
+      required this.senderId,
+      required this.recieverId,
+      required this.type,
+      required this.stackHolders});
 
   Map<String, dynamic> toJson() {
     return {
@@ -57,6 +58,7 @@ class ChatMsg {
       "senderId": this.senderId,
       "recieverId": this.recieverId,
       "type": this.type,
+      "stackHolders": this.stackHolders
     };
   }
 
@@ -66,12 +68,14 @@ class ChatMsg {
     String senderId = doc.get('senderId');
     String recieverId = doc.get('recieverId');
     int type = doc.get('type');
+    List stackHolders = doc.get('stackHolders');
 
     return ChatMsg(
         content: content,
         timeSent: timeSent,
         senderId: senderId,
         recieverId: recieverId,
-        type: type);
+        type: type,
+        stackHolders: stackHolders);
   }
 }
