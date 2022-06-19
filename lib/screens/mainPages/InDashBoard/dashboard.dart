@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/paymentProcess/pzcoin.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chat.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chatScreen.dart';
 import 'package:zone/screens/mainPages/InDashBoard/myOffers.dart';
@@ -51,32 +52,37 @@ class _dashboardState extends State<dashboard> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    height: 45,
-                    width: 100,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(35),
-                        color: primaryColor),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FittedBox(
-                            child: Icon(
-                          Icons.monetization_on,
-                          color: offersColor,
-                          size: 30,
-                        )),
-                        FittedBox(
-                          child: Text(
-                            "  0.0 ",
-                            style: new TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: offersColor,
-                                fontSize: 30.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      navigateTo(context, pzcoin());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      height: 45,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(35),
+                          color: primaryColor),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FittedBox(
+                              child: Icon(
+                            Icons.monetization_on,
+                            color: offersColor,
+                            size: 30,
+                          )),
+                          FittedBox(
+                            child: Text(
+                              "  0.0 ",
+                              style: new TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: offersColor,
+                                  fontSize: 30.0),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -114,6 +114,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               );
             }
           }
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(

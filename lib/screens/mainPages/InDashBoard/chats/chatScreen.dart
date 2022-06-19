@@ -56,7 +56,7 @@ class chatScreenState extends State<chatScreen> {
 
   int _limit = 20;
   int _limitIncrement = 20;
-  String groupChatId = "";
+  String groupChatId = " ";
 
   File? imageFile;
   File? unkownFile;
