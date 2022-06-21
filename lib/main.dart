@@ -7,12 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zone/Services/authProviding.dart';
 import 'package:zone/Services/changeScreenProvider.dart';
 import 'package:zone/Services/sharedPrefs.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/appersMain.dart';
+import 'package:zone/paymentProcess/PurchaseApi.dart';
 import 'package:zone/screens/auth/login.dart';
 import 'package:zone/screens/auth/listner.dart';
 import 'package:zone/screens/auth/login1.dart';
@@ -33,20 +35,21 @@ void main() async {
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
   );
+  await PurchaseApi.init();
 
   await sharedprefs.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) async {
-    ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
-          backgroundColor: primaryColor,
-          body: Center(
-              child: Container(
-                  height: 50,
-                  width: 50,
-                  child: CircularProgressIndicator(
-                    color: Colors.green,
-                  ))),
-        );
+    // ErrorWidget.builder = (FlutterErrorDetails details) => Scaffold(
+    //       backgroundColor: primaryColor,
+    //       body: Center(
+    //           child: Container(
+    //               height: 50,
+    //               width: 50,
+    //               child: CircularProgressIndicator(
+    //                 color: Colors.green,
+    //               ))),
+    //     );
     SharedPreferences prefs = await SharedPreferences.getInstance();
     runApp(new MyApp(prefs: prefs));
   });

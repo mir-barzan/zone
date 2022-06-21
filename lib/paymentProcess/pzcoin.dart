@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:zone/paymentProcess/paymentModel.dart';
 
 import '../additional/colors.dart';
+import './PurchaseApi.dart';
 
 class pzcoin extends StatefulWidget {
   const pzcoin({Key? key}) : super(key: key);
@@ -13,17 +15,30 @@ class pzcoin extends StatefulWidget {
 }
 
 class _pzcoinState extends State<pzcoin> {
+  void initState() {
+    super.initState();
+  }
+
+  List<PaymentTile> coinOffers = [
+    PaymentTile("The Zoin Coin", "10", "5.99", '5', '5coins', false),
+    PaymentTile("The Zoin Coin", "20", "12.99", '10', '10coins', false),
+    PaymentTile("The Zoin Coin", "50", "24.99", '20', '20coins', false),
+    PaymentTile("The Zoin Coin", "150", "109.99", '100', '100coins', false),
+    PaymentTile("The Zoin Coin", "300", "209.99", '200', '200coins', true),
+    PaymentTile("The Zoin test Coin", "1", "1", '1', '1coins', false),
+  ];
+  List<String> offersIDs = [
+    '5coins',
+    '10coins',
+    '20coins',
+    '100coins',
+    '200coins',
+    '1coins'
+  ];
+
+  @override
   @override
   Widget build(BuildContext context) {
-    List<PaymentTile> coinOffers = [
-      PaymentTile("The Zoin Coin", "10", "5.99", '5', '5coins', false),
-      PaymentTile("The Zoin Coin", "20", "12.99", '10', '10coins', false),
-      PaymentTile("The Zoin Coin", "50", "24.99", '20', '20coins', false),
-      PaymentTile("The Zoin Coin", "150", "109.99", '100', '100coins', false),
-      PaymentTile("The Zoin Coin", "300", "209.99", '200', '200coins', true),
-      PaymentTile("The Zoin test Coin", "1", "1", '1', '1coins', true),
-    ];
-    List<PaymentTile> selectedOffer = [];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -37,22 +52,23 @@ class _pzcoinState extends State<pzcoin> {
         elevation: 0,
         actions: [],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, index) {
-            return paymentTiles(
-                coinOffers[index].label,
-                coinOffers[index].oldPrice,
-                coinOffers[index].offeredPrice,
-                coinOffers[index].coins,
-                coinOffers[index].IAPID,
-                coinOffers[index].bestOffer,
-                index);
-          },
-          shrinkWrap: true,
-          itemCount: coinOffers.length,
-        ),
+      body: ListView.builder(
+        itemBuilder: (BuildContext context, index) {
+          return coinOffers.length == 0
+              ? Center(
+                  child: Text('There is no offers at the moment'),
+                )
+              : paymentTiles(
+                  coinOffers[index].label,
+                  coinOffers[index].oldPrice,
+                  coinOffers[index].offeredPrice,
+                  coinOffers[index].coins,
+                  coinOffers[index].IAPID,
+                  coinOffers[index].bestOffer,
+                  index);
+        },
+        shrinkWrap: true,
+        itemCount: coinOffers.length,
       ),
     );
   }
@@ -135,6 +151,9 @@ class _pzcoinState extends State<pzcoin> {
               ),
             ),
           ),
+          onTap: () async {
+            await PurchaseApi.PurchaseProduct(IAPID);
+          },
         ),
       ),
       bestOffer == true
@@ -146,7 +165,7 @@ class _pzcoinState extends State<pzcoin> {
                 foreground: Paint()
                   ..style = PaintingStyle.fill
                   ..strokeWidth = 3
-                  ..color = Colors.red!,
+                  ..color = Colors.red,
               ),
             )
           : SizedBox.shrink()

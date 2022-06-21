@@ -8,9 +8,9 @@ import 'package:zone/screens/mainPages/addOfferMain/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/addProjectScreen.dart';
 import 'package:zone/screens/mainPages/InDashBoard/dashboard.dart';
 import 'package:zone/screens/mainPages/OffersScreen.dart';
+import 'package:zone/screens/mainPages/leaderboard/leaderboard.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
-import 'package:zone/screens/mainPages/optimizedSearch/oSearchScreen.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
 class mainPage extends StatefulWidget {
@@ -56,7 +56,7 @@ class _mainPageState extends State<mainPage> {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       const dashboard(),
-      const searchScreen(),
+      const leaderBoard(),
       const postScreen(),
       const personalOffersScreen(),
       profileScreen(
@@ -110,11 +110,9 @@ class _mainPageState extends State<mainPage> {
                               : Colors.grey,
                         ),
                         Text(
-                          'Dashboard',
+                          'Home',
                           style: TextStyle(
-                            color: currentTab == 0
-                                ? secColor
-                                : Colors.grey,
+                            color: currentTab == 0 ? secColor : Colors.grey,
                           ),
                         )
                       ],
@@ -124,7 +122,7 @@ class _mainPageState extends State<mainPage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = searchScreen();
+                        currentScreen = leaderBoard();
                         currentTab = 1;
                       });
                     },
@@ -132,11 +130,11 @@ class _mainPageState extends State<mainPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.select_all,
+                          Icons.flag,
                           color: currentTab == 1 ? secColor : Colors.grey,
                         ),
                         Text(
-                          'Search',
+                          'Leader',
                           style: TextStyle(
                             color: currentTab == 1 ? secColor : Colors.grey,
                           ),

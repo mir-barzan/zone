@@ -217,12 +217,7 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                           Center(
                               child: Wrap(
                             children: [
-                              Text('You have reached the end. ',
-                                  style: TextStyle(fontSize: 14)),
-                              Icon(
-                                Icons.check_circle,
-                                color: offersColor,
-                              )
+                              Text(' ', style: TextStyle(fontSize: 14)),
                             ],
                           ))
                         ] +
