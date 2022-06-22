@@ -12,11 +12,12 @@ class leaderBoard extends StatefulWidget {
 }
 
 class _leaderBoardState extends State<leaderBoard> {
-  final db = FirebaseFirestore.instance;
-  CollectionReference recipes = FirebaseFirestore.instance.collection('users');
-
+  @override
   @override
   Widget build(BuildContext context) {
+    final db = FirebaseFirestore.instance;
+    CollectionReference recipes =
+        FirebaseFirestore.instance.collection('users');
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: AppBar(
@@ -50,6 +51,7 @@ class _leaderBoardState extends State<leaderBoard> {
             }
 
             return ListView.builder(
+              controller: ScrollController(),
               reverse: false,
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {

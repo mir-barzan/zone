@@ -9,6 +9,12 @@ class PurchaseApi {
     await Purchases.setup(_apiKey);
   }
 
+  static Future<List<Offering>> fetchOfferById(List<String> ids) async {
+    final offers = await fetchOffers();
+
+    return offers.where((offer) => ids.contains(offer.identifier)).toList();
+  }
+
   static Future<List<Offering>> fetchOffers() async {
     try {
       final offerings = await Purchases.getOfferings();
@@ -24,6 +30,7 @@ class PurchaseApi {
     bool result = false;
     try {
       await Purchases.purchaseProduct(ProductName);
+
       result = true;
     } catch (e) {
       return false;

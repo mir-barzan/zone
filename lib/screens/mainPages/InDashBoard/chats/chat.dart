@@ -88,6 +88,7 @@ class _mainChatsScreenState extends State<mainChatsScreen> {
                 List x = userDocument!['activeContracts'];
 
                 return ListView.builder(
+                  controller: ScrollController(),
                   itemCount: x.length,
                   itemBuilder: (context, index) {
                     getData(userDocument!['activeContracts'][index]);
@@ -99,62 +100,60 @@ class _mainChatsScreenState extends State<mainChatsScreen> {
                                 margin: EdgeInsets.only(
                                     top: MediaQuery.of(context).size.height *
                                         0.4),
-                                child: Center(
-                                  child: Flexible(
-                                      child: Text(
-                                    "You don't have any open chats at the moment",
-                                    style: TextStyle(color: Colors.grey),
-                                  )),
-                                ),
-                              ),
-                              DetailsInformation(
-                                  'Chats will open automatically with the seller when you buy an offer')
-                            ],
-                          )
+                          child: Center(
+                            child: Flexible(
+                                child: Text(
+                                  "You don't have any open chats at the moment",
+                                  style: TextStyle(color: Colors.grey),
+                                )),
+                          ),
+                        ),
+                        DetailsInformation(
+                            'Chats will open automatically with the seller when you buy an offer')
+                      ],
+                    )
                         : Container(
-                            margin: EdgeInsets.only(top: 5),
-                            decoration: BoxDecoration(
-                                color: Colors.grey.shade200.withOpacity(0.8)),
-                            child: ListTile(
-                              onTap: () {
-                                navigateTo(
-                                    context,
-                                    chatScreen(
-                                        peerAvatar:
-                                            sellerData['profilePhotoUrl'],
-                                        peerId: sellerData['uid'],
-                                        peerName: sellerData['fname'] +
-                                            " " +
-                                            sellerData['lname'],
-                                        userAvatar:
-                                            userDocument['profilePhotoUrl']));
-                              },
-                              contentPadding: EdgeInsets.all(8),
-                              leading: CircleAvatar(
-                                backgroundColor: primaryColor,
-                                backgroundImage:
-                                    NetworkImage(sellerData['profilePhotoUrl']),
-                                radius: 30,
-                              ),
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      '${sellerData['fname']} ${sellerData['lname']}',
-                                      style: TextStyle(
-                                          fontSize: 24, color: offersColor),
-                                    ),
+                      margin: EdgeInsets.only(top: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200.withOpacity(0.8)),
+                      child: ListTile(
+                        onTap: () {
+                          navigateTo(
+                              context,
+                              chatScreen(
+                                  peerAvatar:
+                                  sellerData['profilePhotoUrl'],
+                                  peerId: sellerData['uid'],
+                                  peerName: sellerData['fname'] +
+                                      " " +
+                                      sellerData['lname'],
+                                  userAvatar:
+                                  userDocument['profilePhotoUrl']));
+                        },
+                        contentPadding: EdgeInsets.all(8),
+                        leading: CircleAvatar(
+                          backgroundColor: primaryColor,
+                          backgroundImage:
+                          NetworkImage(sellerData['profilePhotoUrl']),
+                          radius: 30,
+                        ),
+                        title: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceEvenly,
+                          children: [
+                                  Text(
+                                    '${sellerData['fname']} ${sellerData['lname']}',
+                                    style: TextStyle(
+                                        fontSize: 24, color: offersColor),
                                   ),
                                   Icon(
                                     Icons.send,
                                     color: offersColor,
                                   )
                                 ],
-                              ),
-                            ),
-                          );
+                        ),
+                      ),
+                    );
                   },
                 );
               }),

@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:zone/paymentProcess/paymentModel.dart';
 
 import '../additional/colors.dart';
@@ -17,7 +20,34 @@ class pzcoin extends StatefulWidget {
 class _pzcoinState extends State<pzcoin> {
   void initState() {
     super.initState();
+    // final Stream purchaseUpdated =
+    //     InAppPurchase.instance.purchaseStream;
+    //  purchaseUpdated.listen((purchaseDetailsList) {
+    //   _listenToPurchaseUpdated(purchaseDetailsList);
+    // }, onDone: () {
+    // }, onError: (error) {
+    //   // handle error here.
+    // });
+    // payments();
   }
+
+  // void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+  //   purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+  //     if (purchaseDetails.status == PurchaseStatus.pending) {
+  //
+  //     } else {
+  //       if (purchaseDetails.status == PurchaseStatus.error) {
+  //
+  //       } else if (purchaseDetails.status == PurchaseStatus.purchased ||
+  //           purchaseDetails.status == PurchaseStatus.restored) {
+  //
+  //       }
+  //     }
+  //     if (purchaseDetails.pendingCompletePurchase) {
+  //       await InAppPurchase.instance
+  //           .completePurchase(purchaseDetails);
+  //     }
+  //   });}
 
   List<PaymentTile> coinOffers = [
     PaymentTile("The Zoin Coin", "10", "5.99", '5', '5coins', false),
@@ -27,32 +57,56 @@ class _pzcoinState extends State<pzcoin> {
     PaymentTile("The Zoin Coin", "300", "209.99", '200', '200coins', true),
     PaymentTile("The Zoin test Coin", "1", "1", '1', '1coins', false),
   ];
-  List<String> offersIDs = [
+  List<ProductDetails> products = [];
+
+  payments() async {
+    await InAppPurchase.instance.isAvailable();
+
+    final ProductDetailsResponse response =
+        await InAppPurchase.instance.queryProductDetails(offersIDs);
+    if (response.notFoundIDs.isNotEmpty) {
+      // Handle the error.
+    }
+    products = response.productDetails;
+  }
+
+  buy(x) {
+    final ProductDetails productDetails =
+        products[x]; // Saved earlier from queryProductDetails().
+    final PurchaseParam purchaseParam =
+        PurchaseParam(productDetails: productDetails);
+
+    InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
+
+// From here the purchase flow will be handled by the underlying store.
+// Updates will be delivered to the `InAppPurchase.instance.purchaseStream`.
+  }
+
+  Set<String> offersIDs = {
     '5coins',
     '10coins',
     '20coins',
     '100coins',
     '200coins',
-    '1coins'
-  ];
+    '1coins',
+  };
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-            child: SvgPicture.asset(
+        title: SvgPicture.asset(
           'assets/images/zoneLogo.svg',
           color: primaryColor,
           width: 180,
-        )),
+        ),
         backgroundColor: offersColor,
         elevation: 0,
         actions: [],
       ),
       body: ListView.builder(
+        controller: ScrollController(),
         itemBuilder: (BuildContext context, index) {
           return coinOffers.length == 0
               ? Center(
@@ -64,8 +118,8 @@ class _pzcoinState extends State<pzcoin> {
                   coinOffers[index].offeredPrice,
                   coinOffers[index].coins,
                   coinOffers[index].IAPID,
-                  coinOffers[index].bestOffer,
-                  index);
+              coinOffers[index].bestOffer,
+              index);
         },
         shrinkWrap: true,
         itemCount: coinOffers.length,
@@ -100,59 +154,62 @@ class _pzcoinState extends State<pzcoin> {
             decoration: BoxDecoration(
                 color: primaryColor, borderRadius: BorderRadius.circular(30)),
           ),
-          title: Expanded(
-            child: Container(
-              margin: EdgeInsets.only(bottom: 15, top: 15),
-              decoration: BoxDecoration(
-                  color: primaryColor, borderRadius: BorderRadius.circular(30)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      '\$${oldPrice}',
-                      style: TextStyle(
-                          color: Colors.red,
-                          decoration: TextDecoration.lineThrough,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24),
-                    ),
-                  ),
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  Text(
-                    '\$${offeredPrice}',
+          title: Container(
+            margin: EdgeInsets.only(bottom: 15, top: 15),
+            decoration: BoxDecoration(
+                color: primaryColor, borderRadius: BorderRadius.circular(30)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    '\$${oldPrice}',
                     style: TextStyle(
-                        color: offersColor,
+                        color: Colors.red,
+                        decoration: TextDecoration.lineThrough,
                         fontWeight: FontWeight.bold,
                         fontSize: 24),
                   ),
+                ),
+                // Container(
+                //   width: 30,
+                // ),
+                Text(
+                  '\$${offeredPrice}',
+                  style: TextStyle(
+                      color: offersColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24),
+                ),
 
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Buy',
-                          style: TextStyle(color: primaryColor, fontSize: 30),
-                        ),
-                        Icon(
-                          Icons.shopping_cart,
-                          color: primaryColor,
-                        )
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                        color: offersColor,
-                        borderRadius: BorderRadius.circular(30)),
-                  )
-                ],
-              ),
+                Container(
+                  padding: EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Buy',
+                        style: TextStyle(color: primaryColor, fontSize: 30),
+                      ),
+                      Icon(
+                        Icons.shopping_cart,
+                        color: primaryColor,
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                      color: offersColor,
+                      borderRadius: BorderRadius.circular(30)),
+                )
+              ],
             ),
           ),
-          onTap: () async {
-            await PurchaseApi.PurchaseProduct(IAPID);
+          onTap: () {
+            try {
+              // buy(index);
+
+            } catch (e) {
+              Fluttertoast.showToast(msg: e.toString());
+            }
           },
         ),
       ),

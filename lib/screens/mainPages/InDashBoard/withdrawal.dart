@@ -47,12 +47,11 @@ class _withdrawState extends State<withdraw> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-            child: SvgPicture.asset(
+        title: SvgPicture.asset(
           'assets/images/zoneLogo.svg',
           color: primaryColor,
           width: 180,
-        )),
+        ),
         backgroundColor: offersColor,
         elevation: 0,
         actions: [],

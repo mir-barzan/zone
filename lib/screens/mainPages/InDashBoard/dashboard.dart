@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -89,12 +90,11 @@ class _dashboardState extends State<dashboard> {
             },
           ),
           centerTitle: true,
-          title: Expanded(
-              child: SvgPicture.asset(
-                'assets/images/zoneLogo.svg',
-                color: primaryColor,
-                width: 180,
-              )),
+          title: SvgPicture.asset(
+            'assets/images/zoneLogo.svg',
+            color: primaryColor,
+            width: 180,
+          ),
           backgroundColor: offersColor,
           elevation: 0,
           actions: [
@@ -192,7 +192,9 @@ class _dashboardState extends State<dashboard> {
                     builder: (BuildContext context) {
                       return Container(
                           clipBehavior: Clip.hardEdge,
-                          width: MediaQuery.of(context).size.width,
+                          width: kIsWeb
+                              ? MediaQuery.of(context).size.width * 0.5
+                              : MediaQuery.of(context).size.width,
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
@@ -201,6 +203,7 @@ class _dashboardState extends State<dashboard> {
                               clipBehavior: Clip.hardEdge,
                               child: Image.network(
                                 i,
+                                // fit: BoxFit.contain,
                                 fit: BoxFit.cover,
                               )));
                     },
@@ -276,8 +279,12 @@ class _dashboardState extends State<dashboard> {
       child: Container(
         margin: EdgeInsets.only(top: 30, bottom: 5, right: 5, left: 5),
         padding: EdgeInsets.all(5),
-        width: MediaQuery.of(context).size.width * 0.35,
-        height: MediaQuery.of(context).size.width * 0.22,
+        width: kIsWeb
+            ? MediaQuery.of(context).size.width * 0.18
+            : MediaQuery.of(context).size.width * 0.35,
+        height: kIsWeb
+            ? MediaQuery.of(context).size.width * 0.11
+            : MediaQuery.of(context).size.width * 0.22,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: offersColor,

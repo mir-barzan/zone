@@ -47,12 +47,11 @@ class _porfolioProfileState extends State<porfolioProfile> {
       backgroundColor: primaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-            child: SvgPicture.asset(
+        title: SvgPicture.asset(
           'assets/images/zoneLogo.svg',
           color: primaryColor,
           width: 180,
-        )),
+        ),
         backgroundColor: offersColor,
         elevation: 0,
       ),
@@ -72,28 +71,35 @@ class _porfolioProfileState extends State<porfolioProfile> {
                     }
                   },
                 ),
-                Expanded(
-                  child: Container(
-                    child: Stack(alignment: Alignment.bottomRight, children: [
-                      Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(color: offersColor, width: 3)),
-                          height: 200,
-                          width: double.infinity,
-                          child: imageList.isNotEmpty
-                              ? Image.network(
-                                  imageList.elementAt(index),
-                                  fit: BoxFit.cover,
-                                )
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.image),
-                                    Text('no images')
-                                  ],
-                                )),
-                    ]),
-                  ),
+                Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        child:
+                            Stack(alignment: Alignment.bottomRight, children: [
+                          Container(
+                              decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: offersColor, width: 3)),
+                              height: 200,
+                              width: double.infinity,
+                              child: imageList.isNotEmpty
+                                  ? Image.network(
+                                      imageList.elementAt(index),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.image),
+                                        Text('no images')
+                                      ],
+                                    )),
+                        ]),
+                      ),
+                    ),
+                  ],
                 ),
                 GestureDetector(
                   child: Icon(Icons.arrow_forward_ios),

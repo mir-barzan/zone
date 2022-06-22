@@ -118,12 +118,11 @@ class _profileScreenState extends State<profileScreen> {
               : null,
           elevation: 0,
           backgroundColor: primaryColor,
-          title: Expanded(
-              child: SvgPicture.asset(
+          title: SvgPicture.asset(
             'assets/images/zoneLogo.svg',
             color: offersColor,
             width: 180,
-          )),
+          ),
           centerTitle: true,
           actions: [
             Padding(
@@ -169,113 +168,171 @@ class _profileScreenState extends State<profileScreen> {
                 height: 10.0,
               ),
               Container(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
                     child: Stack(
-                            clipBehavior: Clip.none,
-                            alignment: Alignment.center,
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          height: 350,
+                          width: width,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              ClipRect(
-                                child: Container(
-                                  height: 350,
-                                  width: width,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                              Container(
+                                width: 5,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    border: Border.all(color: primaryColor)),
+                              ),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text(
+                                          '${userData['fname']} ${userData['lname']}',
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                              color: offersColor),
+                                        ),
+                                        Text(
+                                          ' @${userData['username']}',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: offersColor),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            FittedBox(
+                                              child: rating(
+                                                  double.parse(userRating),
+                                                  true,
+                                                  20),
+                                            ),
+                                            Text(
+                                              '(${userData['ratingCounter']})',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                    ),
+                                  ],
+                                ),
+                                height: 80,
+                                decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    border: Border.all(color: primaryColor)),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
                                     children: [
                                       Container(
-                                        width: 5,
-                                        height: 120,
-                                        decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            border: Border.all(
-                                                color: primaryColor)),
-                                      ),
-                                      Container(
-                                        child: Expanded(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    '${userData['fname']} ${userData['lname']}',
-                                                    style: TextStyle(
-                                                        fontSize: 24,
-                                                        fontWeight:
-                                                        FontWeight.bold,
-                                                        color: offersColor),
-                                                  ),
-                                                  Text(
-                                                    ' @${userData['username']}',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                        FontWeight.bold,
-                                                        color: offersColor),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                    children: [
-                                                      FittedBox(
-                                                        child: rating(
-                                                            double.parse(
-                                                                userRating),
-                                                            true,
-                                                            20),
-                                                      ),
-                                                      Text(
-                                                        '(${userData['ratingCounter']})',
-                                                        style: TextStyle(
-                                                            color: Colors.grey),
-                                                      )
-                                                    ],
-                                                  )
-                                                ],
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                        padding: const EdgeInsets.only(
+                                            left: 8,
+                                            bottom: 8,
+                                            top: 15,
+                                            right: 8),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 75,
+                                              child: FittedBox(
+                                                child: Text(
+                                                  "Sold Offers",
+                                                  style: new TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: primaryColor,
+                                                      letterSpacing: 1),
+                                                ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            Container(
+                                              height: 5,
+                                            ),
+                                            CircularPercentIndicator(
+                                              circularStrokeCap:
+                                                  CircularStrokeCap.butt,
+                                              backgroundColor:
+                                                  oldRankPercentColor(),
+                                              progressColor: rankPercentColor(),
+                                              radius: 36.0,
+                                              animation: true,
+                                              animationDuration: 2000,
+                                              lineWidth: 6.0,
+                                              percent: 55 / 100,
+                                              center: Text(
+                                                "0",
+                                                style: new TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: primaryColor,
+                                                    fontSize: 15.0),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        height: 80,
-                                        decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            border: Border.all(
-                                                color: primaryColor)),
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Container(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8,
-                                                    bottom: 8,
-                                                    top: 15,
-                                                    right: 8),
-                                                child: Column(
+                                    ],
+                                  ),
+                                  Container(
+                                    width: 5,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        border:
+                                            Border.all(color: primaryColor)),
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 8,
+                                            bottom: 8,
+                                            top: 15,
+                                            right: 8),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Column(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: [
                                                     Container(
-                                                      width: 75,
+                                                      width: 40,
                                                       child: FittedBox(
                                                         child: Text(
-                                                          "Sold Offers",
+                                                          "Rank",
                                                           style: new TextStyle(
                                                               fontWeight:
-                                                              FontWeight
-                                                                  .bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               color:
-                                                              primaryColor,
-                                                              letterSpacing: 1),
+                                                                  primaryColor,
+                                                              letterSpacing: 1,
+                                                              fontSize: 18.0),
                                                         ),
                                                       ),
                                                     ),
@@ -284,153 +341,73 @@ class _profileScreenState extends State<profileScreen> {
                                                     ),
                                                     CircularPercentIndicator(
                                                       circularStrokeCap:
-                                                      CircularStrokeCap
-                                                          .butt,
+                                                          CircularStrokeCap
+                                                              .butt,
                                                       backgroundColor:
-                                                      oldRankPercentColor(),
+                                                          oldRankPercentColor(),
                                                       progressColor:
-                                                      rankPercentColor(),
+                                                          rankPercentColor(),
                                                       radius: 36.0,
                                                       animation: true,
                                                       animationDuration: 2000,
                                                       lineWidth: 6.0,
-                                                      percent: 55 / 100,
+                                                      percent: 100 / 100,
                                                       center: Text(
-                                                        "0",
+                                                        rank.toUpperCase(),
                                                         style: new TextStyle(
                                                             fontWeight:
-                                                            FontWeight.bold,
+                                                                FontWeight.bold,
                                                             color: primaryColor,
                                                             fontSize: 15.0),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                            width: 5,
-                                            height: 150,
-                                            decoration: BoxDecoration(
-                                                color: primaryColor,
-                                                border: Border.all(
-                                                    color: primaryColor)),
-                                          ),
-                                          Column(
-                                            children: [
-                                              Container(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8,
-                                                    bottom: 8,
-                                                    top: 15,
-                                                    right: 8),
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                      children: [
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                          children: [
-                                                            Container(
-                                                              width: 40,
-                                                              child: FittedBox(
-                                                                child: Text(
-                                                                  "Rank",
-                                                                  style: new TextStyle(
-                                                                      fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                      color:
-                                                                      primaryColor,
-                                                                      letterSpacing:
-                                                                      1,
-                                                                      fontSize:
-                                                                      18.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              height: 5,
-                                                            ),
-                                                            CircularPercentIndicator(
-                                                              circularStrokeCap:
-                                                              CircularStrokeCap
-                                                                  .butt,
-                                                              backgroundColor:
-                                                              oldRankPercentColor(),
-                                                              progressColor:
-                                                              rankPercentColor(),
-                                                              radius: 36.0,
-                                                              animation: true,
-                                                              animationDuration:
-                                                              2000,
-                                                              lineWidth: 6.0,
-                                                              percent:
-                                                              100 / 100,
-                                                              center: Text(
-                                                                rank.toUpperCase(),
-                                                                style: new TextStyle(
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                    color:
-                                                                    primaryColor,
-                                                                    fontSize:
-                                                                    15.0),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(40.0),
-                                        topLeft: Radius.circular(40.0),
-                                        bottomRight: Radius.circular(40.0),
-                                        bottomLeft: Radius.circular(40.0)),
-                                    color: secColor,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 280,
-                                child: CircleAvatar(
-                                  radius: 54,
-                                  backgroundColor: primaryColor,
-                                  child: CircleAvatar(
-                                    backgroundColor: primaryColor,
-                                    backgroundImage: NetworkImage(
-                                        userData['profilePhotoUrl']),
-                                    radius: 50,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                  bottom: 290, left: 225, child: checkRank()),
-                              Positioned(
-                                  bottom: 290,
-                                  right: 225,
-                                  child: badge("verified.svg", 90, 90, false)),
+                                ],
+                              )
                             ],
                           ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(40.0),
+                                topLeft: Radius.circular(40.0),
+                                bottomRight: Radius.circular(40.0),
+                                bottomLeft: Radius.circular(40.0)),
+                            color: secColor,
+                          ),
                         ),
-                      ),
+                        Positioned(
+                          bottom: 280,
+                          child: CircleAvatar(
+                            radius: 54,
+                            backgroundColor: primaryColor,
+                            child: CircleAvatar(
+                              backgroundColor: primaryColor,
+                              backgroundImage:
+                                  NetworkImage(userData['profilePhotoUrl']),
+                              radius: 50,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                            bottom: 290,
+                            left: MediaQuery.of(context).size.width * 0.61,
+                            child: checkRank()),
+                        Positioned(
+                            bottom: 290,
+                            right: MediaQuery.of(context).size.width * 0.61,
+                            child: badge("verified.svg", 90, 90, false)),
+                      ],
+                    ),
+                  ),
+                ),
                     ),
                     SizedBox(
                       height: 7.0,
@@ -630,8 +607,7 @@ class _profileScreenState extends State<profileScreen> {
               Container(
                 height: 10,
               ),
-              Expanded(
-                  child: FutureBuilder(
+              FutureBuilder(
                 future: FirebaseFirestore.instance
                     .collection('Portfolio')
                     .where('uid', isEqualTo: widget.uid)
@@ -670,7 +646,7 @@ class _profileScreenState extends State<profileScreen> {
                     ),
                   );
                 },
-              )),
+              ),
             ],
           ),
         )));

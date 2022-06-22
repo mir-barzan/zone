@@ -22,7 +22,10 @@ class informationScreen extends StatefulWidget {
   State<informationScreen> createState() => informationScreenState();
 }
 
-class informationScreenState extends State<informationScreen> {
+class informationScreenState extends State<informationScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   addOfferScreen addScreen = new addOfferScreen();
   TextEditingController _field1 = TextEditingController();
   TextEditingController _fQuestion = TextEditingController();
@@ -139,26 +142,6 @@ class informationScreenState extends State<informationScreen> {
 
     return Scaffold(
       backgroundColor: primaryColor,
-      appBar: AppBar(
-        leading: CancelIcon(),
-        title: Wrap(children: [
-          Text(
-            "New Offer",
-            style: TextStyle(fontSize: 34, color: offersColor),
-          ),
-          Container(
-              height: 50,
-              width: 50,
-              child: Icon(
-                Icons.local_offer,
-                color: offersColor,
-              )),
-        ]),
-        actions: [],
-        centerTitle: true,
-        backgroundColor: primaryColor,
-        elevation: 1,
-      ),
       body: Center(
           child: ListView(
         padding: EdgeInsets.all(30),
@@ -635,11 +618,14 @@ class informationScreenState extends State<informationScreen> {
                         )),
                     TextButton(
                         onPressed: () {
-                          navigateToWithoutBack(
-                              context,
-                              mainPage(
-                                isFromSettings: false,
-                              ));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => mainPage(
+                                      isFromSettings: false,
+                                    )),
+                            (Route<dynamic> route) => false,
+                          );
                         },
                         child: Text(
                           "Ok",

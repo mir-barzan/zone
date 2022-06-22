@@ -129,12 +129,11 @@ class _addNewPortfolioState extends State<addNewPortfolio> {
       ),
       appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-            child: SvgPicture.asset(
+        title: SvgPicture.asset(
           'assets/images/zoneLogo.svg',
           color: primaryColor,
           width: 180,
-        )),
+        ),
         backgroundColor: offersColor,
         elevation: 0,
       ),

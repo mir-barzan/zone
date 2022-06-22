@@ -105,6 +105,7 @@ class Upside extends StatelessWidget {
             ),
           ),
         ),
+        iconBackButton(context),
         Positioned(
           left: 0,
           top: 175,

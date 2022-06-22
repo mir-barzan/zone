@@ -134,28 +134,32 @@ settingButton(String text, IconData icon, BuildContext context, Widget widget) {
       },
       child: Container(
           height: 50.0,
-          child: Expanded(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+          child: Column(
             children: [
-              SizedBox(
-                width: 20,
-              ),
-              Icon(
-                icon,
-                color: secColor,
-              ),
               Expanded(
-                  child: Container(
-                      child: Center(
-                child: Text(
-                  text,
-                  style:
-                      TextStyle(color: secColor, fontWeight: FontWeight.bold),
-                ),
-              )))
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Icon(
+                    icon,
+                    color: secColor,
+                  ),
+                  Expanded(
+                      child: Container(
+                          child: Center(
+                    child: Text(
+                      text,
+                      style: TextStyle(
+                          color: secColor, fontWeight: FontWeight.bold),
+                    ),
+                  )))
+                ],
+              )),
             ],
-          ))));
+          )));
 }
 
 // settingsDialog(
@@ -216,39 +220,42 @@ settingButton2(
       },
       child: Container(
           height: 50.0,
-          child: Expanded(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
             children: [
-              SizedBox(
-                width: 20,
-              ),
               Expanded(
-                  child: Container(
-                      child: Center(
-                          child: Column(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                      child: Container(
+                          child: Center(
+                              child: Column(
                     children: [
-                      Text(
-                        labelText,
-                        style: TextStyle(
-                            color: secColor, fontWeight: FontWeight.bold),
+                      Row(
+                        children: [
+                          Text(
+                            labelText,
+                            style: TextStyle(
+                                color: secColor, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5.0,
                       ),
                     ],
+                  )))),
+                  Icon(
+                    Icons.keyboard_arrow_right_rounded,
+                    color: secColor,
                   ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-
                 ],
-              )))),
-              Icon(
-                Icons.keyboard_arrow_right_rounded,
-                color: secColor,
-              ),
+              )),
             ],
-          ))));
+          )));
 }
 
 whiteTextInDark(String label, double fontSize) {

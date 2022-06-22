@@ -15,7 +15,11 @@ class priceList extends StatefulWidget {
   State<priceList> createState() => _priceListState();
 }
 
-class _priceListState extends State<priceList> {
+class _priceListState extends State<priceList>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   TextEditingController _moneyController = TextEditingController();
 
@@ -41,22 +45,6 @@ class _priceListState extends State<priceList> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      appBar: AppBar(
-        leading: CancelIcon(),
-        title: Wrap(
-            children:[ Text(
-              "New Offer",
-              style: TextStyle(fontSize: 34, color: offersColor),
-            ),Container(
-                height: 50,
-                width: 50,
-                child: Icon(Icons.local_offer, color: offersColor,)),
-            ]),
-        actions: [],
-        centerTitle: true,
-        backgroundColor: primaryColor,
-        elevation: 1,
-      ),
       body: ListView(children: [
         Center(
             child: Padding(
@@ -338,11 +326,12 @@ class _priceListState extends State<priceList> {
                         )),
                     TextButton(
                         onPressed: () {
-                          navigateToWithoutBack(
-                              context,
-                              mainPage(
-                                isFromSettings: false,
-                              ));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    mainPage(isFromSettings: false)),
+                          );
                         },
                         child: Text(
                           "Ok",

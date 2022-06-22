@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zone/Services/dataSearch.dart';
@@ -38,72 +39,74 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
         flexibleSpace: SafeArea(
           child: Container(
             color: offersColor, // set your color
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      'assets/images/zoneLogo.svg',
-                      color: primaryColor,
-                      width: 180,
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: 3,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade50,
-                          borderRadius: BorderRadius.circular(30)),
-                      padding: EdgeInsets.all(10),
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: Form(
-                        child: TextFormField(
-                          controller: searchControlling,
-                          onChanged: (value) {
-                            setState(() {
-                              isShowing = true;
-                            });
-                            if (searchControlling.text.isEmpty) {
+            child: FittedBox(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/zoneLogo.svg',
+                        color: primaryColor,
+                        width: 180,
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 3,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(30)),
+                        padding: EdgeInsets.all(10),
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Form(
+                          child: TextFormField(
+                            controller: searchControlling,
+                            onChanged: (value) {
                               setState(() {
-                                isShowing = false;
+                                isShowing = true;
                               });
-                            }
-                          },
-                          decoration: const InputDecoration.collapsed(
-                              hintText: 'Search for an offer'),
-                          onFieldSubmitted: (String _) {
-                            setState(() {
-                              isShowing = true;
-                              searchKey = searchControlling
-                                  .text.characters.first
-                                  .toString()
-                                  .toLowerCase();
-                            });
-                            print(_);
-                          },
+                              if (searchControlling.text.isEmpty) {
+                                setState(() {
+                                  isShowing = false;
+                                });
+                              }
+                            },
+                            decoration: const InputDecoration.collapsed(
+                                hintText: 'Search for an offer'),
+                            onFieldSubmitted: (String _) {
+                              setState(() {
+                                isShowing = true;
+                                searchKey = searchControlling
+                                    .text.characters.first
+                                    .toString()
+                                    .toLowerCase();
+                              });
+                              print(_);
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.filter_alt,
-                          color: primaryColor,
-                        ))
-                  ],
-                ),
-                Container(
-                  height: 2,
-                ) // set an icon or image
-                // set your search bar setting
-              ],
+                      IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.filter_alt,
+                            color: primaryColor,
+                          ))
+                    ],
+                  ),
+                  Container(
+                    height: 2,
+                  ) // set an icon or image
+                  // set your search bar setting
+                ],
+              ),
             ),
           ),
         ),
@@ -123,6 +126,7 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                   );
                 }
                 return ListView.builder(
+                  controller: ScrollController(),
                   itemCount: (snapshot.data! as dynamic).docs.length,
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -134,8 +138,8 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                             ownerUid: (snapshot.data! as dynamic).docs[index]
                                 ['uid'],
                           ),
-                        ),
-                      ),
+                            ),
+                          ),
                       child: Container(
                           margin: EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -147,11 +151,11 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                                   children: [
                                     Text(
                                       (snapshot.data! as dynamic).docs[index]
-                                          ['title'],
+                                      ['title'],
                                     ),
                                     rating(
                                         (snapshot.data! as dynamic).docs[index]
-                                            ['rating'],
+                                        ['rating'],
                                         true,
                                         20)
                                   ],
@@ -200,7 +204,7 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                     padding: EdgeInsets.all(10),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                          crossAxisCount: kIsWeb ? 4 : 2,
                       childAspectRatio: 3 / 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 210,
