@@ -35,9 +35,7 @@ class _mainChatsScreenState extends State<mainChatsScreen> {
       sellerData = snap2.data()!;
 
       setState(() {});
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
+    } catch (e) {}
   }
 
 // void initState(){

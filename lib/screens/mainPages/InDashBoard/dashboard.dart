@@ -10,6 +10,7 @@ import 'package:zone/additional/colors.dart';
 import 'package:zone/paymentProcess/pzcoin.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chat.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chatScreen.dart';
+import 'package:zone/screens/mainPages/InDashBoard/favorites/favorites.dart';
 import 'package:zone/screens/mainPages/InDashBoard/myOffers.dart';
 import 'package:zone/screens/mainPages/InDashBoard/withdrawal.dart';
 import '../../../widgets/AdditionalWidgets.dart';
@@ -70,7 +71,7 @@ class _dashboardState extends State<dashboard> {
           )),
       dashBoardContainers(
           'Favorites',
-          withdraw(),
+          favorites(),
           Icon(
             Icons.bookmark,
             color: primaryColor,
@@ -79,67 +80,6 @@ class _dashboardState extends State<dashboard> {
     ];
     return Scaffold(
         backgroundColor: primaryColor,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: offersColor,
-            ),
-            onPressed: () {
-              null;
-            },
-          ),
-          centerTitle: true,
-          title: SvgPicture.asset(
-            'assets/images/zoneLogo.svg',
-            color: primaryColor,
-            width: 180,
-          ),
-          backgroundColor: offersColor,
-          elevation: 0,
-          actions: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      navigateTo(context, const pzcoin());
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      height: 45,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(35),
-                          color: primaryColor),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FittedBox(
-                              child: Icon(
-                                Icons.monetization_on,
-                                color: offersColor,
-                                size: 30,
-                              )),
-                          FittedBox(
-                            child: Text(
-                              "  0.0 ",
-                              style: new TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: offersColor,
-                                  fontSize: 30.0),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SafeArea(

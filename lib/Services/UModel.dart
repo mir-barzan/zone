@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zone/screens/mainPages/InDashBoard/favorites/favorites.dart';
 
 class User {
   final String fname;
@@ -24,6 +25,7 @@ class User {
   final String dateCreated;
   final activeContracts;
   final completedContracts;
+  final favoriteOffers;
 
   const User(
       {required this.fname,
@@ -51,7 +53,8 @@ class User {
       this.phoneNumber = "",
       required this.dateCreated,
       required this.activeContracts,
-      required this.completedContracts});
+      required this.completedContracts,
+      required this.favoriteOffers});
 
   Map<String, dynamic> toJson() =>
       {
@@ -74,5 +77,6 @@ class User {
         "dateCreated": dateCreated,
         "activeContracts": activeContracts,
         "completedContracts": completedContracts,
+        "favoriteOffers": favoriteOffers
       };
 }

@@ -139,7 +139,7 @@ class FireAuth {
             size: 80,
           ));
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!);
+      Fluttertoast.showToast(msg: e.message!);
     }
   }
 
@@ -172,7 +172,7 @@ class FireAuth {
           dateCreated: DateTime.now().toString(),
           activeContracts: [],
           completedContracts: [],
-        );
+            favoriteOffers: []);
         await _firestore.collection('users').doc(cred.user!.uid).set(
           user.toJson(),
         );

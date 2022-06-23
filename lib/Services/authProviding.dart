@@ -94,6 +94,7 @@ class AuthProvider extends ChangeNotifier {
             "username":
                 firebaseUser.displayName! + RandomStr.replaceAll(" ", ""),
             "email": googleSignIn.currentUser!.email.toString(),
+            "favoriteOffers": []
           });
 
           User? currentUser = firebaseUser;

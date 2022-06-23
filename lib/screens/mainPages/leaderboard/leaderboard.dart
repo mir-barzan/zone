@@ -20,25 +20,6 @@ class _leaderBoardState extends State<leaderBoard> {
         FirebaseFirestore.instance.collection('users');
     return Scaffold(
       backgroundColor: primaryColor,
-      appBar: AppBar(
-        centerTitle: true,
-        title: FittedBox(
-            child: Row(
-          children: [
-            Text(
-              'Leaderboard',
-              style: TextStyle(fontSize: 30, color: primaryColor),
-            ),
-            Icon(
-              Icons.tour_rounded,
-              color: Colors.amber,
-              size: 30,
-            )
-          ],
-        )),
-        backgroundColor: offersColor,
-        elevation: 0,
-      ),
       body: StreamBuilder<QuerySnapshot>(
           stream: recipes.orderBy('soldOffers', descending: true).snapshots(),
           builder: (context, snapshot) {

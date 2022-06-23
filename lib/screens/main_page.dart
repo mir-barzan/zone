@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/paymentProcess/pzcoin.dart';
 import 'package:zone/screens/auth/signup.dart';
 import 'package:zone/screens/mainPages/addOfferMain/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/addProjectScreen.dart';
@@ -43,7 +45,6 @@ class _mainPageState extends State<mainPage> {
 
       setState(() {});
     } catch (e) {
-      showSnackBar(context, e.toString());
     }
   }
 
@@ -64,154 +65,103 @@ class _mainPageState extends State<mainPage> {
         isVisiting: false,
       )
     ];
-    return Scaffold(
-      body: IndexedStack(
-        index: currentTab,
-        children: screens,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          navigateTo(context, addOfferScreen());
-          currentScreen = addOfferScreen();
-          currentTab = 0;
-        },
-        backgroundColor: secColor,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = dashboard();
-                        currentTab = 0;
-                      });
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: offersColor,
+          centerTitle: true,
+          title: SvgPicture.asset(
+            'assets/images/zoneLogo.svg',
+            color: primaryColor,
+            width: 180,
+          ),
+          actions: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      navigateTo(context, const pzcoin());
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.dashboard,
-                          color: currentTab == 0
-                              ? secColor
-                              : Colors.grey,
-                        ),
-                        Text(
-                          'Home',
-                          style: TextStyle(
-                            color: currentTab == 0 ? secColor : Colors.grey,
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      height: 45,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(35),
+                          color: primaryColor),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FittedBox(
+                              child: Icon(
+                            Icons.monetization_on,
+                            color: offersColor,
+                            size: 30,
+                          )),
+                          FittedBox(
+                            child: Text(
+                              "  0.0 ",
+                              style: new TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: offersColor,
+                                  fontSize: 30.0),
+                            ),
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = leaderBoard();
-                        currentTab = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.flag,
-                          color: currentTab == 1 ? secColor : Colors.grey,
-                        ),
-                        Text(
-                          'Leader',
-                          style: TextStyle(
-                            color: currentTab == 1 ? secColor : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                ),
+              ],
+            )
+          ],
+          bottom: TabBar(
+            indicatorColor: primaryColor,
+            tabs: [
+              Tab(
+                text: 'Home',
+                icon: Icon(Icons.dashboard),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = personalOffersScreen();
-                        currentTab = 3;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.local_offer,
-                          color: currentTab == 3
-                              ? secColor
-                              : Colors.grey,
-                        ),
-                        Text(
-                          'Offers',
-                          style: TextStyle(
-                            color: currentTab == 3
-                                ? secColor
-                                : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = profileScreen(
-                          uid: FirebaseAuth.instance.currentUser!.uid,
-                          isVisiting: false,
-                        );
-                        currentTab = 4;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.person,
-                          color: currentTab == 4
-                              ? secColor
-                              : Colors.grey,
-                        ),
-                        Text(
-                          'Profile',
-                          style: TextStyle(
-                            color: currentTab == 4
-                                ? secColor
-                                : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              )
+              Tab(
+                text: 'Leader',
+                icon: Icon(Icons.flag),
+              ),
+              Tab(
+                text: 'Offers',
+                icon: Icon(Icons.local_offer),
+              ),
+              Tab(
+                text: 'Profile',
+                icon: Icon(Icons.person),
+              ),
             ],
           ),
         ),
+        body: TabBarView(
+          children: [
+            dashboard(),
+            leaderBoard(),
+            personalOffersScreen(),
+            profileScreen(
+                uid: FirebaseAuth.instance.currentUser!.uid, isVisiting: false)
+          ],
+        ),
+        floatingActionButton: Container(
+          margin: EdgeInsets.all(8),
+          child: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              navigateTo(context, addOfferScreen());
+            },
+            backgroundColor: secColor,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        backgroundColor: primaryColor,
       ),
     );
   }

@@ -12,17 +12,20 @@ import 'package:multi_value_listenable_builder/multi_value_listenable_builder.da
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zone/Services/FireStoreSettings.dart';
 import 'package:zone/Services/sharedPrefs.dart';
+import 'package:zone/Services/storageSettings.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/mainPages/InDashBoard/myOffers.dart';
 import 'package:zone/screens/mainPages/addOfferMain/information.dart';
 import 'package:zone/screens/mainPages/addOfferMain/offerCard.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
-import '../../main_page.dart';
-import '../OffersScreen.dart';
-import './offerCard.dart';
 
-class reviewAndSubmit extends StatefulWidget {
-  const reviewAndSubmit({Key? key}) : super(key: key);
+import 'editofferCard.dart';
+
+class editreviewAndSubmit extends StatefulWidget {
+  final offerId;
+
+  const editreviewAndSubmit({Key? key, required this.offerId})
+      : super(key: key);
 
   static ValueNotifier<String> newTitle = ValueNotifier('');
   static ValueNotifier<String> newPrice = ValueNotifier('');
@@ -32,22 +35,21 @@ class reviewAndSubmit extends StatefulWidget {
   static ValueNotifier<List> faqQuestion = ValueNotifier([]);
   static ValueNotifier<String> newDiscription = ValueNotifier('');
   static ValueNotifier<String> newtimeNeeded = ValueNotifier('');
-
-
+  static ValueNotifier<String> oldPhotoUrl = ValueNotifier('');
 
   @override
-  State<reviewAndSubmit> createState() => _reviewAndSubmitState();
+  State<editreviewAndSubmit> createState() => _editreviewAndSubmitState();
 }
 
-class _reviewAndSubmitState extends State<reviewAndSubmit> {
+class _editreviewAndSubmitState extends State<editreviewAndSubmit> {
   @override
   String title = "";
   bool _isLoading = false;
   bool _isTitleFine = false;
   bool _isDescriptionFine = false;
   bool _isTagsFine = false;
-  bool _isFaqFine = false;
-  bool _isPriceFine = false;
+  bool _isFaqFine = true;
+  bool _isPriceFine = true;
   bool _isDateFine = false;
   bool _everyThingIsFine = false;
   String fname = '';
@@ -65,43 +67,43 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
 
   void checkAll() {
     int x = 0;
-    if (reviewAndSubmit.newTitle.value.toString().length >= 15) {
+    if (editreviewAndSubmit.newTitle.value.toString().length >= 15) {
       setState(() {
         _isTitleFine = true;
         x += 1;
       });
     }
-    if (reviewAndSubmit.newDiscription.value.toString().length >= 100) {
+    if (editreviewAndSubmit.newDiscription.value.toString().length >= 100) {
       setState(() {
         _isDescriptionFine = true;
         x += 1;
       });
     }
-    if (reviewAndSubmit.faqQuestion.value.length >= 5) {
-      setState(() {
-        _isFaqFine = true;
-        x += 1;
-      });
-    }
-    if (reviewAndSubmit.category.value.length >= 2) {
+    // if (editreviewAndSubmit.faqQuestion.value.length >= 5) {
+    //   setState(() {
+    //     _isFaqFine = true;
+    //     x += 1;
+    //   });
+    // }
+    if (editreviewAndSubmit.category.value.length >= 2) {
       setState(() {
         _isTagsFine = true;
         x += 1;
       });
     }
-    if (int.parse(reviewAndSubmit.newPrice.value) >= 5) {
-      setState(() {
-        _isPriceFine = true;
-        x += 1;
-      });
-    }
-    if (reviewAndSubmit.newtimeNeeded.value.toString().length >= 5) {
+    // if (int.parse(editreviewAndSubmit.newPrice.value!) >= 5) {
+    //   setState(() {
+    //     _isPriceFine = true;
+    //     x += 1;
+    //   });
+    // }
+    if (editreviewAndSubmit.newtimeNeeded.value.toString().length >= 5) {
       setState(() {
         _isDateFine = true;
         x += 1;
       });
     }
-    if (x == 6) {
+    if (x == 4) {
       _everyThingIsFine = true;
     }
   }
@@ -205,7 +207,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
           _isLoading = false;
         });
 
-        Fluttertoast.showToast(msg: 'Posted successfuly');
+        Fluttertoast.showToast(msg: 'Posted successfully');
       } else {
         setState(() {
           _isLoading = false;
@@ -217,7 +219,53 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     }
   }
 
+  updateOffer(
+    title,
+    description,
+    price,
+    Uint8List file,
+    timeNeeded,
+  ) async {
+    String photoUrl = "";
+
+    if (file.isNotEmpty) {
+      photoUrl = await storageMeth()
+          .uploadImageFileToFirebaseStorage('Offers', file, true);
+    }
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      if (file.isNotEmpty) {
+        await FirebaseFirestore.instance
+            .collection('Category')
+            .doc(widget.offerId)
+            .update({
+          'title': title,
+          'description': description,
+          'price': price,
+          'PhotoUrl': photoUrl,
+          'timeNeeded': timeNeeded
+        });
+      }
+
+      await FirebaseFirestore.instance
+          .collection('Category')
+          .doc(widget.offerId)
+          .update({
+        'title': title,
+        'description': description,
+        'price': price,
+        'timeNeeded': timeNeeded
+      });
+      Fluttertoast.showToast(msg: 'Updated successfully');
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Please try again later');
+    }
+  }
+
   Timer? timer;
+  String OldImageUrl = "";
 
   @override
   void initState() {
@@ -235,6 +283,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     //     _everyThingIsFine = reviewAndSubmit().checker();
     //   });
     // });
+    OldImageUrl = editreviewAndSubmit.oldPhotoUrl.toString();
   }
 
   void dispose() {
@@ -300,9 +349,10 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
               child: Container(
                 child: MultiValueListenableBuilder(
                   valueListenables: [
-                    reviewAndSubmit.newTitle,
-                    reviewAndSubmit.newPrice,
-                    reviewAndSubmit.newImage
+                    editreviewAndSubmit.newTitle,
+                    editreviewAndSubmit.newPrice,
+                    editreviewAndSubmit.newImage,
+                    editreviewAndSubmit.oldPhotoUrl
                   ],
                   builder: (context, values, child) {
                     // Get the updated value of each listenable
@@ -310,10 +360,11 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                     return Container(
                       width: MediaQuery.of(context).size.width * 0.8,
                       height: 400,
-                      child: new OfferCard(
+                      child: new editOfferCard(
                               title: values.elementAt(0),
                               price: values.elementAt(1),
-                              image: values.elementAt(2))
+                              image: values.elementAt(2),
+                              imageUrl: values.elementAt(3))
                           .makeCard(),
                     );
                   },
@@ -332,14 +383,14 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
               width: 220,
               child: MultiValueListenableBuilder(
                   valueListenables: [
-                    reviewAndSubmit.faqQuestion,
-                    reviewAndSubmit.category,
-                    reviewAndSubmit.newDiscription,
-                    reviewAndSubmit.newImage,
-                    reviewAndSubmit.newPrice,
-                    reviewAndSubmit.newtimeNeeded,
-                    reviewAndSubmit.newTitle,
-                    reviewAndSubmit.faqAnswer
+                    editreviewAndSubmit.faqQuestion,
+                    editreviewAndSubmit.category,
+                    editreviewAndSubmit.newDiscription,
+                    editreviewAndSubmit.newImage,
+                    editreviewAndSubmit.newPrice,
+                    editreviewAndSubmit.newtimeNeeded,
+                    editreviewAndSubmit.newTitle,
+                    editreviewAndSubmit.faqAnswer
                   ],
                   builder: (context, values, child) {
                     return ElevatedButton(
@@ -378,15 +429,12 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                                 setState(() {
                                   _isLoading = true;
                                 });
-                                await postOffer(
-                                    values.elementAt(1),
+                                await updateOffer(
                                     values.elementAt(6),
                                     values.elementAt(2),
                                     values.elementAt(4),
                                     values.elementAt(3),
-                                    values.elementAt(5),
-                                    values.elementAt(0),
-                                    values.elementAt(7));
+                                    values.elementAt(5));
                                 setState(() {
                                   _isLoading = false;
                                 });
@@ -398,7 +446,6 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                                       'Min Title Length: 15',
                                       "Min Description Length: 100",
                                       'Min Category tags: 2',
-                                      "Min FAQ: 5",
                                       'Min Price: 5',
                                       "Time Needed",
                                       _isTitleFine
@@ -411,15 +458,6 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                                               color: Colors.red,
                                             ),
                                       _isDescriptionFine
-                                          ? Icon(
-                                              Icons.check_circle,
-                                              color: offersColor,
-                                            )
-                                          : Icon(
-                                              Icons.close,
-                                              color: Colors.red,
-                                            ),
-                                      _isTagsFine
                                           ? Icon(
                                               Icons.check_circle,
                                               color: offersColor,
@@ -467,57 +505,6 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     );
   }
 
-  CancelIcon() {
-    return IconButton(
-        onPressed: () {
-          setState(() {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(""),
-                  content: Text("Are you sure you want to leave?"),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          timer!.cancel();
-
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    mainPage(isFromSettings: false)),
-                          );
-                        },
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(color: offersColor),
-                        )),
-                    TextButton(
-                        onPressed: () {
-                          navigateToWithoutBack(
-                              context,
-                              mainPage(
-                                isFromSettings: false,
-                              ));
-                        },
-                        child: Text(
-                          "Ok",
-                          style: TextStyle(color: offersColor),
-                        )),
-                  ],
-                );
-                ;
-              },
-            );
-          });
-        },
-        icon: Icon(
-          Icons.close,
-          color: Colors.black,
-        ));
-  }
-
   Future<String> loadString(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? '';
@@ -527,14 +514,14 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     bool x = false;
     MultiValueListenableBuilder(
         valueListenables: [
-          reviewAndSubmit.faqQuestion,
-          reviewAndSubmit.category,
-          reviewAndSubmit.newDiscription,
-          reviewAndSubmit.newImage,
-          reviewAndSubmit.newPrice,
-          reviewAndSubmit.newtimeNeeded,
-          reviewAndSubmit.newTitle,
-          reviewAndSubmit.faqAnswer
+          editreviewAndSubmit.faqQuestion,
+          editreviewAndSubmit.category,
+          editreviewAndSubmit.newDiscription,
+          editreviewAndSubmit.newImage,
+          editreviewAndSubmit.newPrice,
+          editreviewAndSubmit.newtimeNeeded,
+          editreviewAndSubmit.newTitle,
+          editreviewAndSubmit.faqAnswer
         ],
         builder: (context, values, child) {
           if (values.elementAt(0).isNotEmpty &
@@ -552,8 +539,8 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     return x;
   }
 
-  showSucessDialog(BuildContext context, msg1, msg2, msg3, msg4, msg5, msg6,
-      icon1, icon2, icon3, icon4, icon5, icon6) {
+  showSucessDialog(BuildContext context, msg1, msg2, msg3, msg5, msg6, icon1,
+      icon2, icon3, icon5, icon6) {
     // set up the button
     Widget okButton = TextButton(
       child: Text(
@@ -600,16 +587,6 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                     msg3,
                   ),
                   icon3
-                ],
-              ),
-            ),
-            Flexible(
-              child: Row(
-                children: [
-                  Text(
-                    msg4,
-                  ),
-                  icon4
                 ],
               ),
             ),

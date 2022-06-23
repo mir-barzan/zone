@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
@@ -37,7 +38,7 @@ class _porfolioProfileState extends State<porfolioProfile> {
 
       setState(() {});
     } catch (e) {
-      showSnackBar(context, e.toString());
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 

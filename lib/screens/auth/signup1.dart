@@ -39,22 +39,30 @@ class _signup1State extends State<SignUp1> {
   }
 
   void signUser() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String result = await FireAuth().signUpUser(
-        context: context,
-        fname: _firstnameController.text.trim(),
-        lname: _lastnameController.text.trim(),
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim());
-    navigateToWithoutBack(context, login1());
-    if (result != 'success') {
-      Fluttertoast.showToast(msg: "Error, Please try again.");
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      String result = await FireAuth().signUpUser(
+          context: context,
+          fname: _firstnameController.text.trim(),
+          lname: _lastnameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+      Navigator.pushReplacement<void, void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => login1(),
+        ),
+      );
+      Fluttertoast.showToast(
+          msg: 'registration successful please verify your email then login');
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override

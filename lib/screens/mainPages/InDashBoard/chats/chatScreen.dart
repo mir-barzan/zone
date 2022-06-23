@@ -81,9 +81,7 @@ class chatScreenState extends State<chatScreen> {
       userData = snap.data()!;
       userId = userData['uid'];
       setState(() {});
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
+    } catch (e) {}
   }
 
   void initState() {
@@ -156,7 +154,6 @@ class chatScreenState extends State<chatScreen> {
         onSendMessage(imageUrl, 1);
       });
     } on FirebaseException catch (e) {
-      showSnackBar(context, e.toString());
       setState(() {
         isLoading = false;
       });

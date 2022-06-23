@@ -56,9 +56,7 @@ class _offerProfileState extends State<offerProfile> {
       ques = offerData['faqQuestion'];
       answ = offerData['faqAnswer'];
       setState(() {});
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
+    } catch (e) {}
   }
 
   getUserData() async {
@@ -69,9 +67,7 @@ class _offerProfileState extends State<offerProfile> {
           .get();
       userData = snap.data()!;
       setState(() {});
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
+    } catch (e) {}
   }
 
   assignFAQ() {}

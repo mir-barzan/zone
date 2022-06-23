@@ -344,7 +344,7 @@ class informationScreenState extends State<informationScreen>
                   child: Wrap(
                     children: [
                       Text(
-                        "You have to provide your customers with at least 5 FAQ that related to your offer.",
+                        "You have to provide your customers with at least 5 FAQ that related to your offer. FAQS ADDED CANNOT BE CHANGED LATER",
                         style: TextStyle(color: offersColor),
                       ),
                       Container(

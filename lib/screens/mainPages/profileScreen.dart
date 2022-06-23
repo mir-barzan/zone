@@ -72,9 +72,7 @@ class _profileScreenState extends State<profileScreen> {
       userId = userData['uid'];
       skills = userData['skills'];
       setState(() {});
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
+    } catch (e) {}
   }
 
   checkRank() {
@@ -118,49 +116,39 @@ class _profileScreenState extends State<profileScreen> {
               : null,
           elevation: 0,
           backgroundColor: primaryColor,
-          title: SvgPicture.asset(
-            'assets/images/zoneLogo.svg',
-            color: offersColor,
-            width: 180,
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.isVisiting
+                ? null
+                : GestureDetector(
+                    onTap: () {
+                      navigateTo(
+                          context,
+                          const userSettings(
+                            isAfterChange: false,
+                          ));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Edit',
+                          style: TextStyle(color: offersColor),
+                        ),
+                        Icon(
+                          Icons.settings,
+                          color: secColor,
+                        ),
+                      ],
+                    ),
+                  ),
           ),
           centerTitle: true,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  //navigateTo(context, const userSettings());
-                },
-                child: Icon(
-                  Icons.adaptive.share,
-                  color: secColor,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: widget.isVisiting
-                  ? null
-                  : GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                            context,
-                            const userSettings(
-                              isAfterChange: false,
-                            ));
-                      },
-                      child: Icon(
-                        Icons.settings,
-                        color: secColor,
-                      ),
-                    ),
-            ),
-          ],
         ),
         body: Center(
             child: checker(
-                username,
-                ListView(
+          username,
+          ListView(
             physics: PageScrollPhysics(),
             padding: EdgeInsets.all(20),
             children: [
@@ -408,191 +396,188 @@ class _profileScreenState extends State<profileScreen> {
                     ),
                   ),
                 ),
-                    ),
-                    SizedBox(
-                      height: 7.0,
-                    ),
-                    Divider(thickness: 2),
-                    SizedBox(
-                      height: 7.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Badges",
-                          style: new TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: offersColor,
-                              fontSize: 20.0),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            navigateTo(context, seeUserOffers(uid: userId));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'See user offers',
-                                  style: TextStyle(color: primaryColor),
-                                ),
-                                Icon(
-                                  Icons.local_offer_sharp,
-                                  color: primaryColor,
-                                )
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                                color: offersColor,
-                                borderRadius: BorderRadius.circular(30)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 5,
-                    ),
-                    Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 2, color: secColor),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                          children: [
-                            Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  badge("welcome.svg", 60, 60, isZoner),
-                                  badge("verified.svg", 60, 60, isVerified),
-                                  badge("pro.svg", 60, 60, isPro),
-                                  badge("gold.svg", 60, 60, isGold),
-                                  badge("star.svg", 60, 60, isStar),
-                                ])
-                          ],
-                        )),
-                    SizedBox(
-                      height: 7.0,
-                    ),
-                    Divider(thickness: 2),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Skills",
-                          style: TextStyle(
-                              letterSpacing: 1,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: secColor),
-                        ),
-                        Icon(
-                          Icons.school,
-                          color: offersColor,
-                          size: 22,
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Container(
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: 6,
+              ),
+              SizedBox(
+                height: 7.0,
+              ),
+              Divider(thickness: 2),
+              SizedBox(
+                height: 7.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Badges",
+                    style: new TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: offersColor,
+                        fontSize: 20.0),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      navigateTo(context, seeUserOffers(uid: userId));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          for (var i in skills!)
-                            (Chip(
-                              labelStyle: TextStyle(color: primaryColor),
-                              label: Text(i.toString()),
-                              backgroundColor: offersColor,
-                            ))
+                          Text(
+                            'See user offers',
+                            style: TextStyle(color: primaryColor),
+                          ),
+                          Icon(
+                            Icons.local_offer_sharp,
+                            color: primaryColor,
+                          )
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          color: offersColor,
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                height: 5,
+              ),
+              Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 2, color: secColor),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            badge("welcome.svg", 60, 60, isZoner),
+                            badge("verified.svg", 60, 60, isVerified),
+                            badge("pro.svg", 60, 60, isPro),
+                            badge("gold.svg", 60, 60, isGold),
+                            badge("star.svg", 60, 60, isStar),
+                          ])
+                    ],
+                  )),
+              SizedBox(
+                height: 7.0,
+              ),
+              Divider(thickness: 2),
+              SizedBox(
+                height: 10.0,
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Skills",
+                    style: TextStyle(
+                        letterSpacing: 1,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: secColor),
+                  ),
+                  Icon(
+                    Icons.school,
+                    color: offersColor,
+                    size: 22,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Container(
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 6,
+                  children: [
+                    for (var i in skills!)
+                      (Chip(
+                        labelStyle: TextStyle(color: primaryColor),
+                        label: Text(i.toString()),
+                        backgroundColor: offersColor,
+                      ))
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "About me",
+                        style: TextStyle(
+                            color: secColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 1,
+                      ),
+                      Icon(
+                        Icons.boy_sharp,
+                        color: offersColor,
+                        size: 25,
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Wrap(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(color: offersColor, width: 1)),
+                            child: Text(
+                              userData['bio'],
+                              style: TextStyle(
+                                color: secColor.withOpacity(0.8),
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Divider(
-                      thickness: 2,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "About me",
-                              style: TextStyle(
-                                  color: secColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 1,
-                            ),
-                            Icon(
-                              Icons.boy_sharp,
-                              color: offersColor,
-                              size: 25,
-                            ),
-                          ],
-                        ),
-                        Center(
-                          child: Container(
-                            padding: EdgeInsets.all(20),
-                            child: Wrap(
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: offersColor, width: 1)),
-                                  child: Text(
-                                    userData['bio'],
-                                    style: TextStyle(
-                                      color: secColor.withOpacity(0.8),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Divider(
-                      thickness: 2,
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
                   "Portfolio",
                   style: TextStyle(
                       color: Colors.teal,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,12 +22,21 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
   void initState() {
     super.initState();
 
-    // getData();
+    getData();
   }
 
   TextEditingController searchControlling = new TextEditingController();
   bool isShowing = false;
   String searchKey = '';
+  var snap2 = {};
+
+  void getData() async {
+    var snapx = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    snap2 = snapx.data()!;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +44,6 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
       backgroundColor: primaryColor,
       appBar: AppBar(
         backgroundColor: offersColor,
-        toolbarHeight:
-            MediaQuery.of(context).size.height * 0.175, //set your height
         flexibleSpace: SafeArea(
           child: Container(
             color: offersColor, // set your color
@@ -43,16 +51,6 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/zoneLogo.svg',
-                        color: primaryColor,
-                        width: 180,
-                      )
-                    ],
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -213,8 +211,9 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                             (index) {
                           return Container(
                               child: MainOfferCard(
-                            snap: snapshot.data!.docs[index].data(),
+                                snap: snapshot.data!.docs[index].data(),
                             isLocal: false,
+                            snap2: snap2,
                           ));
                         }) +
                         [
