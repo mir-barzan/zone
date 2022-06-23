@@ -76,7 +76,10 @@ class _favoritesState extends State<favorites> {
                             onTap: () {
                               try {
                                 print('presses');
-                                listOfFavorites!.remove(listOfFavorites[index]);
+                                setState(() {
+                                  listOfFavorites!
+                                      .remove(listOfFavorites[index]);
+                                });
                                 FirebaseFirestore.instance
                                     .collection('users')
                                     .doc(FirebaseAuth.instance.currentUser!.uid)
