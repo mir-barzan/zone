@@ -34,19 +34,20 @@ class _login1State extends State<login1> {
   }
 
   bool _isLoading = false;
+  String EmailField = "";
+  String PasswordField = "";
 
   void signInUser() async {
     try {
       setState(() {
         _isLoading = true;
       });
-      String result = await FireAuth().signInUser(context,
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+      await FireAuth().signInUser(context,
+          email: EmailField.trim(), password: PasswordField.trim());
 
       navigateToWithoutBack(
           context,
-          const mainPage(
+          mainPage(
             isFromSettings: false,
           ));
       setState(() {
@@ -142,10 +143,12 @@ class _login1State extends State<login1> {
                             child: Column(
                               children: [
                                 RoundedInputField(
+                                    x: EmailField,
                                     hintText: "Email",
                                     icon: Icons.email,
                                     controller: _emailController),
                                 RoundedPasswordField(
+                                  x: PasswordField,
                                   passwordController: _passwordController,
                                 ),
                                 switchListTile(),

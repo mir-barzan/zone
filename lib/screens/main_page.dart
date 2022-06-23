@@ -55,7 +55,7 @@ class _mainPageState extends State<mainPage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> screens = [
+    List<Widget> screens = [
       const dashboard(),
       const leaderBoard(),
       const postScreen(),

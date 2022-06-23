@@ -39,6 +39,7 @@ class _offerProfileState extends State<offerProfile> {
 
   List? ques = [];
   List? answ = [];
+  String rrating = '0';
 
   getData() async {
     try {
@@ -50,12 +51,15 @@ class _offerProfileState extends State<offerProfile> {
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
-      CurrentUserData = snap2.data()!;
-      offerData = snap.data()!;
-      username = offerData['username'];
-      ques = offerData['faqQuestion'];
-      answ = offerData['faqAnswer'];
-      setState(() {});
+
+      setState(() {
+        CurrentUserData = snap2.data()!;
+        offerData = snap.data()!;
+        username = offerData['username'];
+        ques = offerData['faqQuestion'];
+        answ = offerData['faqAnswer'];
+        rrating = userData['rating'];
+      });
     } catch (e) {}
   }
 
@@ -232,7 +236,7 @@ class _offerProfileState extends State<offerProfile> {
                 Column(
                   children: [
                     Ratingbadge(
-                      userData['rating'],
+                      rrating,
                       90,
                       90,
                     ),

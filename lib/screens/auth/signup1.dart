@@ -38,6 +38,11 @@ class _signup1State extends State<SignUp1> {
     _lastnameController.dispose();
   }
 
+  String firstName = "";
+  String Email = "";
+  String Surname = "";
+  String Password = "";
+
   void signUser() async {
     try {
       setState(() {
@@ -45,10 +50,10 @@ class _signup1State extends State<SignUp1> {
       });
       String result = await FireAuth().signUpUser(
           context: context,
-          fname: _firstnameController.text.trim(),
-          lname: _lastnameController.text.trim(),
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
+          fname: firstName.trim(),
+          lname: Surname.trim(),
+          email: Email.trim(),
+          password: Password.trim());
       Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute<void>(
@@ -101,18 +106,22 @@ class _signup1State extends State<SignUp1> {
                           child: Column(
                             children: [
                               RoundedInputField(
+                                  x: Email,
                                   controller: _emailController,
                                   hintText: "Email",
                                   icon: Icons.email),
                               RoundedInputField(
+                                  x: firstName,
                                   controller: _firstnameController,
                                   hintText: "Name",
                                   icon: Icons.person),
                               RoundedInputField(
+                                  x: Surname,
                                   controller: _lastnameController,
                                   hintText: "Surname",
                                   icon: Icons.person),
                               RoundedPasswordField(
+                                x: Password,
                                 passwordController: _passwordController,
                               ),
                               RoundedButton(

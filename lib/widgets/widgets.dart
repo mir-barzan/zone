@@ -106,10 +106,12 @@ class RoundedInputField extends StatelessWidget {
       {Key? key,
       this.hintText,
       required this.controller,
-      this.icon = Icons.person})
+      this.icon = Icons.person,
+      required this.x})
       : super(key: key);
   final String? hintText;
   final IconData icon;
+  String x;
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +119,13 @@ class RoundedInputField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         cursorColor: offersColor,
+        onChanged: (value) {
+          setState() {
+            x = value;
+          }
+
+          ;
+        },
         decoration: InputDecoration(
             icon: Icon(
               icon,
@@ -132,8 +141,10 @@ class RoundedInputField extends StatelessWidget {
 
 class RoundedPasswordField extends StatefulWidget {
   final TextEditingController passwordController;
+  String x;
 
-  const RoundedPasswordField({Key? key, required this.passwordController})
+  RoundedPasswordField(
+      {Key? key, required this.passwordController, required this.x})
       : super(key: key);
 
   @override
@@ -147,6 +158,11 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
+        onChanged: (value) {
+          setState() {
+            widget.x = value;
+          }
+        },
         controller: widget.passwordController,
         obscureText: isObscure,
         cursorColor: offersColor,

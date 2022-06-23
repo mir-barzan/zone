@@ -73,24 +73,19 @@ class FireAuth {
   }
 
   //ULI
-  Future signInUser(
+  Future<void> signInUser(
     BuildContext context, {
     required String email,
     required String password,
   }) async {
     try {
-      if (email.isNotEmpty == true || password.isNotEmpty == true) {
-        //make sure that the user email is verified
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
 
-        await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
+      print("########\n#######\n#######");
 
-        print("########\n#######\n#######");
-
-        print("########\n#######\n#######");
-      }
+      print("########\n#######\n#######");
     } catch (err) {
-      Fluttertoast.showToast(msg: 'Error Login');
+      Fluttertoast.showToast(msg: err.toString());
     }
   }
 

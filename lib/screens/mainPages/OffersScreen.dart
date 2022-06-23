@@ -113,7 +113,8 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
           ? FutureBuilder(
               future: FirebaseFirestore.instance
                   .collection('Category')
-                  .where('searchKeys', arrayContains: searchControlling.text)
+                  .where('searchKeys',
+                      arrayContains: searchControlling.text.toString().trim())
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -124,19 +125,18 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                   );
                 }
                 return ListView.builder(
-                  controller: ScrollController(),
-                  itemCount: (snapshot.data! as dynamic).docs.length,
+                  itemCount: (snapshot.data! as dynamic).docs!.length,
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => offerProfile(
+                        MaterialPageRoute(builder: (context) {
+                          return offerProfile(
                             uid: (snapshot.data! as dynamic).docs[index]
                                 ['offerId'],
                             ownerUid: (snapshot.data! as dynamic).docs[index]
                                 ['uid'],
-                          ),
-                            ),
+                          );
+                        }),
                           ),
                       child: Container(
                           margin: EdgeInsets.all(10),
@@ -146,16 +146,19 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                             children: [
                               ListTile(
                                 title: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      (snapshot.data! as dynamic).docs[index]
-                                      ['title'],
+                                      'I will ${(snapshot.data! as dynamic).docs[index]['title']}',
+                                      maxLines: 2,
                                     ),
                                     rating(
-                                        (snapshot.data! as dynamic).docs[index]
-                                        ['rating'],
+                                        double.parse((snapshot.data! as dynamic)
+                                            .docs[index]['rating']),
                                         true,
-                                        20)
+                                        10)
                                   ],
                                 ),
                                 trailing: Container(

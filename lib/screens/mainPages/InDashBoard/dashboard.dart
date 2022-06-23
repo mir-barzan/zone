@@ -12,6 +12,7 @@ import 'package:zone/screens/mainPages/InDashBoard/chats/chat.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chatScreen.dart';
 import 'package:zone/screens/mainPages/InDashBoard/favorites/favorites.dart';
 import 'package:zone/screens/mainPages/InDashBoard/myOffers.dart';
+import 'package:zone/screens/mainPages/InDashBoard/support.dart';
 import 'package:zone/screens/mainPages/InDashBoard/withdrawal.dart';
 import '../../../widgets/AdditionalWidgets.dart';
 
@@ -63,7 +64,7 @@ class _dashboardState extends State<dashboard> {
           )),
       dashBoardContainers(
           'Support',
-          withdraw(),
+          support(),
           Icon(
             Icons.contact_support,
             color: primaryColor,
