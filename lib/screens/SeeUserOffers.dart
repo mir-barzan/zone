@@ -16,18 +16,34 @@ class seeUserOffers extends StatefulWidget {
 }
 
 class _seeUserOffersState extends State<seeUserOffers> {
+  var snap2 = {};
+
+  void getData() async {
+    var snapx = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    snap2 = snapx.data()!;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-            child: SvgPicture.asset(
+        title: SvgPicture.asset(
           'assets/images/zoneLogo.svg',
           color: primaryColor,
           width: 180,
-        )),
+        ),
         backgroundColor: offersColor,
         elevation: 0,
         actions: [
@@ -48,10 +64,10 @@ class _seeUserOffersState extends State<seeUserOffers> {
                     children: [
                       FittedBox(
                           child: Icon(
-                        Icons.monetization_on,
-                        color: offersColor,
-                        size: 30,
-                      )),
+                            Icons.monetization_on,
+                            color: offersColor,
+                            size: 30,
+                          )),
                       FittedBox(
                         child: Text(
                           "  0.0 ",
@@ -85,38 +101,39 @@ class _seeUserOffersState extends State<seeUserOffers> {
 
             return Expanded(
                 child: GridView(
-              physics: ScrollPhysics(),
-              padding: EdgeInsets.all(10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 3 / 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 280,
-              ),
-              children:
+                  physics: ScrollPhysics(),
+                  padding: EdgeInsets.all(10),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 280,
+                  ),
+                  children:
                   List<Widget>.generate(snapshot.data!.docs.length, (index) {
-                        return Container(
-                            child: MainOfferCard(
+                    return Container(
+                        child: MainOfferCard(
                           snap: snapshot.data!.docs[index].data(),
                           isLocal: false,
+                          snap2: snap2,
                         ));
-                      }) +
+                  }) +
                       [
                         Center(
                             child: Wrap(
-                          children: [
-                            Container(
-                              height: 20,
-                            )
-                          ],
-                        ))
+                              children: [
+                                Container(
+                                  height: 20,
+                                )
+                              ],
+                            ))
                       ] +
                       [
                         Container(
                           height: 1,
                         )
                       ],
-            ));
+                ));
           },
         ),
       ),

@@ -36,10 +36,9 @@ class _profileScreenState extends State<profileScreen> {
   bool isStar = false;
   bool isVerified = false;
   String rank = "";
-  String userRating = "";
+  String userRating = "0";
   String userId = "";
   List skills = [];
-  var userData = {};
   int portLen = 0;
 
   var sss;
@@ -51,6 +50,8 @@ class _profileScreenState extends State<profileScreen> {
 
     // getData();
   }
+
+  var userData = {};
 
   getData() async {
     try {
@@ -71,9 +72,7 @@ class _profileScreenState extends State<profileScreen> {
       userId = userData['uid'];
       skills = userData['skills'];
       setState(() {});
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
+    } catch (e) {}
   }
 
   checkRank() {
@@ -117,50 +116,39 @@ class _profileScreenState extends State<profileScreen> {
               : null,
           elevation: 0,
           backgroundColor: primaryColor,
-          title: Expanded(
-              child: SvgPicture.asset(
-            'assets/images/zoneLogo.svg',
-            color: offersColor,
-            width: 180,
-          )),
-          centerTitle: true,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  //navigateTo(context, const userSettings());
-                },
-                child: Icon(
-                  Icons.adaptive.share,
-                  color: secColor,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: widget.isVisiting
-                  ? null
-                  : GestureDetector(
-                      onTap: () {
-                        navigateTo(
-                            context,
-                            const userSettings(
-                              isAfterChange: false,
-                            ));
-                      },
-                      child: Icon(
-                        Icons.settings,
-                        color: secColor,
-                      ),
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.isVisiting
+                ? null
+                : GestureDetector(
+                    onTap: () {
+                      navigateTo(
+                          context,
+                          const userSettings(
+                            isAfterChange: false,
+                          ));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Edit',
+                          style: TextStyle(color: offersColor),
+                        ),
+                        Icon(
+                          Icons.settings,
+                          color: secColor,
+                        ),
+                      ],
                     ),
-            ),
-          ],
+                  ),
+          ),
+          centerTitle: true,
         ),
         body: Center(
             child: checker(
-                username,
-                ListView(
+          username,
+          ListView(
             physics: PageScrollPhysics(),
             padding: EdgeInsets.all(20),
             children: [
@@ -168,113 +156,171 @@ class _profileScreenState extends State<profileScreen> {
                 height: 10.0,
               ),
               Container(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
                     child: Stack(
-                            clipBehavior: Clip.none,
-                            alignment: Alignment.center,
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          height: 350,
+                          width: width,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              ClipRect(
-                                child: Container(
-                                  height: 350,
-                                  width: width,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                              Container(
+                                width: 5,
+                                height: 120,
+                                decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    border: Border.all(color: primaryColor)),
+                              ),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text(
+                                          '${userData['fname']} ${userData['lname']}',
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                              color: offersColor),
+                                        ),
+                                        Text(
+                                          ' @${userData['username']}',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: offersColor),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            FittedBox(
+                                              child: rating(
+                                                  double.parse(userRating),
+                                                  true,
+                                                  20),
+                                            ),
+                                            Text(
+                                              '(${userData['ratingCounter']})',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                    ),
+                                  ],
+                                ),
+                                height: 80,
+                                decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    border: Border.all(color: primaryColor)),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
                                     children: [
                                       Container(
-                                        width: 5,
-                                        height: 120,
-                                        decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            border: Border.all(
-                                                color: primaryColor)),
-                                      ),
-                                      Container(
-                                        child: Expanded(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    '${userData['fname']} ${userData['lname']}',
-                                                    style: TextStyle(
-                                                        fontSize: 24,
-                                                        fontWeight:
-                                                        FontWeight.bold,
-                                                        color: offersColor),
-                                                  ),
-                                                  Text(
-                                                    ' @${userData['username']}',
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                        FontWeight.bold,
-                                                        color: offersColor),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                    children: [
-                                                      FittedBox(
-                                                        child: rating(
-                                                            double.parse(
-                                                                userRating),
-                                                            true,
-                                                            20),
-                                                      ),
-                                                      Text(
-                                                        '(${userData['ratingCounter']})',
-                                                        style: TextStyle(
-                                                            color: Colors.grey),
-                                                      )
-                                                    ],
-                                                  )
-                                                ],
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                        padding: const EdgeInsets.only(
+                                            left: 8,
+                                            bottom: 8,
+                                            top: 15,
+                                            right: 8),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 75,
+                                              child: FittedBox(
+                                                child: Text(
+                                                  "Sold Offers",
+                                                  style: new TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: primaryColor,
+                                                      letterSpacing: 1),
+                                                ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            Container(
+                                              height: 5,
+                                            ),
+                                            CircularPercentIndicator(
+                                              circularStrokeCap:
+                                                  CircularStrokeCap.butt,
+                                              backgroundColor:
+                                                  oldRankPercentColor(),
+                                              progressColor: rankPercentColor(),
+                                              radius: 36.0,
+                                              animation: true,
+                                              animationDuration: 2000,
+                                              lineWidth: 6.0,
+                                              percent: 55 / 100,
+                                              center: Text(
+                                                "0",
+                                                style: new TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: primaryColor,
+                                                    fontSize: 15.0),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        height: 80,
-                                        decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            border: Border.all(
-                                                color: primaryColor)),
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Container(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8,
-                                                    bottom: 8,
-                                                    top: 15,
-                                                    right: 8),
-                                                child: Column(
+                                    ],
+                                  ),
+                                  Container(
+                                    width: 5,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        border:
+                                            Border.all(color: primaryColor)),
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 8,
+                                            bottom: 8,
+                                            top: 15,
+                                            right: 8),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Column(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                      MainAxisAlignment.center,
                                                   children: [
                                                     Container(
-                                                      width: 75,
+                                                      width: 40,
                                                       child: FittedBox(
                                                         child: Text(
-                                                          "Sold Offers",
+                                                          "Rank",
                                                           style: new TextStyle(
                                                               fontWeight:
-                                                              FontWeight
-                                                                  .bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               color:
-                                                              primaryColor,
-                                                              letterSpacing: 1),
+                                                                  primaryColor,
+                                                              letterSpacing: 1,
+                                                              fontSize: 18.0),
                                                         ),
                                                       ),
                                                     ),
@@ -283,338 +329,255 @@ class _profileScreenState extends State<profileScreen> {
                                                     ),
                                                     CircularPercentIndicator(
                                                       circularStrokeCap:
-                                                      CircularStrokeCap
-                                                          .butt,
+                                                          CircularStrokeCap
+                                                              .butt,
                                                       backgroundColor:
-                                                      oldRankPercentColor(),
+                                                          oldRankPercentColor(),
                                                       progressColor:
-                                                      rankPercentColor(),
+                                                          rankPercentColor(),
                                                       radius: 36.0,
                                                       animation: true,
                                                       animationDuration: 2000,
                                                       lineWidth: 6.0,
-                                                      percent: 55 / 100,
+                                                      percent: 100 / 100,
                                                       center: Text(
-                                                        "0",
+                                                        rank.toUpperCase(),
                                                         style: new TextStyle(
                                                             fontWeight:
-                                                            FontWeight.bold,
+                                                                FontWeight.bold,
                                                             color: primaryColor,
                                                             fontSize: 15.0),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                            width: 5,
-                                            height: 150,
-                                            decoration: BoxDecoration(
-                                                color: primaryColor,
-                                                border: Border.all(
-                                                    color: primaryColor)),
-                                          ),
-                                          Column(
-                                            children: [
-                                              Container(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8,
-                                                    bottom: 8,
-                                                    top: 15,
-                                                    right: 8),
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                      children: [
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                          children: [
-                                                            Container(
-                                                              width: 40,
-                                                              child: FittedBox(
-                                                                child: Text(
-                                                                  "Rank",
-                                                                  style: new TextStyle(
-                                                                      fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                      color:
-                                                                      primaryColor,
-                                                                      letterSpacing:
-                                                                      1,
-                                                                      fontSize:
-                                                                      18.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              height: 5,
-                                                            ),
-                                                            CircularPercentIndicator(
-                                                              circularStrokeCap:
-                                                              CircularStrokeCap
-                                                                  .butt,
-                                                              backgroundColor:
-                                                              oldRankPercentColor(),
-                                                              progressColor:
-                                                              rankPercentColor(),
-                                                              radius: 36.0,
-                                                              animation: true,
-                                                              animationDuration:
-                                                              2000,
-                                                              lineWidth: 6.0,
-                                                              percent:
-                                                              100 / 100,
-                                                              center: Text(
-                                                                rank.toUpperCase(),
-                                                                style: new TextStyle(
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                    color:
-                                                                    primaryColor,
-                                                                    fontSize:
-                                                                    15.0),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      )
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(40.0),
-                                        topLeft: Radius.circular(40.0),
-                                        bottomRight: Radius.circular(40.0),
-                                        bottomLeft: Radius.circular(40.0)),
-                                    color: secColor,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 280,
-                                child: CircleAvatar(
-                                  radius: 54,
-                                  backgroundColor: primaryColor,
-                                  child: CircleAvatar(
-                                    backgroundColor: primaryColor,
-                                    backgroundImage: NetworkImage(
-                                        userData['profilePhotoUrl']),
-                                    radius: 50,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                  bottom: 290, left: 225, child: checkRank()),
-                              Positioned(
-                                  bottom: 290,
-                                  right: 225,
-                                  child: badge("verified.svg", 90, 90, false)),
+                                ],
+                              )
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 7.0,
-                    ),
-                    Divider(thickness: 2),
-                    SizedBox(
-                      height: 7.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Badges",
-                          style: new TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: offersColor,
-                              fontSize: 20.0),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            navigateTo(context, seeUserOffers(uid: userId));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'See user offers',
-                                  style: TextStyle(color: primaryColor),
-                                ),
-                                Icon(
-                                  Icons.local_offer_sharp,
-                                  color: primaryColor,
-                                )
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                                color: offersColor,
-                                borderRadius: BorderRadius.circular(30)),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(40.0),
+                                topLeft: Radius.circular(40.0),
+                                bottomRight: Radius.circular(40.0),
+                                bottomLeft: Radius.circular(40.0)),
+                            color: secColor,
                           ),
                         ),
-                      ],
-                    ),
-                    Container(
-                      height: 5,
-                    ),
-                    Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(width: 2, color: secColor),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                          children: [
-                            Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  badge("welcome.svg", 60, 60, isZoner),
-                                  badge("verified.svg", 60, 60, isVerified),
-                                  badge("pro.svg", 60, 60, isPro),
-                                  badge("gold.svg", 60, 60, isGold),
-                                  badge("star.svg", 60, 60, isStar),
-                                ])
-                          ],
-                        )),
-                    SizedBox(
-                      height: 7.0,
-                    ),
-                    Divider(thickness: 2),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Skills",
-                          style: TextStyle(
-                              letterSpacing: 1,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: secColor),
+                        Positioned(
+                          bottom: 280,
+                          child: CircleAvatar(
+                            radius: 54,
+                            backgroundColor: primaryColor,
+                            child: CircleAvatar(
+                              backgroundColor: primaryColor,
+                              backgroundImage:
+                                  NetworkImage(userData['profilePhotoUrl']),
+                              radius: 50,
+                            ),
+                          ),
                         ),
-                        Icon(
-                          Icons.school,
-                          color: offersColor,
-                          size: 22,
-                        )
+                        Positioned(
+                            bottom: 290,
+                            left: MediaQuery.of(context).size.width * 0.61,
+                            child: checkRank()),
+                        Positioned(
+                            bottom: 290,
+                            right: MediaQuery.of(context).size.width * 0.61,
+                            child: badge("verified.svg", 90, 90, false)),
                       ],
                     ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Container(
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: 6,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 7.0,
+              ),
+              Divider(thickness: 2),
+              SizedBox(
+                height: 7.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Badges",
+                    style: new TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: offersColor,
+                        fontSize: 20.0),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      navigateTo(context, seeUserOffers(uid: userId));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          for (var i in skills!)
-                            (Chip(
-                              labelStyle: TextStyle(color: primaryColor),
-                              label: Text(i.toString()),
-                              backgroundColor: offersColor,
-                            ))
+                          Text(
+                            'See user offers',
+                            style: TextStyle(color: primaryColor),
+                          ),
+                          Icon(
+                            Icons.local_offer_sharp,
+                            color: primaryColor,
+                          )
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          color: offersColor,
+                          borderRadius: BorderRadius.circular(30)),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                height: 5,
+              ),
+              Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 2, color: secColor),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            badge("welcome.svg", 60, 60, isZoner),
+                            badge("verified.svg", 60, 60, isVerified),
+                            badge("pro.svg", 60, 60, isPro),
+                            badge("gold.svg", 60, 60, isGold),
+                            badge("star.svg", 60, 60, isStar),
+                          ])
+                    ],
+                  )),
+              SizedBox(
+                height: 7.0,
+              ),
+              Divider(thickness: 2),
+              SizedBox(
+                height: 10.0,
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Skills",
+                    style: TextStyle(
+                        letterSpacing: 1,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: secColor),
+                  ),
+                  Icon(
+                    Icons.school,
+                    color: offersColor,
+                    size: 22,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Container(
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 6,
+                  children: [
+                    for (var i in skills!)
+                      (Chip(
+                        labelStyle: TextStyle(color: primaryColor),
+                        label: Text(i.toString()),
+                        backgroundColor: offersColor,
+                      ))
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "About me",
+                        style: TextStyle(
+                            color: secColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 1,
+                      ),
+                      Icon(
+                        Icons.boy_sharp,
+                        color: offersColor,
+                        size: 25,
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Wrap(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border:
+                                    Border.all(color: offersColor, width: 1)),
+                            child: Text(
+                              userData['bio'],
+                              style: TextStyle(
+                                color: secColor.withOpacity(0.8),
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Divider(
-                      thickness: 2,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "About me",
-                              style: TextStyle(
-                                  color: secColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              width: 1,
-                            ),
-                            Icon(
-                              Icons.boy_sharp,
-                              color: offersColor,
-                              size: 25,
-                            ),
-                          ],
-                        ),
-                        Center(
-                          child: Container(
-                            padding: EdgeInsets.all(20),
-                            child: Wrap(
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: offersColor, width: 1)),
-                                  child: Text(
-                                    userData['bio'],
-                                    style: TextStyle(
-                                      color: secColor.withOpacity(0.8),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 1,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Divider(
-                      thickness: 2,
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
                   "Portfolio",
                   style: TextStyle(
                       color: Colors.teal,
@@ -629,8 +592,7 @@ class _profileScreenState extends State<profileScreen> {
               Container(
                 height: 10,
               ),
-              Expanded(
-                  child: FutureBuilder(
+              FutureBuilder(
                 future: FirebaseFirestore.instance
                     .collection('Portfolio')
                     .where('uid', isEqualTo: widget.uid)
@@ -643,7 +605,8 @@ class _profileScreenState extends State<profileScreen> {
                   }
 
                   return Container(
-                    height: ((snapshot.data! as dynamic).docs.length * 320) / 2,
+                    height:
+                        ((snapshot.data! as dynamic).docs.length * 330) * 0.8,
                     child: GridView.builder(
                       physics: PageScrollPhysics(),
                       shrinkWrap: true,
@@ -668,7 +631,7 @@ class _profileScreenState extends State<profileScreen> {
                     ),
                   );
                 },
-              )),
+              ),
             ],
           ),
         )));

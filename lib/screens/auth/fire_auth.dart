@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/user.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -72,34 +73,20 @@ class FireAuth {
   }
 
   //ULI
-  Future<String> signInUser(
+  Future<void> signInUser(
     BuildContext context, {
     required String email,
     required String password,
   }) async {
-    String result = "Error !";
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
-        //make sure that the user email is verified
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
 
-        bool verified = await _auth.currentUser!.emailVerified;
-        print("########\n#######\n#######");
-        print(verified);
-        print("########\n#######\n#######");
+      print("########\n#######\n#######");
 
-        await _auth.currentUser!.reload();
-        if (verified == true) {
-          await _auth.signInWithEmailAndPassword(
-              email: email, password: password);
-          result = 'success';
-        }
-      } else {
-        showSnackBar(context, "Please fill all fields correctly");
-      }
+      print("########\n#######\n#######");
     } catch (err) {
-      result = err.toString();
+      Fluttertoast.showToast(msg: err.toString());
     }
-    return result;
   }
 
   //TODO:::: Fix this part
@@ -147,7 +134,7 @@ class FireAuth {
             size: 80,
           ));
     } on FirebaseAuthException catch (e) {
-      showSnackBar(context, e.message!);
+      Fluttertoast.showToast(msg: e.message!);
     }
   }
 
@@ -177,7 +164,10 @@ class FireAuth {
           password: password,
           uid: cred.user!.uid,
           username: fname + RandomStr,
-        );
+          dateCreated: DateTime.now().toString(),
+          activeContracts: [],
+          completedContracts: [],
+            favoriteOffers: []);
         await _firestore.collection('users').doc(cred.user!.uid).set(
           user.toJson(),
         );

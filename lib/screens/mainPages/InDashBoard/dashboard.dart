@@ -1,12 +1,19 @@
 import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/paymentProcess/pzcoin.dart';
+import 'package:zone/screens/mainPages/InDashBoard/chats/chat.dart';
+import 'package:zone/screens/mainPages/InDashBoard/chats/chatScreen.dart';
+import 'package:zone/screens/mainPages/InDashBoard/favorites/favorites.dart';
 import 'package:zone/screens/mainPages/InDashBoard/myOffers.dart';
+import 'package:zone/screens/mainPages/InDashBoard/support.dart';
+import 'package:zone/screens/mainPages/InDashBoard/withdrawal.dart';
 import '../../../widgets/AdditionalWidgets.dart';
 
 class dashboard extends StatefulWidget {
@@ -23,65 +30,57 @@ class _dashboardState extends State<dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    List<dashBoardContainers> x = [
+      dashBoardContainers(
+          'Chat',
+          mainChatsScreen(),
+          Icon(
+            Icons.chat,
+            color: primaryColor,
+          )),
+      dashBoardContainers(
+          'My offers',
+          myOffers(),
+          Icon(
+            Icons.local_offer,
+            color: primaryColor,
+            size: 50,
+          )),
+      dashBoardContainers(
+          'Withdraw',
+          withdraw(),
+          Icon(
+            Icons.monetization_on,
+            color: primaryColor,
+            size: 50,
+          )),
+      dashBoardContainers(
+          'My sales',
+          withdraw(),
+          Icon(
+            Icons.receipt_long,
+            color: primaryColor,
+            size: 50,
+          )),
+      dashBoardContainers(
+          'Support',
+          support(),
+          Icon(
+            Icons.contact_support,
+            color: primaryColor,
+            size: 50,
+          )),
+      dashBoardContainers(
+          'Favorites',
+          favorites(),
+          Icon(
+            Icons.bookmark,
+            color: primaryColor,
+            size: 50,
+          )),
+    ];
     return Scaffold(
         backgroundColor: primaryColor,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: offersColor,
-            ),
-            onPressed: () {
-              null;
-            },
-          ),
-          centerTitle: true,
-          title: Expanded(
-              child: SvgPicture.asset(
-            'assets/images/zoneLogo.svg',
-            color: primaryColor,
-            width: 180,
-          )),
-          backgroundColor: offersColor,
-          elevation: 0,
-          actions: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    padding: EdgeInsets.all(5),
-                    height: 45,
-                    width: 100,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(35),
-                        color: primaryColor),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FittedBox(
-                            child: Icon(
-                              Icons.monetization_on,
-                              color: offersColor,
-                              size: 30,
-                            )),
-                        FittedBox(
-                          child: Text(
-                            "  0.0 ",
-                            style: new TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: offersColor,
-                                fontSize: 30.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SafeArea(
@@ -134,7 +133,9 @@ class _dashboardState extends State<dashboard> {
                     builder: (BuildContext context) {
                       return Container(
                           clipBehavior: Clip.hardEdge,
-                          width: MediaQuery.of(context).size.width,
+                          width: kIsWeb
+                              ? MediaQuery.of(context).size.width * 0.5
+                              : MediaQuery.of(context).size.width,
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
@@ -143,6 +144,7 @@ class _dashboardState extends State<dashboard> {
                               clipBehavior: Clip.hardEdge,
                               child: Image.network(
                                 i,
+                                // fit: BoxFit.contain,
                                 fit: BoxFit.cover,
                               )));
                     },
@@ -154,330 +156,98 @@ class _dashboardState extends State<dashboard> {
                 height: 20,
               ),
               //chat and myOffers
+              //here
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: offersColor,
-                                      borderRadius: BorderRadius.circular(22)),
-                                  height: 120,
-                                  width: 150,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Chat",
-                                        style: new TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: primaryColor,
-                                            fontSize: 25.0),
-                                      ),
-                                      Icon(
-                                        Icons.chat,
-                                        color: primaryColor,
-                                        size: 35,
-                                      )
-                                    ],
-                                  )),
-                              Positioned(
-                                top: 5,
-                                left: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: primaryColor),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: 110,
-                                  width: 140,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              navigateTo(context, myOffers());
-                            },
-                            child: Container(
-                              child: Stack(
-                                children: [
-                                  Container(
-                                      decoration: BoxDecoration(
-                                          color: offersColor,
-                                          borderRadius:
-                                              BorderRadius.circular(22)),
-                                      height: 120,
-                                      width: 150,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "My offers",
-                                            style: new TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: primaryColor,
-                                                fontSize: 23.0),
-                                          ),
-                                          Icon(
-                                            Icons.local_offer_sharp,
-                                            color: primaryColor,
-                                            size: 30,
-                                          )
-                                        ],
-                                      )),
-                                  Positioned(
-                                    top: 5,
-                                    left: 5,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: primaryColor),
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      height: 110,
-                                      width: 140,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
+                  FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        dashboardContainer(x[0].label, x[0].icon, x[0].widget),
+                        Container(
+                          width: 20,
+                        ),
+                        dashboardContainer(x[1].label, x[1].icon, x[1].widget),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 20,
+                  ),
+                  FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        dashboardContainer(x[2].label, x[2].icon, x[2].widget),
+                        Container(
+                          width: 20,
+                        ),
+                        dashboardContainer(x[3].label, x[3].icon, x[3].widget),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 20,
+                  ),
+                  FittedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        dashboardContainer(x[4].label, x[4].icon, x[4].widget),
+                        Container(
+                          width: 20,
+                        ),
+                        dashboardContainer(x[5].label, x[5].icon, x[5].widget),
+                      ],
+                    ),
                   ),
                 ],
-              ),
-              Container(
-                height: 28,
-              ),
-              //withdraw money and ...
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: offersColor,
-                                      borderRadius: BorderRadius.circular(22)),
-                                  height: 120,
-                                  width: 150,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        child: FittedBox(
-                                          child: Text(
-                                            "Withdraw",
-                                            style: new TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: primaryColor,
-                                                fontSize: 25.0),
-                                          ),
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.monetization_on,
-                                        color: primaryColor,
-                                        size: 28,
-                                      )
-                                    ],
-                                  )),
-                              Positioned(
-                                top: 5,
-                                left: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: primaryColor),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: 110,
-                                  width: 140,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: offersColor,
-                                      borderRadius: BorderRadius.circular(22)),
-                                  height: 120,
-                                  width: 150,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "My sales",
-                                        style: new TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: primaryColor,
-                                            fontSize: 23.0),
-                                      ),
-                                      Icon(
-                                        Icons.restore_page,
-                                        color: primaryColor,
-                                        size: 27,
-                                      )
-                                    ],
-                                  )),
-                              Positioned(
-                                top: 5,
-                                left: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: primaryColor),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: 110,
-                                  width: 140,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                height: 28,
-              ),
-              //..... and .....
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: offersColor,
-                                      borderRadius: BorderRadius.circular(22)),
-                                  height: 120,
-                                  width: 150,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Support",
-                                            style: new TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: primaryColor,
-                                                fontSize: 23.0),
-                                          ),
-                                          Icon(
-                                            Icons.contact_support_outlined,
-                                            color: primaryColor,
-                                            size: 26,
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  )),
-                              Positioned(
-                                top: 5,
-                                left: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: primaryColor),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: 110,
-                                  width: 140,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                  decoration: BoxDecoration(
-                                      color: offersColor,
-                                      borderRadius: BorderRadius.circular(22)),
-                                  height: 120,
-                                  width: 150,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        child: FittedBox(
-                                          child: Text(
-                                            "Favorites",
-                                            style: new TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: primaryColor,
-                                                fontSize: 23.0),
-                                          ),
-                                        ),
-                                      ),
-                                      Icon(
-                                        Icons.bookmark,
-                                        color: primaryColor,
-                                      )
-                                    ],
-                                  )),
-                              Positioned(
-                                top: 5,
-                                left: 5,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: primaryColor),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: 110,
-                                  width: 140,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                height: 15,
               )
             ]),
           ),
         ));
   }
+
+  Widget dashboardContainer(String label, Icon icon, Widget widget) {
+    return InkWell(
+      onTap: () {
+        navigateTo(context, widget);
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: 30, bottom: 5, right: 5, left: 5),
+        padding: EdgeInsets.all(5),
+        width: kIsWeb
+            ? MediaQuery.of(context).size.width * 0.18
+            : MediaQuery.of(context).size.width * 0.35,
+        height: kIsWeb
+            ? MediaQuery.of(context).size.width * 0.11
+            : MediaQuery.of(context).size.width * 0.22,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: offersColor,
+        ),
+        child: FittedBox(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(label, style: TextStyle(fontSize: 50, color: primaryColor)),
+              icon
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class dashBoardContainers {
+  String label;
+  Icon icon;
+  Widget widget;
+
+  dashBoardContainers(this.label, this.widget, this.icon);
 }

@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:zone/screens/mainPages/InDashBoard/chats/chatScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
 
 import '../../additional/colors.dart';
@@ -24,7 +27,10 @@ class _offerProfileState extends State<offerProfile> {
 
   var offerData = {};
   var userData = {};
+  var CurrentUserData = {};
+  bool isLoading = false;
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -33,6 +39,7 @@ class _offerProfileState extends State<offerProfile> {
 
   List? ques = [];
   List? answ = [];
+  String rrating = '0';
 
   getData() async {
     try {
@@ -40,13 +47,20 @@ class _offerProfileState extends State<offerProfile> {
           .collection('Category')
           .doc(widget.uid)
           .get();
-      offerData = snap.data()!;
-      username = offerData['username'];
+      var snap2 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
 
-      setState(() {});
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
+      setState(() {
+        CurrentUserData = snap2.data()!;
+        offerData = snap.data()!;
+        username = offerData['username'];
+        ques = offerData['faqQuestion'];
+        answ = offerData['faqAnswer'];
+        rrating = userData['rating'];
+      });
+    } catch (e) {}
   }
 
   getUserData() async {
@@ -57,17 +71,13 @@ class _offerProfileState extends State<offerProfile> {
           .get();
       userData = snap.data()!;
       setState(() {});
-    } catch (e) {
-      showSnackBar(context, e.toString());
-    }
+    } catch (e) {}
   }
 
   assignFAQ() {}
 
   @override
   Widget build(BuildContext context) {
-    ques = offerData['faqQuestion'];
-    answ = offerData['faqAnswer'];
     for (int i = 0; i < ques!.length; i++) {
       createQuestionAndAnswer(ques!.elementAt(i), answ!.elementAt(i));
     }
@@ -76,12 +86,11 @@ class _offerProfileState extends State<offerProfile> {
       backgroundColor: primaryColor,
       appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-            child: SvgPicture.asset(
+        title: SvgPicture.asset(
           'assets/images/zoneLogo.svg',
           color: primaryColor,
           width: 180,
-        )),
+        ),
         backgroundColor: offersColor,
         elevation: 0,
       ),
@@ -227,7 +236,7 @@ class _offerProfileState extends State<offerProfile> {
                 Column(
                   children: [
                     Ratingbadge(
-                      userData['rating'],
+                      rrating,
                       90,
                       90,
                     ),
@@ -290,24 +299,38 @@ class _offerProfileState extends State<offerProfile> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              await setActiveContract();
+              navigateToWithoutBack(
+                context,
+                chatScreen(
+                    userAvatar: CurrentUserData['profilePhotoUrl'],
+                    peerAvatar: userData['profilePhotoUrl'],
+                    peerId: userData['uid'],
+                    peerName: '${userData['fname']} ${userData['lname']}'),
+              );
+            },
             child: Container(
               margin: EdgeInsets.all(8),
               decoration: BoxDecoration(
                   color: offersColor, borderRadius: BorderRadius.circular(30)),
               padding: EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Text(
-                    'Buy This Offer',
-                    style: TextStyle(fontSize: 23, color: primaryColor),
-                  ),
-                  Icon(
-                    Icons.shopping_cart,
-                    color: primaryColor,
-                    size: 24,
-                  )
-                ],
+              child: isLoading
+                  ? CircularProgressIndicator(
+                      color: primaryColor,
+                    )
+                  : Row(
+                      children: [
+                        Text(
+                          'Buy This Offer',
+                          style: TextStyle(fontSize: 23, color: primaryColor),
+                        ),
+                        Icon(
+                          Icons.shopping_cart,
+                          color: primaryColor,
+                          size: 24,
+                        )
+                      ],
               ),
             ),
           )
@@ -346,5 +369,34 @@ class _offerProfileState extends State<offerProfile> {
     ));
 
     setState(() {});
+  }
+
+  setActiveContract() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      List currentlyActiveForUser = CurrentUserData['activeContracts'];
+      List currentlyActiveForOfferSeller = userData['activeContracts'];
+      currentlyActiveForUser.add(userData['uid']);
+      currentlyActiveForOfferSeller.add(CurrentUserData['uid']);
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(CurrentUserData['uid'])
+          .update({'activeContracts': currentlyActiveForUser});
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userData['uid'])
+          .update({'activeContracts': currentlyActiveForOfferSeller});
+      setState(() {
+        isLoading = false;
+      });
+      Fluttertoast.showToast(msg: "Activated Offer Successfully");
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 }

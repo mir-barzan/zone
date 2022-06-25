@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/mainPages/offerProfile.dart';
@@ -30,7 +31,7 @@ class _MainPortfolioCardState extends State<MainPortfolioCard> {
         isLoading = true;
       });
     } catch (e) {
-      showSnackBar(context, e.toString());
+      Fluttertoast.showToast(msg: e.toString());
       setState(() {
         isLoading = false;
       });
@@ -144,7 +145,10 @@ class _MainPortfolioCardState extends State<MainPortfolioCard> {
                                     TextButton(
                                       onPressed: () =>
                                           Navigator.pop(context, 'Cancel'),
-                                      child: const Text('Cancel'),
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(color: offersColor),
+                                      ),
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -162,7 +166,10 @@ class _MainPortfolioCardState extends State<MainPortfolioCard> {
                                         }
                                         Navigator.pop(context, 'OK');
                                       },
-                                      child: const Text('OK'),
+                                      child: const Text(
+                                        'OK',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
                                     ),
                                   ],
                                 ),

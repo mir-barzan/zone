@@ -4,25 +4,17 @@ import 'package:zone/additional/colors.dart';
 import 'package:zone/additional/colors.dart';
 
 class RoundedButton extends StatelessWidget {
-<<<<<<< HEAD
-  const RoundedButton(
-      {Key? key, this.press, this.textColor = Colors.white, required this.text})
-      : super(key: key);
-  final String text;
-  final Function()? press;
-=======
   final isLoading;
 
   const RoundedButton(
       {Key? key,
-      this.press,
+      required this.press,
       this.textColor = Colors.white,
       required this.text,
       required this.isLoading})
       : super(key: key);
   final text;
-  final press;
->>>>>>> upstream/master
+  final VoidCallback? press;
   final Color? textColor;
 
   @override
@@ -40,15 +32,6 @@ class RoundedButton extends StatelessWidget {
 
   Widget newElevatedButton() {
     return ElevatedButton(
-<<<<<<< HEAD
-      child: Text(
-        text,
-        style: TextStyle(color: textColor, fontSize: 17),
-      ),
-      onPressed: press,
-      style: ElevatedButton.styleFrom(
-          primary: kPrimaryColor,
-=======
       child: isLoading
           ? CircularProgressIndicator(
               color: primaryColor,
@@ -60,7 +43,6 @@ class RoundedButton extends StatelessWidget {
       onPressed: press,
       style: ElevatedButton.styleFrom(
           primary: offersColor,
->>>>>>> upstream/master
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
           textStyle: TextStyle(
               letterSpacing: 2,
@@ -75,10 +57,7 @@ class RoundedButton extends StatelessWidget {
 class RoundedIcon extends StatelessWidget {
   const RoundedIcon({Key? key, required this.imageUrl}) : super(key: key);
   final String imageUrl;
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/master
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -112,11 +91,7 @@ class TextFieldContainer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       width: size.width * 0.8,
       decoration: BoxDecoration(
-<<<<<<< HEAD
-        color: kPrimaryLightColor,
-=======
         color: Colors.grey.shade200,
->>>>>>> upstream/master
         borderRadius: BorderRadius.circular(29),
       ),
       child: child,
@@ -125,39 +100,36 @@ class TextFieldContainer extends StatelessWidget {
 }
 
 class RoundedInputField extends StatelessWidget {
-<<<<<<< HEAD
-  const RoundedInputField({Key? key, this.hintText, this.icon = Icons.person})
-=======
   final controller;
 
   RoundedInputField(
       {Key? key,
       this.hintText,
       required this.controller,
-      this.icon = Icons.person})
->>>>>>> upstream/master
+      this.icon = Icons.person,
+      required this.x})
       : super(key: key);
   final String? hintText;
   final IconData icon;
+  String x;
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
-<<<<<<< HEAD
-        cursorColor: kPrimaryColor,
-        decoration: InputDecoration(
-            icon: Icon(
-              icon,
-              color: kPrimaryColor,
-=======
         controller: controller,
         cursorColor: offersColor,
+        onChanged: (value) {
+          setState() {
+            x = value;
+          }
+
+          ;
+        },
         decoration: InputDecoration(
             icon: Icon(
               icon,
               color: offersColor,
->>>>>>> upstream/master
             ),
             hintText: hintText,
             hintStyle: const TextStyle(fontFamily: 'OpenSans'),
@@ -167,31 +139,12 @@ class RoundedInputField extends StatelessWidget {
   }
 }
 
-<<<<<<< HEAD
-class RoundedPasswordField extends StatelessWidget {
-  const RoundedPasswordField({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFieldContainer(
-      child: TextFormField(
-        obscureText: true,
-        cursorColor: kPrimaryColor,
-        decoration: const InputDecoration(
-            icon: Icon(
-              Icons.lock,
-              color: kPrimaryColor,
-            ),
-            hintText: "Password",
-            hintStyle: TextStyle(fontFamily: 'OpenSans'),
-            suffixIcon: Icon(
-              Icons.visibility,
-              color: kPrimaryColor,
-=======
 class RoundedPasswordField extends StatefulWidget {
   final TextEditingController passwordController;
+  String x;
 
-  const RoundedPasswordField({Key? key, required this.passwordController})
+  RoundedPasswordField(
+      {Key? key, required this.passwordController, required this.x})
       : super(key: key);
 
   @override
@@ -205,6 +158,11 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
+        onChanged: (value) {
+          setState() {
+            widget.x = value;
+          }
+        },
         controller: widget.passwordController,
         obscureText: isObscure,
         cursorColor: offersColor,
@@ -225,7 +183,6 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
                 Icons.visibility,
                 color: offersColor,
               ),
->>>>>>> upstream/master
             ),
             border: InputBorder.none),
       ),

@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:zone/Services/authProviding.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/signup.dart';
@@ -31,46 +34,51 @@ class _login1State extends State<login1> {
   }
 
   bool _isLoading = false;
+  String EmailField = "";
+  String PasswordField = "";
 
   void signInUser() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String result = await FireAuth().signInUser(context,
-        email: _emailController.text, password: _passwordController.text);
-    if (result != 'success') {
-      showAlertDialog(
-          context,
-          "Make sure all fields are filled correctly or you didn't verify your email!",
-          "",
-          Icon(
-            Icons.error,
-            color: Colors.red,
-            size: 60,
-          ));
-    } else {
-      showAlertDialog(
-          context,
-          "",
-          "Success",
-          Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      await FireAuth().signInUser(context,
+          email: EmailField.trim(), password: PasswordField.trim());
+
       navigateToWithoutBack(
           context,
           mainPage(
             isFromSettings: false,
           ));
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(msg: "Logged In successfully");
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
+      setState(() {
+        _isLoading = false;
+      });
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    switch (authProvider.status) {
+      case Status.authenticationError:
+        Fluttertoast.showToast(msg: "Sign In Fail");
+        break;
+      case Status.authenticationCanceled:
+        Fluttertoast.showToast(msg: "Sign In Cancelled");
+        break;
+      case Status.authenticated:
+        Fluttertoast.showToast(msg: "Sign In Success");
+        break;
+      default:
+        break;
+    }
     return WillPopScope(
       onWillPop: () async => false,
       child: SafeArea(
@@ -102,7 +110,24 @@ class _login1State extends State<login1> {
                           const SizedBox(
                             height: 15,
                           ),
-                          iconButton(context),
+                          GestureDetector(
+                              onTap: () async {
+                                try {
+                                  bool isSuccess =
+                                      await authProvider.handleSignIn();
+                                  if (isSuccess == true) {
+                                    navigateTo(context,
+                                        mainPage(isFromSettings: false));
+                                    print('Success');
+                                  } else {
+                                    Fluttertoast.showToast(msg: "Didn't work");
+                                    print('Failed');
+                                  }
+                                } catch (e) {
+                                  Fluttertoast.showToast(msg: e.toString());
+                                }
+                              },
+                              child: iconButton(context)),
                           const SizedBox(
                             height: 20,
                           ),
@@ -118,10 +143,12 @@ class _login1State extends State<login1> {
                             child: Column(
                               children: [
                                 RoundedInputField(
+                                    x: EmailField,
                                     hintText: "Email",
                                     icon: Icons.email,
                                     controller: _emailController),
                                 RoundedPasswordField(
+                                  x: PasswordField,
                                   passwordController: _passwordController,
                                 ),
                                 switchListTile(),
@@ -130,7 +157,13 @@ class _login1State extends State<login1> {
                                     text: 'LOGIN',
                                     press: () {
                                       // signInUser();
-                                      signInUser();
+                                      try {
+                                        signInUser();
+                                      } catch (e) {}
+                                      print("###########################");
+                                      print(_emailController.text);
+                                      print(_passwordController.text);
+                                      print("###########################");
                                     }),
                                 const SizedBox(
                                   height: 10,
@@ -196,14 +229,6 @@ class _login1State extends State<login1> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [
-        RoundedIcon(imageUrl: "assets/images/facebook.png"),
-        SizedBox(
-          width: 20,
-        ),
-        RoundedIcon(imageUrl: "assets/images/twitter.png"),
-        SizedBox(
-          width: 20,
-        ),
         RoundedIcon(imageUrl: "assets/images/google.jpg"),
       ],
     );

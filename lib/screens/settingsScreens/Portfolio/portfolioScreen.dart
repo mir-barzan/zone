@@ -46,7 +46,7 @@ class _portfolioScreenState extends State<portfolioScreen> {
           },
         ),
         centerTitle: true,
-        title: Expanded(child: Text('Your Portfolio')),
+        title: Text('Your Portfolio'),
         backgroundColor: offersColor,
         elevation: 0,
         actions: [

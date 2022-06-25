@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/login.dart';
@@ -37,30 +38,36 @@ class _signup1State extends State<SignUp1> {
     _lastnameController.dispose();
   }
 
+  String firstName = "";
+  String Email = "";
+  String Surname = "";
+  String Password = "";
+
   void signUser() async {
-    setState(() {
-      _isLoading = true;
-    });
-    String result = await FireAuth().signUpUser(
-        context: context,
-        fname: _firstnameController.text,
-        lname: _lastnameController.text,
-        email: _emailController.text,
-        password: _passwordController.text);
-    navigateToWithoutBack(context, login1());
-    if (result != 'success') {
-      showAlertDialog(
-          context,
-          "Make sure all fields are filled correctly!",
-          result,
-          Icon(
-            Icons.error,
-            color: Colors.red,
-          ));
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      String result = await FireAuth().signUpUser(
+          context: context,
+          fname: firstName.trim(),
+          lname: Surname.trim(),
+          email: Email.trim(),
+          password: Password.trim());
+      Navigator.pushReplacement<void, void>(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => login1(),
+        ),
+      );
+      Fluttertoast.showToast(
+          msg: 'registration successful please verify your email then login');
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString());
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
@@ -99,18 +106,22 @@ class _signup1State extends State<SignUp1> {
                           child: Column(
                             children: [
                               RoundedInputField(
+                                  x: Email,
                                   controller: _emailController,
                                   hintText: "Email",
                                   icon: Icons.email),
                               RoundedInputField(
+                                  x: firstName,
                                   controller: _firstnameController,
                                   hintText: "Name",
                                   icon: Icons.person),
                               RoundedInputField(
+                                  x: Surname,
                                   controller: _lastnameController,
                                   hintText: "Surname",
                                   icon: Icons.person),
                               RoundedPasswordField(
+                                x: Password,
                                 passwordController: _passwordController,
                               ),
                               RoundedButton(

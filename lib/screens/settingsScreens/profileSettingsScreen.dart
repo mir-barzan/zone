@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -135,7 +136,7 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
           .update({OLD: NEW});
       ;
     } catch (e) {
-      showSnackBar(context, e.toString());
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 
@@ -151,7 +152,7 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
 
       setState(() {});
     } catch (e) {
-      showSnackBar(context, e.toString());
+      Fluttertoast.showToast(msg: e.toString());
     }
   }
 
@@ -187,7 +188,7 @@ class _profileSettingsScreenState extends State<profileSettingsScreen> {
                 navigateToWithoutBack(
                     context, userSettings(isAfterChange: true));
               } catch (e) {
-                showSnackBar(context, e.toString());
+                Fluttertoast.showToast(msg: e.toString());
                 setState(() {
                   _isLoading = false;
                 });

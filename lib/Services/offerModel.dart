@@ -21,6 +21,7 @@ class Offer {
   final categoryTags;
   final faqQuestion;
   final faqAnswer;
+  final searchKeys;
 
   const Offer(
       {required this.title,
@@ -37,7 +38,9 @@ class Offer {
       required this.price,
       required this.offerId,
       required this.categoryTags,
-      required this.faqQuestion, required this.faqAnswer});
+      required this.faqQuestion,
+      required this.faqAnswer,
+      required this.searchKeys});
 
   Map<String, dynamic> toJson() => {
         "title": title,
@@ -54,8 +57,9 @@ class Offer {
         "price": price,
         "offerId": offerId,
         "categoryTags": categoryTags,
-    "faqQuestion":faqQuestion,
-    "faqAnswer":faqAnswer
+        "faqQuestion": faqQuestion,
+        "faqAnswer": faqAnswer,
+        "searchKeys": searchKeys
       };
 
   static Offer fromSnap(DocumentSnapshot snap) {
@@ -76,6 +80,8 @@ class Offer {
         price: snapshot['price'],
         offerId: snapshot['offerId'],
         categoryTags: snapshot['categoryTags'],
-    faqQuestion: snapshot['faqQuestion'], faqAnswer: snapshot['faqAnswer']);
+        faqQuestion: snapshot['faqQuestion'],
+        faqAnswer: snapshot['faqAnswer'],
+        searchKeys: snapshot['searchKeys']);
   }
 }

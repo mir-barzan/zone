@@ -1,10 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zone/Services/storageSettings.dart';
+import 'package:zone/screens/mainPages/InDashBoard/chats/chatMsg.dart';
 
 import 'offerModel.dart';
 import 'portfolioModel.dart';
@@ -13,43 +15,68 @@ class FireStoreSettings{
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //post the offer and save it in FireStore database
+  Future<String> openChat(String recieverId) async {
+    String result = "error";
+    String chatId = Uuid().v1();
+    try {
+      Chatt chat = Chatt(
+        chatId: chatId,
+        isActive: true,
+        recieverId: recieverId,
+        senderId: FirebaseAuth.instance.currentUser!.uid,
+      );
+      _firestore.collection("Chats").doc(chatId).set(chat.toJson());
+      result = "success";
+    } catch (e) {
+      print(e.toString());
+      result = 'error';
+    }
+    return result;
+  }
 
   Future<String> uploadOffer(
       bool isLoading,
       List faqQuestions,
-    String title,
-    String description,
-     uid,
-    String price,
-    Uint8List file,
-    fname, lname, username ,rating, rank, timeNeeded, List categoryTags, List faqAnswers) async{
+      String title,
+      String description,
+      uid,
+      String price,
+      Uint8List file,
+      fname,
+      lname,
+      username,
+      rating,
+      rank,
+      timeNeeded,
+      categoryTags,
+      List faqAnswers) async {
     String result = "Error!";
-        try{
-          isLoading = true;
-          String offerId = Uuid().v1();
-          String photoUrl = await storageMeth().uploadImageFileToFirebaseStorage('Offers', file, true);
-          Offer offer = Offer(
-            title: title,
-            fname: fname,
-            lname: lname,
-            username: username,
-            uid: uid,
-            description: description,
-            rating: rating,
-            rank: rank,
-            PhotoUrl: photoUrl,
-            datePublished: DateTime.now(),
-            timeNeeded: timeNeeded,
-            price: price,
-            offerId: offerId,
-            categoryTags: categoryTags,
-            faqQuestion: faqQuestions,
-              faqAnswer: faqAnswers
 
+    try {
+      isLoading = true;
+      String offerId = Uuid().v1();
+      String photoUrl = await storageMeth()
+          .uploadImageFileToFirebaseStorage('Offers', file, true);
 
-
-
-          );
+      Offer offer = Offer(
+        title: title,
+        fname: fname,
+        lname: lname,
+        username: username,
+        uid: uid,
+        description: description,
+        rating: rating,
+        rank: rank,
+        PhotoUrl: photoUrl,
+        datePublished: DateTime.now(),
+        timeNeeded: timeNeeded,
+        price: price,
+        offerId: offerId,
+        categoryTags: categoryTags,
+        faqQuestion: faqQuestions,
+        faqAnswer: faqAnswers,
+        searchKeys: searchKeys(categoryTags),
+      );
       _firestore.collection('Category').doc(offerId).set(offer.toJson());
 
       result = 'success';
@@ -87,4 +114,14 @@ class FireStoreSettings{
     }
     return result;
   }
+}
+
+searchKeys(List<String> c) {
+  List<String> searchKeys = [];
+  for (int i = 0; i < c.length; i++) {
+    for (int x = 1; x < c[i].length + 1; x++) {
+      searchKeys.add(c[i].substring(0, x).toLowerCase());
+    }
+  }
+  return searchKeys;
 }

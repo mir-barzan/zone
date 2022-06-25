@@ -119,7 +119,7 @@ class _userSettingsState extends State<userSettings> {
                           InkWell(
                             onTap: () async {
                               await FireAuth().signOut();
-                              navigateToWithoutBack(context, login());
+                              navigateToWithoutBack(context, login1());
                             },
                             child: Container(
                                 child: Text(

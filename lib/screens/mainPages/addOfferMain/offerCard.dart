@@ -91,39 +91,38 @@ class OfferCard {
                             fontSize: 25),
                       ),
                     ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                          ),
-                          Icon(
-                            Icons.star,
-                            color: Colors.white,
-                          ),
-                          Text(
-                            "(${rate})",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: primaryColor,
-                                fontSize: 15),
-                          ),
-                        ],
-                      ),
+                    Expanded(child: Container()),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Colors.white,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.white,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.white,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.white,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          "(${rate})",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: primaryColor,
+                              fontSize: 15),
+                        ),
+                      ],
                     ),
                   ],
                 ),

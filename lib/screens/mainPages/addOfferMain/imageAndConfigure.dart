@@ -18,30 +18,16 @@ class imageAndConfigureScreen extends StatefulWidget {
       _imageAndConfigureScreenState();
 }
 
-class _imageAndConfigureScreenState extends State<imageAndConfigureScreen> {
+class _imageAndConfigureScreenState extends State<imageAndConfigureScreen>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   Uint8List? _image;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      appBar: AppBar(
-        leading: CancelIcon(),
-        title: Wrap(children: [
-          Text(
-            "New Offer",
-            style: TextStyle(fontSize: 34, color: offersColor),
-          ),
-          Container(
-              height: 50,
-              width: 50,
-              child: Icon(Icons.local_offer, color: offersColor,)),
-        ]),
-        actions: [],
-        centerTitle: true,
-        backgroundColor: primaryColor,
-        elevation: 1,
-      ),
       body: Center(
           child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -150,11 +136,12 @@ class _imageAndConfigureScreenState extends State<imageAndConfigureScreen> {
                         )),
                     TextButton(
                         onPressed: () {
-                          navigateToWithoutBack(
-                              context,
-                              mainPage(
-                                isFromSettings: false,
-                              ));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    mainPage(isFromSettings: false)),
+                          );
                         },
                         child: Text(
                           "Ok",

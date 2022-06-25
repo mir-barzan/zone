@@ -1,7 +1,9 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zone/screens/mainPages/InDashBoard/favorites/favorites.dart';
 
 class User {
   final String fname;
@@ -20,32 +22,39 @@ class User {
   final String soldOffers;
   final String boughtOffers;
   final String phoneNumber;
+  final String dateCreated;
+  final activeContracts;
+  final completedContracts;
+  final favoriteOffers;
 
-  const User({
-    required this.fname,
-    required this.lname,
-    required this.email,
-    required this.password,
-    required this.uid,
-    this.rating = "0",
-    this.rank = "Zoner",
-    this.bio = "",
+  const User(
+      {required this.fname,
+      required this.lname,
+      required this.email,
+      required this.password,
+      required this.uid,
+      this.rating = "0",
+      this.rank = "Zoner",
+      this.bio = "",
       required this.username,
-      this.profilePhotoUrl =
+    this.profilePhotoUrl =
         "https://firebasestorage.googleapis.com/v0/b/zone-b3608.appspot.com/o/207-2074624_white-gray-circle-avatar-png-transparent-png.png?alt=media&token=b4ed042a-93cd-44fe-930d-98aad2bfb8cf",
     this.skills = const [
       "no skill",
       "no skill",
-      "no skill",
-      "no skill",
-      "no skill"
-    ],
-    this.balance = "0",
-    this.ratingCounter = "0",
-    this.soldOffers = "0",
-    this.boughtOffers = "0",
-    this.phoneNumber = "",
-  });
+        "no skill",
+        "no skill",
+        "no skill"
+      ],
+      this.balance = "0",
+      this.ratingCounter = "0",
+      this.soldOffers = "0",
+      this.boughtOffers = "0",
+      this.phoneNumber = "",
+      required this.dateCreated,
+      required this.activeContracts,
+      required this.completedContracts,
+      required this.favoriteOffers});
 
   Map<String, dynamic> toJson() =>
       {
@@ -65,5 +74,9 @@ class User {
         "soldOffers": soldOffers,
         "boughtOffers": boughtOffers,
         "phoneNumber": phoneNumber,
+        "dateCreated": dateCreated,
+        "activeContracts": activeContracts,
+        "completedContracts": completedContracts,
+        "favoriteOffers": favoriteOffers
       };
 }

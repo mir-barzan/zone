@@ -2,15 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/paymentProcess/pzcoin.dart';
 import 'package:zone/screens/auth/signup.dart';
 import 'package:zone/screens/mainPages/addOfferMain/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/addProjectScreen.dart';
 import 'package:zone/screens/mainPages/InDashBoard/dashboard.dart';
 import 'package:zone/screens/mainPages/OffersScreen.dart';
+import 'package:zone/screens/mainPages/leaderboard/leaderboard.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
-import 'package:zone/screens/mainPages/optimizedSearch/oSearchScreen.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
 class mainPage extends StatefulWidget {
@@ -23,17 +25,28 @@ class mainPage extends StatefulWidget {
 }
 
 class _mainPageState extends State<mainPage> {
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   int currentTab = 0;
-  final List<Widget> screens = [
-    dashboard(),
-    searchScreen(),
-    postScreen(),
-    personalOffersScreen(),
-    profileScreen(
-      uid: FirebaseAuth.instance.currentUser!.uid,
-      isVisiting: false,
-    )
-  ];
+
+  var CurrentUserData = {};
+
+  getData() async {
+    try {
+      var snap2 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      CurrentUserData = snap2.data()!;
+
+      setState(() {});
+    } catch (e) {
+    }
+  }
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = dashboard();
@@ -42,156 +55,113 @@ class _mainPageState extends State<mainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: currentTab,
-        children: screens,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          navigateTo(context, addOfferScreen());
-          currentScreen = addOfferScreen();
-          currentTab = 0;
-        },
-        backgroundColor: secColor,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: Container(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = dashboard();
-                        currentTab = 0;
-                      });
+    List<Widget> screens = [
+      const dashboard(),
+      const leaderBoard(),
+      const postScreen(),
+      const personalOffersScreen(),
+      profileScreen(
+        uid: FirebaseAuth.instance.currentUser!.uid,
+        isVisiting: false,
+      )
+    ];
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: offersColor,
+          centerTitle: true,
+          title: SvgPicture.asset(
+            'assets/images/zoneLogo.svg',
+            color: primaryColor,
+            width: 180,
+          ),
+          actions: [
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      navigateTo(context, const pzcoin());
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.dashboard,
-                          color: currentTab == 0
-                              ? secColor
-                              : Colors.grey,
-                        ),
-                        Text(
-                          'Dashboard',
-                          style: TextStyle(
-                            color: currentTab == 0
-                                ? secColor
-                                : Colors.grey,
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      height: 45,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(35),
+                          color: primaryColor),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FittedBox(
+                              child: Icon(
+                            Icons.monetization_on,
+                            color: offersColor,
+                            size: 30,
+                          )),
+                          FittedBox(
+                            child: Text(
+                              "  0.0 ",
+                              style: new TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: offersColor,
+                                  fontSize: 30.0),
+                            ),
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = searchScreen();
-                        currentTab = 1;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.select_all,
-                          color: currentTab == 1 ? secColor : Colors.grey,
-                        ),
-                        Text(
-                          'Search',
-                          style: TextStyle(
-                            color: currentTab == 1 ? secColor : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                ),
+              ],
+            )
+          ],
+          bottom: TabBar(
+            indicatorColor: primaryColor,
+            tabs: [
+              Tab(
+                text: 'Home',
+                icon: Icon(Icons.dashboard),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = personalOffersScreen();
-                        currentTab = 3;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.local_offer,
-                          color: currentTab == 3
-                              ? secColor
-                              : Colors.grey,
-                        ),
-                        Text(
-                          'Offers',
-                          style: TextStyle(
-                            color: currentTab == 3
-                                ? secColor
-                                : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 40,
-                    onPressed: () {
-                      setState(() {
-                        currentScreen = profileScreen(
-                          uid: FirebaseAuth.instance.currentUser!.uid,
-                          isVisiting: false,
-                        );
-                        currentTab = 4;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.person,
-                          color: currentTab == 4
-                              ? secColor
-                              : Colors.grey,
-                        ),
-                        Text(
-                          'Profile',
-                          style: TextStyle(
-                            color: currentTab == 4
-                                ? secColor
-                                : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              )
+              Tab(
+                text: 'Leader',
+                icon: Icon(Icons.flag),
+              ),
+              Tab(
+                text: 'Offers',
+                icon: Icon(Icons.local_offer),
+              ),
+              Tab(
+                text: 'Profile',
+                icon: Icon(Icons.person),
+              ),
             ],
           ),
         ),
+        body: TabBarView(
+          children: [
+            dashboard(),
+            leaderBoard(),
+            personalOffersScreen(),
+            profileScreen(
+                uid: FirebaseAuth.instance.currentUser!.uid, isVisiting: false)
+          ],
+        ),
+        floatingActionButton: Container(
+          margin: EdgeInsets.all(8),
+          child: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              navigateTo(context, addOfferScreen());
+            },
+            backgroundColor: secColor,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        backgroundColor: primaryColor,
       ),
     );
   }

@@ -7,16 +7,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_value_listenable_builder/multi_value_listenable_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zone/Services/FireStoreSettings.dart';
 import 'package:zone/Services/sharedPrefs.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/screens/mainPages/InDashBoard/myOffers.dart';
 import 'package:zone/screens/mainPages/addOfferMain/information.dart';
 import 'package:zone/screens/mainPages/addOfferMain/offerCard.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 import '../../main_page.dart';
 import '../OffersScreen.dart';
+import './offerCard.dart';
 
 class reviewAndSubmit extends StatefulWidget {
   const reviewAndSubmit({Key? key}) : super(key: key);
@@ -29,32 +32,8 @@ class reviewAndSubmit extends StatefulWidget {
   static ValueNotifier<List> faqQuestion = ValueNotifier([]);
   static ValueNotifier<String> newDiscription = ValueNotifier('');
   static ValueNotifier<String> newtimeNeeded = ValueNotifier('');
-  static ValueNotifier<Color> titleColor = ValueNotifier(Colors.red);
-  static ValueNotifier<Color> descriptionColor = ValueNotifier(Colors.red);
-  static ValueNotifier<Color> tagsColor = ValueNotifier(Colors.red);
-  static ValueNotifier<Color> faqColor = ValueNotifier(Colors.red);
-  static ValueNotifier<Color> imageColor = ValueNotifier(Colors.red);
-  static ValueNotifier<Color> priceColor = ValueNotifier(Colors.red);
-  static ValueNotifier<Color> neededTimeColor = ValueNotifier(Colors.red);
-  static ValueNotifier<String> titleCount = ValueNotifier('');
-  static ValueNotifier<String> descriptionCount = ValueNotifier('');
-  static ValueNotifier<String> questionsCount = ValueNotifier('');
 
-  checker() {
-    bool x = false;
-    if ((newTitle.value.length >= 10) &
-        (int.parse(newPrice.value) >= 5) &
-        (newImage.value!.isNotEmpty) &
-        (category.value.isNotEmpty) &
-        (faqAnswer.value.length >= 5) &
-        (faqQuestion.value.length >= 5) &
-        (newDiscription.value.length >= 100) &
-        (newtimeNeeded.value.isNotEmpty)) {
-      x = true;
-    }
 
-    return x;
-  }
 
   @override
   State<reviewAndSubmit> createState() => _reviewAndSubmitState();
@@ -64,8 +43,13 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
   @override
   String title = "";
   bool _isLoading = false;
+  bool _isTitleFine = false;
+  bool _isDescriptionFine = false;
+  bool _isTagsFine = false;
+  bool _isFaqFine = false;
+  bool _isPriceFine = false;
+  bool _isDateFine = false;
   bool _everyThingIsFine = false;
-  bool correctTitle = false;
   String fname = '';
   String lname = '';
   String uid = '';
@@ -79,15 +63,47 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
       priceColor = Colors.red,
       timeColor = Colors.red;
 
-  checkTitle() {
-    bool x = false;
-    if (reviewAndSubmit.newTitle.value.length >= 10) {
+  void checkAll() {
+    int x = 0;
+    if (reviewAndSubmit.newTitle.value.toString().length >= 15) {
       setState(() {
-        x = true;
+        _isTitleFine = true;
+        x += 1;
       });
     }
-    print(x);
-    return x;
+    if (reviewAndSubmit.newDiscription.value.toString().length >= 100) {
+      setState(() {
+        _isDescriptionFine = true;
+        x += 1;
+      });
+    }
+    if (reviewAndSubmit.faqQuestion.value.length >= 5) {
+      setState(() {
+        _isFaqFine = true;
+        x += 1;
+      });
+    }
+    if (reviewAndSubmit.category.value.length >= 2) {
+      setState(() {
+        _isTagsFine = true;
+        x += 1;
+      });
+    }
+    if (int.parse(reviewAndSubmit.newPrice.value) >= 5) {
+      setState(() {
+        _isPriceFine = true;
+        x += 1;
+      });
+    }
+    if (reviewAndSubmit.newtimeNeeded.value.toString().length >= 5) {
+      setState(() {
+        _isDateFine = true;
+        x += 1;
+      });
+    }
+    if (x == 6) {
+      _everyThingIsFine = true;
+    }
   }
 
   getUsername() async {
@@ -117,6 +133,23 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     lname = (snap.data() as Map<String, dynamic>)['lname'];
   }
 
+  Iterable<Iterable<T>> combinations<T>(
+    List<List<T>> lists, [
+    int index = 0,
+    List<T>? prefix,
+  ]) sync* {
+    prefix ??= <T>[];
+
+    if (lists.length == index) {
+      yield prefix;
+    } else {
+      for (final value in lists[index]) {
+        yield* combinations(lists, index + 1, prefix..add(value));
+        prefix.removeLast();
+      }
+    }
+  }
+
   getUserid() async {
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection('users')
@@ -144,7 +177,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
     ratinga = (snap.data() as Map<String, dynamic>)['rating'];
   }
 
-  void postOffer(categoryTags, title, description, price, file, timeNeeded,
+  postOffer(categoryTags, title, description, price, file, timeNeeded,
       faqQuestion, faqAnswer) async {
     setState(() {
       _isLoading = true;
@@ -171,7 +204,8 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
         setState(() {
           _isLoading = false;
         });
-        showSnackBar(context, 'posted');
+
+        Fluttertoast.showToast(msg: 'Posted successfuly');
       } else {
         setState(() {
           _isLoading = false;
@@ -179,68 +213,45 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
         showAlertDialog(context, 'errorText', result, Icon(Icons.error));
       }
     } catch (e) {
-      showSnackBar(context, e.toString());
+      Fluttertoast.showToast(msg: 'Please try again later');
     }
   }
+
+  Timer? timer;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    checkAll();
     getUserfname();
     getUserlname();
     getUsername();
     getUserrank();
     getUserrating();
     getUserid();
-    Timer timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
-      setState(() {
-        _everyThingIsFine = reviewAndSubmit().checker();
-      });
-    });
+    // timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
+    //   setState(() {
+    //     _everyThingIsFine = reviewAndSubmit().checker();
+    //   });
+    // });
+  }
+
+  void dispose() {
+    super.dispose();
+    timer!.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      appBar: AppBar(
-        leading: CancelIcon(),
-        title: Wrap(children: [
-          Text(
-            "New Offer",
-            style: TextStyle(fontSize: 34, color: offersColor),
-          ),
-          Container(
-              height: 50,
-              width: 50,
-              child: Icon(
-                Icons.local_offer,
-                color: offersColor,
-              )),
-        ]),
-        actions: [],
-        centerTitle: true,
-        backgroundColor: primaryColor,
-        elevation: 1,
-      ),
       body: ListView(children: [
         Center(
             child: Column(
           children: [
             Container(
               height: 19,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    DetailsInformation(
-                        "This is how your offer will be shown in the Offers page"),
-                  ],
-                )
-              ],
             ),
             Container(
               height: 10,
@@ -280,7 +291,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
             Container(
               padding: EdgeInsets.all(4),
               height: 410,
-              width: 360,
+              width: MediaQuery.of(context).size.width * 0.8,
               decoration: BoxDecoration(
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.only(
@@ -297,7 +308,7 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                     // Get the updated value of each listenable
                     // in values list.
                     return Container(
-                      width: 350,
+                      width: MediaQuery.of(context).size.width * 0.8,
                       height: 400,
                       child: new OfferCard(
                               title: values.elementAt(0),
@@ -350,38 +361,100 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                                       style: TextStyle(
                                           fontSize: 26, color: primaryColor),
                                     ),
-                                    Icon(
-                                      Icons.check,
-                                      color: primaryColor,
-                                      size: 30,
-                                    ),
+                                    _isLoading
+                                        ? CircularProgressIndicator(
+                                            color: primaryColor,
+                                          )
+                                        : Icon(
+                                            Icons.check,
+                                            color: primaryColor,
+                                            size: 30,
+                                          ),
                                   ],
                                 ),
                               ),
                         onPressed: _everyThingIsFine
-                            ? () => setState(() {
-                                  postOffer(
-                                      values.elementAt(1),
-                                      values.elementAt(6),
-                                      values.elementAt(2),
-                                      values.elementAt(4),
-                                      values.elementAt(3),
-                                      values.elementAt(5),
-                                      values.elementAt(0),
-                                      values.elementAt(7));
-
-                                  navigateToWithoutBack(
-                                      context, personalOffersScreen());
-                                })
+                            ? () async {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                await postOffer(
+                                    values.elementAt(1),
+                                    values.elementAt(6),
+                                    values.elementAt(2),
+                                    values.elementAt(4),
+                                    values.elementAt(3),
+                                    values.elementAt(5),
+                                    values.elementAt(0),
+                                    values.elementAt(7));
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                                navigateToWithoutBack(context, myOffers());
+                              }
                             : () => {
-                                  showAlertDialog(
+                                  showSucessDialog(
                                       context,
-                                      "Error",
-                                      "You have to fill all the rquirements before submiting your offer !",
-                                      Icon(
-                                        Icons.error,
-                                        color: Colors.red,
-                                      ))
+                                      'Min Title Length: 15',
+                                      "Min Description Length: 100",
+                                      'Min Category tags: 2',
+                                      "Min FAQ: 5",
+                                      'Min Price: 5',
+                                      "Time Needed",
+                                      _isTitleFine
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: offersColor,
+                                            )
+                                          : Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            ),
+                                      _isDescriptionFine
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: offersColor,
+                                            )
+                                          : Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            ),
+                                      _isTagsFine
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: offersColor,
+                                            )
+                                          : Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            ),
+                                      _isFaqFine
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: offersColor,
+                                            )
+                                          : Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            ),
+                                      _isPriceFine
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: offersColor,
+                                            )
+                                          : Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            ),
+                                      _isDateFine
+                                          ? Icon(
+                                              Icons.check_circle,
+                                              color: offersColor,
+                                            )
+                                          : Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            ))
                                 });
                   }),
             ),
@@ -407,7 +480,14 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
                   actions: [
                     TextButton(
                         onPressed: () {
-                          navigatePop(context, widget);
+                          timer!.cancel();
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    mainPage(isFromSettings: false)),
+                          );
                         },
                         child: Text(
                           "Cancel",
@@ -470,5 +550,103 @@ class _reviewAndSubmitState extends State<reviewAndSubmit> {
           return SnackBar(content: Text('${x.toString()}'));
         });
     return x;
+  }
+
+  showSucessDialog(BuildContext context, msg1, msg2, msg3, msg4, msg5, msg6,
+      icon1, icon2, icon3, icon4, icon5, icon6) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text(
+        "OK",
+        style: TextStyle(color: offersColor),
+      ),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: FittedBox(child: Text('Requirements to submit')),
+      content: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(45)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: Row(
+                children: [
+                  Text(
+                    msg1,
+                  ),
+                  icon1
+                ],
+              ),
+            ),
+            Flexible(
+              child: Row(
+                children: [
+                  Text(
+                    msg2,
+                  ),
+                  icon2
+                ],
+              ),
+            ),
+            Flexible(
+              child: Row(
+                children: [
+                  Text(
+                    msg3,
+                  ),
+                  icon3
+                ],
+              ),
+            ),
+            Flexible(
+              child: Row(
+                children: [
+                  Text(
+                    msg4,
+                  ),
+                  icon4
+                ],
+              ),
+            ),
+            Flexible(
+              child: Row(
+                children: [
+                  Text(
+                    msg5,
+                  ),
+                  icon5
+                ],
+              ),
+            ),
+            Flexible(
+              child: Row(
+                children: [
+                  Text(
+                    msg6,
+                  ),
+                  icon6
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

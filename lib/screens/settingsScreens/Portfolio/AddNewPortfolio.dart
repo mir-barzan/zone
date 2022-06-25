@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zone/Services/FireStoreSettings.dart';
 import 'package:zone/Services/storageSettings.dart';
@@ -96,7 +97,7 @@ class _addNewPortfolioState extends State<addNewPortfolio> {
                       isAfterAddingANewPortfolio: true,
                     ));
               } catch (e) {
-                showSnackBar(context, e.toString());
+                Fluttertoast.showToast(msg: e.toString());
                 setState(() {
                   _isLoading = false;
                 });
@@ -129,12 +130,11 @@ class _addNewPortfolioState extends State<addNewPortfolio> {
       ),
       appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-            child: SvgPicture.asset(
+        title: SvgPicture.asset(
           'assets/images/zoneLogo.svg',
           color: primaryColor,
           width: 180,
-        )),
+        ),
         backgroundColor: offersColor,
         elevation: 0,
       ),
