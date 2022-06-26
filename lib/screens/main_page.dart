@@ -14,6 +14,7 @@ import 'package:zone/screens/mainPages/leaderboard/leaderboard.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class mainPage extends StatefulWidget {
   final isFromSettings;
@@ -25,10 +26,25 @@ class mainPage extends StatefulWidget {
 }
 
 class _mainPageState extends State<mainPage> {
+  int selectedIndex = 0;
+  final keyOne = GlobalKey();
+  final keyTwo = GlobalKey();
+  final keyThree = GlobalKey();
+  final keyFour = GlobalKey();
+  final keyFive = GlobalKey();
   @override
   void initState() {
     super.initState();
     getData();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => ShowCaseWidget.of(context).startShowCase([
+        keyOne,
+        keyTwo,
+        keyThree,
+        keyFour,
+        keyFive,
+      ]),
+    );
   }
 
   int currentTab = 0;
@@ -44,8 +60,7 @@ class _mainPageState extends State<mainPage> {
       CurrentUserData = snap2.data()!;
 
       setState(() {});
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -123,21 +138,33 @@ class _mainPageState extends State<mainPage> {
             indicatorColor: primaryColor,
             tabs: [
               Tab(
-                text: 'Home',
-                icon: Icon(Icons.dashboard),
-              ),
+                  text: 'Home',
+                  icon: customeShowcaseWidget(
+                    globalKey: keyOne,
+                    desccription: 'this will lead you to home screen',
+                    child: Icon(Icons.dashboard),
+                  )),
               Tab(
-                text: 'Leader',
-                icon: Icon(Icons.flag),
-              ),
+                  text: 'Leader',
+                  icon: customeShowcaseWidget(
+                    globalKey: keyTwo,
+                    desccription: 'this will lead you to Leader screen',
+                    child: Icon(Icons.flag),
+                  )),
               Tab(
-                text: 'Offers',
-                icon: Icon(Icons.local_offer),
-              ),
+                  text: 'Offers',
+                  icon: customeShowcaseWidget(
+                    globalKey: keyThree,
+                    desccription: 'this will lead you to offer screen',
+                    child: Icon(Icons.local_offer),
+                  )),
               Tab(
-                text: 'Profile',
-                icon: Icon(Icons.person),
-              ),
+                  text: 'Profile',
+                  icon: customeShowcaseWidget(
+                    globalKey: keyFour,
+                    desccription: 'this will lead you to profile screen',
+                    child: Icon(Icons.person),
+                  )),
             ],
           ),
         ),
@@ -153,7 +180,11 @@ class _mainPageState extends State<mainPage> {
         floatingActionButton: Container(
           margin: EdgeInsets.all(8),
           child: FloatingActionButton(
-            child: Icon(Icons.add),
+            child: customeShowcaseWidget(
+              globalKey: keyFive,
+              desccription: 'this will lead you to Addiing Offer screen',
+              child: Icon(Icons.add),
+            ),
             onPressed: () {
               navigateTo(context, addOfferScreen());
             },
@@ -165,4 +196,35 @@ class _mainPageState extends State<mainPage> {
       ),
     );
   }
+}
+
+class customeShowcaseWidget extends StatelessWidget {
+  final Widget child;
+  final String desccription;
+  final GlobalKey globalKey;
+
+  const customeShowcaseWidget({
+    required this.desccription,
+    required this.child,
+    required this.globalKey,
+  });
+  @override
+  Widget build(BuildContext context) => Showcase(
+        key: globalKey,
+        showcaseBackgroundColor: Colors.pink.shade400,
+        contentPadding: EdgeInsets.all(12),
+        showArrow: true,
+        disableAnimation: false,
+        title: 'Hello',
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 32),
+        description: desccription,
+        descTextStyle: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+        overlayColor: Colors.white,
+        overlayOpacity: 0.3,
+        child: child,
+      );
 }

@@ -28,6 +28,7 @@ import 'package:zone/screens/auth/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -88,7 +89,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: _title,
-        home: MyStatefulWidget(),
+        home: ShowCaseWidget(
+          builder: Builder(builder: (_) => MyStatefulWidget()),
+          autoPlay: true,
+          autoPlayDelay: Duration(seconds: 10),
+          onFinish: () => print('finished completely'),
+        ),
       ),
     );
   }
