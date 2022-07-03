@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/SeeUserOffers.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
@@ -42,9 +43,23 @@ class _profileScreenState extends State<profileScreen> {
   int portLen = 0;
 
   var sss;
+  final keyOne = GlobalKey();
+  final keyTwo = GlobalKey();
+  final keyThree = GlobalKey();
+  final keyFour = GlobalKey();
+  final keyFive = GlobalKey();
 
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => ShowCaseWidget.of(context).startShowCase([
+        keyOne,
+        keyTwo,
+        keyThree,
+        keyFour,
+        keyFive,
+      ]),
+    );
     getData();
     checkRank();
 
@@ -660,4 +675,35 @@ class _profileScreenState extends State<profileScreen> {
       return offersColor;
     }
   }
+}
+
+class customeShowcaseWidget extends StatelessWidget {
+  final Widget child;
+  final String desccription;
+  final GlobalKey globalKey;
+
+  const customeShowcaseWidget({
+    required this.desccription,
+    required this.child,
+    required this.globalKey,
+  });
+  @override
+  Widget build(BuildContext context) => Showcase(
+        key: globalKey,
+        showcaseBackgroundColor: Colors.pink.shade400,
+        contentPadding: EdgeInsets.all(12),
+        showArrow: true,
+        disableAnimation: false,
+        title: 'Hello',
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 32),
+        description: desccription,
+        descTextStyle: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+        overlayColor: Colors.white,
+        overlayOpacity: 0.3,
+        child: child,
+      );
 }
