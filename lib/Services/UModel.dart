@@ -26,6 +26,7 @@ class User {
   final activeContracts;
   final completedContracts;
   final favoriteOffers;
+  final totalRating;
 
   const User(
       {required this.fname,
@@ -54,7 +55,8 @@ class User {
       required this.dateCreated,
       required this.activeContracts,
       required this.completedContracts,
-      required this.favoriteOffers});
+      required this.favoriteOffers,
+      required this.totalRating});
 
   Map<String, dynamic> toJson() =>
       {
@@ -77,6 +79,7 @@ class User {
         "dateCreated": dateCreated,
         "activeContracts": activeContracts,
         "completedContracts": completedContracts,
-        "favoriteOffers": favoriteOffers
+        "favoriteOffers": favoriteOffers,
+        "totalRating": totalRating,
       };
 }

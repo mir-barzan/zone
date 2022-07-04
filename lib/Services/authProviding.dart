@@ -91,10 +91,11 @@ class AuthProvider extends ChangeNotifier {
             "activeContracts": [],
             "completedContracts": [],
             "soldOffers": "0",
-            "username":
-                firebaseUser.displayName! + RandomStr.replaceAll(" ", ""),
+            "username": firebaseUser.displayName!.toLowerCase() +
+                RandomStr.replaceAll(" ", ""),
             "email": googleSignIn.currentUser!.email.toString(),
-            "favoriteOffers": []
+            "favoriteOffers": [],
+            "totalRating": '0',
           });
 
           User? currentUser = firebaseUser;

@@ -14,7 +14,7 @@ class RoundedButton extends StatelessWidget {
       required this.isLoading})
       : super(key: key);
   final text;
-  final VoidCallback? press;
+  final VoidCallback press;
   final Color? textColor;
 
   @override
@@ -99,7 +99,7 @@ class TextFieldContainer extends StatelessWidget {
   }
 }
 
-class RoundedInputField extends StatelessWidget {
+class RoundedInputField extends StatefulWidget {
   final controller;
 
   RoundedInputField(
@@ -114,31 +114,32 @@ class RoundedInputField extends StatelessWidget {
   String x;
 
   @override
+  State<RoundedInputField> createState() => _RoundedInputFieldState();
+}
+
+class _RoundedInputFieldState extends State<RoundedInputField> {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
-        controller: controller,
+        controller: widget.controller,
         cursorColor: offersColor,
         onChanged: (value) {
-          setState() {
-            x = value;
-          }
-
-          ;
+          setState(() {
+            widget.x = value;
+          });
         },
         decoration: InputDecoration(
             icon: Icon(
-              icon,
+              widget.icon,
               color: offersColor,
             ),
-            hintText: hintText,
+            hintText: widget.hintText,
             hintStyle: const TextStyle(fontFamily: 'OpenSans'),
             border: InputBorder.none),
       ),
     );
   }
 }
-
 class RoundedPasswordField extends StatefulWidget {
   final TextEditingController passwordController;
   String x;
@@ -159,9 +160,9 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
     return TextFieldContainer(
       child: TextFormField(
         onChanged: (value) {
-          setState() {
+          setState(() {
             widget.x = value;
-          }
+          });
         },
         controller: widget.passwordController,
         obscureText: isObscure,

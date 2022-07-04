@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,21 +22,60 @@ class _mainChatsScreenState extends State<mainChatsScreen> {
   Stream? chatRoomStream;
   var myData = {};
   var sellerData = {};
+  List activeContacts = [];
+  List firstNames = [];
+  List surnames = [];
+  List profilePictures = [];
+  List uids = [];
 
-  getData(x) async {
+  getData() async {
     try {
-      var snap = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get();
-      var snap2 =
-          await FirebaseFirestore.instance.collection('users').doc('$x').get();
+      print(activeContacts);
+    } catch (e) {}
+  }
 
-      myData = snap.data()!;
-      sellerData = snap2.data()!;
+  getData2() async {
+    var snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    myData = snap.data()!;
+
+    setState(() {
+      activeContacts = myData['activeContracts'];
+    });
+    for (int i = 0; i <= activeContacts.length; i++) {
+      var ss = {};
+      var ss2 = {};
+      var snap4 = await FirebaseFirestore.instance
+          .collection('Contracts')
+          .doc(activeContacts[i])
+          .get();
+      ss = snap4.data()!;
+      String otherId = " ";
+      if (ss['sellerId'] == FirebaseAuth.instance.currentUser!.uid) {
+        otherId = ss['buyerId'];
+      } else {
+        otherId = ss['sellerId'];
+      }
+      var snap2 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(otherId)
+          .get();
+      ss2 = snap2.data()!;
 
       setState(() {});
-    } catch (e) {}
+      firstNames.add(ss2['fname']);
+      surnames.add(ss2['lname']);
+      uids.add(ss2['uid']);
+      profilePictures.add(ss2['profilePhotoUrl']);
+
+      print(firstNames);
+      print(surnames);
+      print(uids);
+      print(profilePictures);
+    }
   }
 
 // void initState(){
@@ -57,6 +97,14 @@ class _mainChatsScreenState extends State<mainChatsScreen> {
 //       Fluttertoast.showToast(msg: e.toString());
 //     }
 //   }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    getData2();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +137,7 @@ class _mainChatsScreenState extends State<mainChatsScreen> {
                   controller: ScrollController(),
                   itemCount: x.length,
                   itemBuilder: (context, index) {
-                    getData(userDocument!['activeContracts'][index]);
-                    return x.isEmpty
+                    return activeContacts.isEmpty
                         ? Column(
                             children: [
                               Container(
@@ -98,60 +145,68 @@ class _mainChatsScreenState extends State<mainChatsScreen> {
                                 margin: EdgeInsets.only(
                                     top: MediaQuery.of(context).size.height *
                                         0.4),
-                          child: Center(
-                            child: Flexible(
-                                child: Text(
-                                  "You don't have any open chats at the moment",
-                                  style: TextStyle(color: Colors.grey),
-                                )),
-                          ),
-                        ),
-                        DetailsInformation(
-                            'Chats will open automatically with the seller when you buy an offer')
-                      ],
-                    )
+                                child: Center(
+                                  child: Flexible(
+                                      child: Text(
+                                    "You don't have any open chats at the moment",
+                                    style: TextStyle(color: Colors.grey),
+                                  )),
+                                ),
+                              ),
+                              DetailsInformation(
+                                  'Chats will open automatically with the seller when you buy an offer')
+                            ],
+                          )
                         : Container(
-                      margin: EdgeInsets.only(top: 5),
-                      decoration: BoxDecoration(
-                          color: Colors.grey.shade200.withOpacity(0.8)),
-                      child: ListTile(
-                        onTap: () {
-                          navigateTo(
-                              context,
-                              chatScreen(
-                                  peerAvatar:
-                                  sellerData['profilePhotoUrl'],
-                                  peerId: sellerData['uid'],
-                                  peerName: sellerData['fname'] +
-                                      " " +
-                                      sellerData['lname'],
-                                  userAvatar:
-                                  userDocument['profilePhotoUrl']));
-                        },
-                        contentPadding: EdgeInsets.all(8),
-                        leading: CircleAvatar(
-                          backgroundColor: primaryColor,
-                          backgroundImage:
-                          NetworkImage(sellerData['profilePhotoUrl']),
-                          radius: 30,
-                        ),
-                        title: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceEvenly,
-                          children: [
-                                  Text(
-                                    '${sellerData['fname']} ${sellerData['lname']}',
-                                    style: TextStyle(
-                                        fontSize: 24, color: offersColor),
+                            margin: EdgeInsets.only(top: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.grey.shade200.withOpacity(0.8)),
+                            child: ListTile(
+                              onTap: () {
+                                navigateTo(
+                                    context,
+                                    chatScreen(
+                                        contractId: activeContacts[index],
+                                        isNewContract: false,
+                                        peerAvatar: profilePictures[index],
+                                        peerId: uids[index],
+                                        peerName: firstNames[index] +
+                                            " " +
+                                            surnames[index],
+                                        userAvatar:
+                                            userDocument['profilePhotoUrl']));
+                              },
+                              contentPadding: EdgeInsets.all(8),
+                              leading: CircleAvatar(
+                                backgroundImage: CachedNetworkImageProvider(
+                                    profilePictures[index]),
+                                backgroundColor: primaryColor,
+                                radius: MediaQuery.of(context).size.width * 0.1,
+                              ),
+                              title: Column(
+                                children: [
+                                  Wrap(
+                                    children: [
+                                      Text(
+                                        '${firstNames[index]} ${surnames[index]}',
+                                        style: TextStyle(
+                                            fontSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
                                   ),
-                                  Icon(
-                                    Icons.send,
-                                    color: offersColor,
-                                  )
                                 ],
-                        ),
-                      ),
-                    );
+                              ),
+                              trailing: Icon(
+                                Icons.send,
+                                color: offersColor,
+                                size: MediaQuery.of(context).size.width * 0.1,
+                              ),
+                            ),
+                          );
                   },
                 );
               }),

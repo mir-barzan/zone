@@ -293,6 +293,25 @@ rating(double Rating, bool ignoreTabs, double size) {
   );
 }
 
+rating2(x, bool ignoreTabs, double size) {
+  return RatingBar.builder(
+    itemSize: size,
+    ignoreGestures: ignoreTabs,
+    glow: true,
+    initialRating: 0,
+    minRating: 0,
+    direction: Axis.horizontal,
+    allowHalfRating: true,
+    itemCount: 5,
+    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+    itemBuilder: (context, _) => Icon(
+      Icons.star,
+      color: Colors.amber,
+    ),
+    onRatingUpdate: (rating) {},
+  );
+}
+
 roundedContainerWithBackground(String label, Color backgroundColor,
     [double radius = 45]) {
   return Container(

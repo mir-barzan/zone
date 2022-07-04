@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -43,30 +44,29 @@ class _signup1State extends State<SignUp1> {
   String Surname = "";
   String Password = "";
 
-  void signUser() async {
+  signUser() async {
     try {
       setState(() {
         _isLoading = true;
       });
-      String result = await FireAuth().signUpUser(
+      String x = await FireAuth().signUpUser(
           context: context,
-          fname: firstName.trim(),
-          lname: Surname.trim(),
-          email: Email.trim(),
-          password: Password.trim());
-      Navigator.pushReplacement<void, void>(
-        context,
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => login1(),
-        ),
-      );
-      Fluttertoast.showToast(
-          msg: 'registration successful please verify your email then login');
+          fname: _firstnameController.text.trim(),
+          lname: _lastnameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+
       setState(() {
         _isLoading = false;
       });
-    } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
+
+      if (x == 'success') {
+        navigateTo(context, login1());
+        Fluttertoast.showToast(
+            msg: 'Registration sucess, please verify your email then log in');
+      }
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(msg: e.toString().split(']')[1]);
     }
   }
 
@@ -141,7 +141,7 @@ class _signup1State extends State<SignUp1> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const login1()));
+                                          const login1()));
                                 },
                               ),
                               const SizedBox(

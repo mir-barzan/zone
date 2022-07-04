@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:zone/Services/authProviding.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/paymentProcess/reviewAndRelease/ReviewAndRelease.dart';
 import 'package:zone/screens/auth/login1.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chatMsg.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chatProvider.dart';
@@ -22,14 +23,18 @@ class chatScreen extends StatefulWidget {
   final peerName;
 
   final userAvatar;
+  final bool isNewContract;
+  final contractId;
 
-  const chatScreen(
-      {Key? key,
-      required this.peerAvatar,
-      required this.peerId,
-      required this.peerName,
-      required this.userAvatar})
-      : super(key: key);
+  const chatScreen({
+    Key? key,
+    required this.peerAvatar,
+    required this.peerId,
+    required this.peerName,
+    required this.userAvatar,
+    required this.isNewContract,
+    required this.contractId,
+  }) : super(key: key);
 
   @override
   State createState() => chatScreenState(
@@ -42,6 +47,8 @@ class chatScreen extends StatefulWidget {
 class chatScreenState extends State<chatScreen> {
   String userId = "";
   var userData = {};
+  var contractData = {};
+  var offerData = {};
 
   chatScreenState(
       {Key? key,
@@ -56,8 +63,6 @@ class chatScreenState extends State<chatScreen> {
 
   int _limit = 20;
   int _limitIncrement = 20;
-  String groupChatId = " ";
-
   File? imageFile;
   File? unkownFile;
   bool isLoading = false;
@@ -70,6 +75,8 @@ class chatScreenState extends State<chatScreen> {
 
   late ChatProvider chatProvider;
   late AuthProvider authProvider;
+  bool isSeller = false;
+  bool moneyRequested = false;
 
   getData() async {
     try {
@@ -77,9 +84,25 @@ class chatScreenState extends State<chatScreen> {
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
-
+      var snap2 = await FirebaseFirestore.instance
+          .collection('Contracts')
+          .doc(widget.contractId)
+          .get();
       userData = snap.data()!;
+      contractData = snap2.data()!;
+      var snap3 = await FirebaseFirestore.instance
+          .collection('Category')
+          .doc(contractData['offerId'])
+          .get();
+
+      offerData = snap3.data()!;
+      if (offerData['uid'] == FirebaseAuth.instance.currentUser!.uid) {
+        setState(() {
+          isSeller = true;
+        });
+      }
       userId = userData['uid'];
+      currentUserId = userData['uid'];
       setState(() {});
     } catch (e) {}
   }
@@ -91,7 +114,6 @@ class chatScreenState extends State<chatScreen> {
     authProvider = context.read<AuthProvider>();
     focusNode.addListener(onFocusChange);
     listScrollController.addListener(_scrollListener);
-    readLocal();
   }
 
   Future getImage() async {
@@ -131,7 +153,7 @@ class chatScreenState extends State<chatScreen> {
   void onSendMessage(String content, int type) {
     if (content.trim().isNotEmpty) {
       textEditingController.clear();
-      chatProvider.sendMessage(groupChatId, content,
+      chatProvider.sendMessage(widget.contractId, content,
           FirebaseAuth.instance.currentUser!.uid.toString(), peerId, type);
       listScrollController.animateTo(0,
           duration: Duration(milliseconds: 300), curve: Curves.easeOut);
@@ -177,22 +199,22 @@ class chatScreenState extends State<chatScreen> {
     }
   }
 
-  void readLocal() async {
-    if (authProvider.getUserFirebaseId()?.isNotEmpty == true) {
-      currentUserId = authProvider.getUserFirebaseId()!;
-    } else {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => login1()),
-          (Route<dynamic> route) => false);
-    }
-    if (currentUserId.hashCode <= peerId.hashCode) {
-      groupChatId = '$currentUserId';
-    } else {
-      groupChatId = '$currentUserId';
-    }
-
-    chatProvider.updateDataFirestore('users', 'uid', {'recevierId': peerId});
-  }
+  // void readLocal() async {
+  //   if (authProvider.getUserFirebaseId()?.isNotEmpty == true) {
+  //     currentUserId = authProvider.getUserFirebaseId()!;
+  //   } else {
+  //     Navigator.of(context).pushAndRemoveUntil(
+  //         MaterialPageRoute(builder: (context) => login1()),
+  //         (Route<dynamic> route) => false);
+  //   }
+  //   if (currentUserId.hashCode <= peerId.hashCode) {
+  //     groupChatId = '$currentUserId';
+  //   } else {
+  //     groupChatId = '$currentUserId';
+  //   }
+  //
+  //   chatProvider.updateDataFirestore('users', 'uid', {'recevierId': peerId});
+  // }
 
   Future<bool> onBackPress() {
     chatProvider.updateDataFirestore(
@@ -210,16 +232,134 @@ class chatScreenState extends State<chatScreen> {
         backgroundColor: primaryColor,
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
-            this.peerName,
-            style: new TextStyle(
-                fontWeight: FontWeight.bold,
-                color: primaryColor,
-                fontSize: 30.0),
+          title: FittedBox(
+            child: Text(
+              this.peerName,
+              style: new TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                  fontSize: 30.0),
+            ),
           ),
           backgroundColor: offersColor,
           elevation: 0,
-          actions: [],
+          actions: [
+            isSeller
+                ? FittedBox(
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(""),
+                              content: Text(
+                                "Are you sure you want to Request the Money?\n\nPlease contact\nsupport@appers.org\n\n**if the client refused to release the money",
+                              ),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      //here
+                                      navigatePop(context, widget);
+                                    },
+                                    child: Text(
+                                      "Ok",
+                                      style: TextStyle(color: offersColor),
+                                    )),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(8),
+                        padding: EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(90)),
+                        child: Center(
+                          child: Row(
+                            children: [
+                              Text(
+                                'Request Money',
+                                style: TextStyle(
+                                    color: offersColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Icon(
+                                Icons.monetization_on_outlined,
+                                color: offersColor,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : FittedBox(
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(""),
+                              content: Text(
+                                  "Are you sure you want to Release Money?"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      navigatePop(context, widget);
+                                    },
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(color: offersColor),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      //here
+                                      navigatePop(context, widget);
+                                      navigateTo(
+                                          context,
+                                          ReviewAndRelease(
+                                            contractId: widget.contractId,
+                                          ));
+                                    },
+                                    child: Text(
+                                      "Ok",
+                                      style: TextStyle(color: offersColor),
+                                    )),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(8),
+                        padding: EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(90)),
+                        child: Center(
+                          child: Row(
+                            children: [
+                              Text(
+                                'Release Money',
+                                style: TextStyle(
+                                    color: offersColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Icon(
+                                Icons.monetization_on_outlined,
+                                color: offersColor,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+          ],
         ),
         body: Container(
           margin: EdgeInsets.all(8),
@@ -346,17 +486,17 @@ class chatScreenState extends State<chatScreen> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8.0),
                                     image: DecorationImage(
-                            image: NetworkImage(chatMsg.content),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        width: 200,
-                        height: 200,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: offersColor,
-                            value:
-                            progress.expectedTotalBytes != null &&
+                                      image: NetworkImage(chatMsg.content),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  width: 200,
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: offersColor,
+                                      value:
+                                          progress.expectedTotalBytes != null &&
                                 progress.expectedTotalBytes !=
                                     null
                                 ? progress.cumulativeBytesLoaded /
@@ -393,10 +533,10 @@ class chatScreenState extends State<chatScreen> {
                           height: 100,
                           fit: BoxFit.cover,
                         ),
-              margin: EdgeInsets.only(
-                  bottom: isLastMessageRight(index) ? 20 : 10,
-                  right: 10),
-            )
+                        margin: EdgeInsets.only(
+                            bottom: isLastMessageRight(index) ? 20 : 10,
+                            right: 10),
+                      )
           ],
         );
       } else {
@@ -442,7 +582,7 @@ class chatScreenState extends State<chatScreen> {
                         ),
                   chatMsg.type == TypeMessage.TEXT
                       ? Container(
-                    child: Text(
+                          child: Text(
                             chatMsg.content,
                             style: TextStyle(color: primaryColor),
                           ),
@@ -544,9 +684,9 @@ class chatScreenState extends State<chatScreen> {
 
   Widget buildListMessage() {
     return Flexible(
-        child: groupChatId.isNotEmpty
+        child: widget.contractId.isNotEmpty
             ? StreamBuilder<QuerySnapshot>(
-                stream: chatProvider.getChatStream(groupChatId, _limit),
+                stream: chatProvider.getChatStream(widget.contractId, _limit),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {

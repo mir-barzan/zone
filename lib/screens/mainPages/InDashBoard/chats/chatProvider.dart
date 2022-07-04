@@ -30,21 +30,21 @@ class ChatProvider {
         .update(dataNeedUpdate);
   }
 
-  Stream<QuerySnapshot> getChatStream(String groupChatId, intLimit) {
+  Stream<QuerySnapshot> getChatStream(String contractId, intLimit) {
     return firebaseFirestore
-        .collection('chat')
-        .doc(groupChatId)
+        .collection('Contracts')
+        .doc(contractId)
         .collection('messages')
         .orderBy('timeSent', descending: true)
         .limit(intLimit)
         .snapshots();
   }
 
-  void sendMessage(String groupChatId, String content, String senderId,
+  void sendMessage(String contractId, String content, String senderId,
       String recieverId, int type) async {
     await firebaseFirestore
-        .collection('chat')
-        .doc(groupChatId)
+        .collection('Contracts')
+        .doc(contractId)
         .collection('messages')
         .add({
       'content': content,

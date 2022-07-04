@@ -1,15 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/paymentProcess/pzcoin.dart';
+import 'package:zone/screens/auth/fire_auth.dart';
+import 'package:zone/screens/auth/login1.dart';
 import 'package:zone/screens/auth/signup.dart';
+import 'package:zone/screens/mainPages/InDashBoard/chats/chatProvider.dart';
 import 'package:zone/screens/mainPages/addOfferMain/addOfferScreen.dart';
 import 'package:zone/screens/mainPages/addProjectScreen.dart';
 import 'package:zone/screens/mainPages/InDashBoard/dashboard.dart';
 import 'package:zone/screens/mainPages/OffersScreen.dart';
+import 'package:zone/screens/mainPages/homeScreen/homeScreen.dart';
 import 'package:zone/screens/mainPages/leaderboard/leaderboard.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
@@ -25,15 +32,30 @@ class mainPage extends StatefulWidget {
 }
 
 class _mainPageState extends State<mainPage> {
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
   @override
   void initState() {
     super.initState();
     getData();
+    registerNotification();
+    configureLocalNotification();
   }
 
   int currentTab = 0;
-
+  String uid = " ";
   var CurrentUserData = {};
+
+  Future<void> updateDataFirestore(String collectionPath, String docPath,
+      Map<String, dynamic> dataNeedUpdate) {
+    return firebaseFirestore
+        .collection(collectionPath)
+        .doc(docPath)
+        .update(dataNeedUpdate);
+  }
 
   getData() async {
     try {
@@ -43,9 +65,10 @@ class _mainPageState extends State<mainPage> {
           .get();
       CurrentUserData = snap2.data()!;
 
-      setState(() {});
-    } catch (e) {
-    }
+      setState(() {
+        uid = CurrentUserData['uid'];
+      });
+    } catch (e) {}
   }
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -53,22 +76,112 @@ class _mainPageState extends State<mainPage> {
 
   bool _isLoading = false;
 
+  void registerNotification() {
+    firebaseMessaging.requestPermission();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        showNotification(message.notification!);
+      }
+      return;
+    });
+    firebaseMessaging.getToken().then((token) {
+      if (token != null) {
+        updateDataFirestore('users', FirebaseAuth.instance.currentUser!.uid,
+            {'pushToken': token});
+      }
+    }).catchError((error) {
+      Fluttertoast.showToast(msg: error.toString());
+    });
+  }
+
+  void configureLocalNotification() {
+    AndroidInitializationSettings initializationAndroidSettings =
+        AndroidInitializationSettings("a512");
+    IOSInitializationSettings initializationIosSettings =
+        IOSInitializationSettings();
+    InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationAndroidSettings, iOS: initializationIosSettings);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  void showNotification(RemoteNotification remoteNotification) async {
+    AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails('com.zone.appers.zone', "The Zone",
+            playSound: true,
+            enableLights: true,
+            enableVibration: true,
+            importance: Importance.max,
+            priority: Priority.high);
+
+    IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails();
+    NotificationDetails notificationDetails = NotificationDetails(
+        android: androidNotificationDetails, iOS: iosNotificationDetails);
+
+    await flutterLocalNotificationsPlugin.show(0, remoteNotification.title,
+        remoteNotification.body, notificationDetails,
+        payload: null);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> screens = [
+      const homeScreen(),
       const dashboard(),
       const leaderBoard(),
       const postScreen(),
       const personalOffersScreen(),
       profileScreen(
-        uid: FirebaseAuth.instance.currentUser!.uid,
+        uid: uid,
         isVisiting: false,
       )
     ];
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
+          leading: FittedBox(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.exit_to_app,
+                    color: primaryColor,
+                  ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(""),
+                          content: Text("Are you sure you want to logout?"),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  navigatePop(context, widget);
+                                },
+                                child: Text(
+                                  "Cancel",
+                                  style: TextStyle(color: offersColor),
+                                )),
+                            TextButton(
+                                onPressed: () async {
+                                  await FireAuth().signOut();
+                                  navigateToWithoutBack(context, login1());
+                                },
+                                child: Text(
+                                  "Ok",
+                                  style: TextStyle(color: Colors.red),
+                                )),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
           elevation: 0,
           backgroundColor: offersColor,
           centerTitle: true,
@@ -98,10 +211,10 @@ class _mainPageState extends State<mainPage> {
                         children: [
                           FittedBox(
                               child: Icon(
-                            Icons.monetization_on,
-                            color: offersColor,
-                            size: 30,
-                          )),
+                                Icons.monetization_on,
+                                color: offersColor,
+                                size: 30,
+                              )),
                           FittedBox(
                             child: Text(
                               "  0.0 ",
@@ -124,6 +237,10 @@ class _mainPageState extends State<mainPage> {
             tabs: [
               Tab(
                 text: 'Home',
+                icon: Icon(Icons.home),
+              ),
+              Tab(
+                text: 'Dashboard',
                 icon: Icon(Icons.dashboard),
               ),
               Tab(
@@ -143,11 +260,11 @@ class _mainPageState extends State<mainPage> {
         ),
         body: TabBarView(
           children: [
+            homeScreen(),
             dashboard(),
             leaderBoard(),
             personalOffersScreen(),
-            profileScreen(
-                uid: FirebaseAuth.instance.currentUser!.uid, isVisiting: false)
+            profileScreen(uid: uid, isVisiting: false)
           ],
         ),
         floatingActionButton: Container(

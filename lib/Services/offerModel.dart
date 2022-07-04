@@ -22,25 +22,30 @@ class Offer {
   final faqQuestion;
   final faqAnswer;
   final searchKeys;
+  final ratingCounter;
+  final totalRating;
 
-  const Offer(
-      {required this.title,
-      required this.fname,
-      required this.lname,
-      required this.username,
-      required this.uid,
-      required this.description,
-      required this.rating,
-      required this.rank,
-      required this.PhotoUrl,
-      required this.datePublished,
-      required this.timeNeeded,
-      required this.price,
-      required this.offerId,
-      required this.categoryTags,
-      required this.faqQuestion,
-      required this.faqAnswer,
-      required this.searchKeys});
+  const Offer({
+    required this.title,
+    required this.fname,
+    required this.lname,
+    required this.username,
+    required this.uid,
+    required this.description,
+    required this.rating,
+    required this.rank,
+    required this.PhotoUrl,
+    required this.datePublished,
+    required this.timeNeeded,
+    required this.price,
+    required this.offerId,
+    required this.categoryTags,
+    required this.faqQuestion,
+    required this.faqAnswer,
+    required this.searchKeys,
+    required this.ratingCounter,
+    required this.totalRating,
+  });
 
   Map<String, dynamic> toJson() => {
         "title": title,
@@ -59,7 +64,9 @@ class Offer {
         "categoryTags": categoryTags,
         "faqQuestion": faqQuestion,
         "faqAnswer": faqAnswer,
-        "searchKeys": searchKeys
+        "searchKeys": searchKeys,
+        "ratingCounter": ratingCounter,
+        "totalRating": totalRating
       };
 
   static Offer fromSnap(DocumentSnapshot snap) {
@@ -82,6 +89,8 @@ class Offer {
         categoryTags: snapshot['categoryTags'],
         faqQuestion: snapshot['faqQuestion'],
         faqAnswer: snapshot['faqAnswer'],
-        searchKeys: snapshot['searchKeys']);
+        searchKeys: snapshot['searchKeys'],
+        ratingCounter: snapshot['ratingCounter'],
+        totalRating: snapshot['totalRating']);
   }
 }
