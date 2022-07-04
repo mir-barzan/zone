@@ -198,7 +198,7 @@ class _HomeOfferCard extends State<HomeOfferCard> {
                                       size: 35,
                                     ),
                                     Text(
-                                      "${rate.toStringAsFixed(1)}",
+                                      "${rate.isNaN ? 0 : rate.toStringAsFixed(1)}",
                                       style: TextStyle(
                                           fontSize: 20,
                                           color: primaryColor,

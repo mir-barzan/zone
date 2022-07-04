@@ -23,6 +23,7 @@ import 'package:zone/screens/mainPages/offerProfile.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
 import '../../../../widgets/AdditionalWidgets.dart';
 import 'homeOfferCard.dart';
+enum Menu { itemOne, itemTwo, itemThree, itemFour }
 
 class homeScreen extends StatefulWidget {
   const homeScreen({Key? key}) : super(key: key);
@@ -130,6 +131,8 @@ class _homeScreenState extends State<homeScreen> {
     );
   }
 
+  String _selectedMenu = '';
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -198,12 +201,6 @@ class _homeScreenState extends State<homeScreen> {
                           ],
                         ),
                       ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.filter_alt,
-                            color: primaryColor,
-                          ))
                     ],
                   ),
                   Container(
@@ -215,6 +212,73 @@ class _homeScreenState extends State<homeScreen> {
             ),
           ),
         ),
+        actions: [
+          PopupMenuButton<Menu>(
+              icon: Icon(
+                Icons.filter_alt,
+                color: primaryColor,
+              ),
+              // Callback that sets the selected popup menu item.
+              onSelected: (Menu item) {
+                setState(() {
+                  _selectedMenu = item.name;
+                });
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemOne,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Top Sales'),
+                          Icon(
+                            Icons.monetization_on_outlined,
+                            color: Colors.amber,
+                          )
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemTwo,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Top Rated'),
+                          Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          )
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemThree,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('New Offers'),
+                          Icon(
+                            Icons.timer_sharp,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemFour,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Old Offers'),
+                          Icon(
+                            Icons.access_time_rounded,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ),
+                  ])
+        ],
       ),
       body: isShowing
           ? Column(

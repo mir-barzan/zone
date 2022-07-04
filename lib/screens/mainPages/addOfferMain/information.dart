@@ -3743,6 +3743,8 @@ class informationScreenState extends State<informationScreen>
                                 setState(() {
                                   isBadWord = true;
                                 });
+                              } else {
+                                isBadWord = false;
                               }
                             });
                           },
@@ -3772,12 +3774,13 @@ class informationScreenState extends State<informationScreen>
                               });
                             }
                           } else {
-                            ///
+                            ///nothing to add
                           }
                         },
                         child: Text("Add"),
                         style: ElevatedButton.styleFrom(
-                            shape: StadiumBorder(), primary: offersColor),
+                            shape: StadiumBorder(),
+                            primary: isBadWord ? Colors.red : offersColor),
                       ),
                       Container(
                           margin: EdgeInsets.all(2),

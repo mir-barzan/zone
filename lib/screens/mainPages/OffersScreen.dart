@@ -10,6 +10,7 @@ import 'package:zone/screens/mainPages/offerProfile.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
 import 'addOfferMain/mainOfferCard.dart';
+enum Menu { itemOne, itemTwo, itemThree, itemFour }
 
 class personalOffersScreen extends StatefulWidget {
   const personalOffersScreen({Key? key, bool isUploaded = false})
@@ -38,6 +39,8 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
         .get();
     snap2 = snapx.data()!;
   }
+
+  String _selectedMenu = '';
 
   @override
   Widget build(BuildContext context) {
@@ -109,12 +112,6 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                           ],
                         ),
                       ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.filter_alt,
-                            color: primaryColor,
-                          ))
                     ],
                   ),
                   Container(
@@ -126,6 +123,73 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
             ),
           ),
         ),
+        actions: [
+          PopupMenuButton<Menu>(
+              icon: Icon(
+                Icons.filter_alt,
+                color: primaryColor,
+              ),
+              // Callback that sets the selected popup menu item.
+              onSelected: (Menu item) {
+                setState(() {
+                  _selectedMenu = item.name;
+                });
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemOne,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Top Sales'),
+                          Icon(
+                            Icons.monetization_on_outlined,
+                            color: Colors.amber,
+                          )
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemTwo,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Top Rated'),
+                          Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          )
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemThree,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('New Offers'),
+                          Icon(
+                            Icons.timer_sharp,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemFour,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Old Offers'),
+                          Icon(
+                            Icons.access_time_rounded,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ),
+                  ])
+        ],
       ),
       body: isShowing
           ? FutureBuilder(
