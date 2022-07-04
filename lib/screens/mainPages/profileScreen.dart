@@ -12,6 +12,7 @@ import 'package:zone/screens/SeeUserOffers.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
 import 'package:zone/screens/auth/login.dart';
 import 'package:zone/screens/mainPages/addOfferMain/mainOfferCard.dart';
+import 'package:zone/screens/mainPages/usercommentsScreen.dart';
 import 'package:zone/screens/settingsScreens/Portfolio/MainPortfolioCard.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
@@ -67,6 +68,10 @@ class _profileScreenState extends State<profileScreen> {
   }
 
   var userData = {};
+  var comments = {};
+  int commentsLength = 0;
+  double totalRate = 0;
+  double rate = 0;
 
   getData() async {
     try {
@@ -79,6 +84,12 @@ class _profileScreenState extends State<profileScreen> {
           .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get();
 
+      var snap3 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .collection('comments')
+          .get();
+
       portLen = portSnap.docs.length;
       userData = snap.data()!;
       username = userData['username'];
@@ -86,7 +97,15 @@ class _profileScreenState extends State<profileScreen> {
       userRating = userData['rating'];
       userId = userData['uid'];
       skills = userData['skills'];
-      setState(() {});
+      setState(() {
+        commentsLength = snap3.docs.length;
+        snap3.docs.forEach((value) {
+          var rate = value.data()!['rate'];
+          totalRate = totalRate + rate;
+        });
+        rate = totalRate / commentsLength;
+        print(rate);
+      });
     } catch (e) {}
   }
 
@@ -212,22 +231,34 @@ class _profileScreenState extends State<profileScreen> {
                                               fontWeight: FontWeight.bold,
                                               color: offersColor),
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            FittedBox(
-                                              child: rating(
-                                                  double.parse(userRating),
-                                                  true,
-                                                  20),
-                                            ),
-                                            Text(
-                                              '(${userData['ratingCounter']})',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            )
-                                          ],
+                                        InkWell(
+                                          onTap: () {
+                                            navigateTo(
+                                                context,
+                                                userComments(
+                                                    userId: widget.uid));
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              FittedBox(
+                                                child: rating(
+                                                    rate.isNaN
+                                                        ? 0
+                                                        : double.parse(rate
+                                                            .toStringAsFixed(
+                                                                1)),
+                                                    true,
+                                                    19),
+                                              ),
+                                              Text(
+                                                '(${commentsLength})',
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              )
+                                            ],
+                                          ),
                                         )
                                       ],
                                       mainAxisAlignment:

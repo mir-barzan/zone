@@ -42,18 +42,24 @@ class _login1State extends State<login1> {
       setState(() {
         _isLoading = true;
       });
-      await FireAuth().signInUser(context,
-          email: EmailField.trim(), password: PasswordField.trim());
 
-      navigateToWithoutBack(
-          context,
-          mainPage(
-            isFromSettings: false,
-          ));
+      String result = await FireAuth().signInUser(context,
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+
+      if (result == 'success') {
+        navigateToWithoutBack(
+            context,
+            mainPage(
+              isFromSettings: false,
+            ));
+        Fluttertoast.showToast(msg: "Logged In successfully");
+      } else {
+        Fluttertoast.showToast(msg: "Error Login\nPlease check your entry");
+      }
       setState(() {
         _isLoading = false;
       });
-      Fluttertoast.showToast(msg: "Logged In successfully");
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
       setState(() {
@@ -159,7 +165,9 @@ class _login1State extends State<login1> {
                                       // signInUser();
                                       try {
                                         signInUser();
-                                      } catch (e) {}
+                                      } catch (e) {
+                                        navigateTo(context, login1());
+                                      }
                                       print("###########################");
                                       print(_emailController.text);
                                       print(_passwordController.text);

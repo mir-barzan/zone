@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zone/Services/dataSearch.dart';
 import 'package:zone/additional/colors.dart';
+import 'package:zone/screens/mainPages/homeScreen/homeOfferCard.dart';
 import 'package:zone/screens/mainPages/offerProfile.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
 
 import 'addOfferMain/mainOfferCard.dart';
+enum Menu { itemOne, itemTwo, itemThree, itemFour }
 
 class personalOffersScreen extends StatefulWidget {
   const personalOffersScreen({Key? key, bool isUploaded = false})
@@ -38,6 +40,8 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
     snap2 = snapx.data()!;
   }
 
+  String _selectedMenu = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,41 +66,52 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                             color: Colors.grey.shade50,
                             borderRadius: BorderRadius.circular(30)),
                         padding: EdgeInsets.all(10),
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: Form(
-                          child: TextFormField(
-                            controller: searchControlling,
-                            onChanged: (value) {
-                              setState(() {
-                                isShowing = true;
-                              });
-                              if (searchControlling.text.isEmpty) {
-                                setState(() {
-                                  isShowing = false;
-                                });
-                              }
-                            },
-                            decoration: const InputDecoration.collapsed(
-                                hintText: 'Search for an offer'),
-                            onFieldSubmitted: (String _) {
-                              setState(() {
-                                isShowing = true;
-                                searchKey = searchControlling
-                                    .text.characters.first
-                                    .toString()
-                                    .toLowerCase();
-                              });
-                              print(_);
-                            },
-                          ),
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Form(
+                                child: TextFormField(
+                                  controller: searchControlling,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isShowing = true;
+                                    });
+                                    if (searchControlling.text.isEmpty) {
+                                      setState(() {
+                                        isShowing = false;
+                                      });
+                                    }
+                                  },
+                                  decoration: InputDecoration.collapsed(
+                                      hintText: 'Search'),
+                                  onFieldSubmitted: (String _) {
+                                    setState(() {
+                                      isShowing = true;
+                                      searchKey = searchControlling
+                                          .text.characters.first
+                                          .toString()
+                                          .toLowerCase();
+                                    });
+                                    print(_);
+                                  },
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    isShowing = false;
+                                    searchControlling.text = "";
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.close,
+                                  color: Colors.grey,
+                                ))
+                          ],
                         ),
                       ),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.filter_alt,
-                            color: primaryColor,
-                          ))
                     ],
                   ),
                   Container(
@@ -108,6 +123,73 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
             ),
           ),
         ),
+        actions: [
+          PopupMenuButton<Menu>(
+              icon: Icon(
+                Icons.filter_alt,
+                color: primaryColor,
+              ),
+              // Callback that sets the selected popup menu item.
+              onSelected: (Menu item) {
+                setState(() {
+                  _selectedMenu = item.name;
+                });
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemOne,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Top Sales'),
+                          Icon(
+                            Icons.monetization_on_outlined,
+                            color: Colors.amber,
+                          )
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemTwo,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Top Rated'),
+                          Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          )
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemThree,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('New Offers'),
+                          Icon(
+                            Icons.timer_sharp,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<Menu>(
+                      value: Menu.itemFour,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text('Old Offers'),
+                          Icon(
+                            Icons.access_time_rounded,
+                            color: Colors.grey,
+                          )
+                        ],
+                      ),
+                    ),
+                  ])
+        ],
       ),
       body: isShowing
           ? FutureBuilder(
@@ -137,49 +219,16 @@ class _personalOffersScreenState extends State<personalOffersScreen> {
                                 ['uid'],
                           );
                         }),
-                          ),
-                      child: Container(
-                          margin: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: offersColor, width: 3)),
-                          child: Stack(
-                            children: [
-                              ListTile(
-                                title: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      'I will ${(snapshot.data! as dynamic).docs[index]['title']}',
-                                      maxLines: 2,
-                                    ),
-                                    rating(
-                                        double.parse((snapshot.data! as dynamic)
-                                            .docs[index]['rating']),
-                                        true,
-                                        10)
-                                  ],
-                                ),
-                                trailing: Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                      color: offersColor,
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(40),
-                                          bottomRight: Radius.circular(40))),
-                                  child: Text(
-                                    '\$ ${(snapshot.data! as dynamic).docs[index]['price']}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: primaryColor,
-                                        fontSize: 25),
-                                  ),
-                                ),
-                              ),
-                              Icon(Icons.local_offer_outlined)
-                            ],
-                          )),
+                      ),
+                      child: HomeOfferCard(
+                        isSearch: true,
+                        isLocal: false,
+                        snap2: (snapshot.data! as dynamic).docs[index],
+                        OwnerId: (snapshot.data! as dynamic).docs[index]['uid'],
+                        OfferId: (snapshot.data! as dynamic).docs[index]
+                            ['offerId'],
+                        snap: (snapshot.data! as dynamic).docs[index],
+                      ),
                     );
                   },
                 );

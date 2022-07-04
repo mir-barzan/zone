@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uuid/uuid.dart';
+import 'package:zone/Services/contractModel.dart';
 import 'package:zone/Services/storageSettings.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chatMsg.dart';
 
@@ -32,6 +34,44 @@ class FireStoreSettings{
       result = 'error';
     }
     return result;
+  }
+
+  Future<String> createContract(
+    amount,
+    StartingDate,
+    SellerUid,
+    BuyerUid,
+    OfferId,
+  ) async {
+    String contractId = "";
+    try {
+      contractId = Uuid().v1();
+      Contract contract = Contract(
+          totalTime: null,
+          endingDate: null,
+          sellerId: SellerUid,
+          buyerId: BuyerUid,
+          contractId: contractId,
+          startingDate: DateTime.now().toString(),
+          amount: amount,
+          offerId: OfferId);
+      await _firestore
+          .collection('Contracts')
+          .doc(contractId)
+          .set(contract.toJson());
+      await _firestore.collection('users').doc(SellerUid).set({
+        'activeContracts': FieldValue.arrayUnion([contractId])
+      }, SetOptions(merge: true));
+      await _firestore.collection('users').doc(BuyerUid).set({
+        'activeContracts': FieldValue.arrayUnion([contractId])
+      }, SetOptions(merge: true));
+
+      Fluttertoast.showToast(msg: 'Contract started successfully');
+      return contractId;
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Error starting contract');
+      return contractId;
+    }
   }
 
   Future<String> uploadOffer(
@@ -76,6 +116,8 @@ class FireStoreSettings{
         faqQuestion: faqQuestions,
         faqAnswer: faqAnswers,
         searchKeys: searchKeys(categoryTags),
+        ratingCounter: "0",
+        totalRating: "0",
       );
       _firestore.collection('Category').doc(offerId).set(offer.toJson());
 

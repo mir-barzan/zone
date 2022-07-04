@@ -2,8 +2,8 @@
     package="com.zone.appers.zone">
     <uses-permission android:name="com.android.vending.BILLING" />
    <application
-        android:label="zone"
-        android:name="${applicationName}"
+        android:label="The Zone"
+       android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

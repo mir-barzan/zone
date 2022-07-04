@@ -73,20 +73,21 @@ class FireAuth {
   }
 
   //ULI
-  Future<void> signInUser(
+  Future<String> signInUser(
     BuildContext context, {
     required String email,
     required String password,
   }) async {
+    String result = "error";
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
 
       print("########\n#######\n#######");
 
       print("########\n#######\n#######");
-    } catch (err) {
-      Fluttertoast.showToast(msg: err.toString());
-    }
+      result = "success";
+    } catch (err) {}
+    return result;
   }
 
   //TODO:::: Fix this part
@@ -146,7 +147,7 @@ class FireAuth {
     required String password,
     required BuildContext context,
   }) async {
-    String result = "";
+    String result = "error";
     try {
       if (fname.isNotEmpty ||
           lname.isNotEmpty ||
@@ -158,23 +159,25 @@ class FireAuth {
         //add user to the firebase database
         _firestore.collection('users').doc(cred.user!.uid);
         model.User user = model.User(
-          fname: fname,
-          lname: lname,
-          email: email,
-          password: password,
-          uid: cred.user!.uid,
-          username: fname + RandomStr,
-          dateCreated: DateTime.now().toString(),
-          activeContracts: [],
-          completedContracts: [],
-            favoriteOffers: []);
+            fname: fname.toLowerCase().trim(),
+            lname: lname.toLowerCase().trim(),
+            email: email.trim(),
+            password: password,
+            uid: cred.user!.uid,
+            username: fname.toLowerCase() + lname.toLowerCase() + RandomStr,
+            dateCreated: DateTime.now().toString(),
+            activeContracts: [],
+            completedContracts: [],
+            favoriteOffers: [],
+            totalRating: '0');
         await _firestore.collection('users').doc(cred.user!.uid).set(
-          user.toJson(),
-        );
+              user.toJson(),
+            );
         result = "success";
       }
-    } catch (err) {
-      result = err.toString();
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.toString().split(']')[1]);
+      print(e.toString());
     }
     return result;
   }

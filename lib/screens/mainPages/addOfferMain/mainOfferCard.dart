@@ -27,21 +27,91 @@ class MainOfferCard extends StatefulWidget {
 
 class _MainOfferCard extends State<MainOfferCard> {
   bool isFavorite = false;
-  var snap3 = {};
+  var snap55 = {};
   List favOffers = [];
+  String rrating = '0';
+  int commentsLength = 0;
+  double totalRate = 0;
+  double rate = 0;
+  int usercommentsLength = 0;
+  double usertotalRate = 0;
+  double userrate = 0;
+  var offerData = {};
+  var userData = {};
+  var CurrentUserData = {};
+  var snap3 = {};
 
   void getData() async {
-    var snapx = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-    snap3 = snapx.data()!;
-    favOffers = snap3['favoriteOffers'];
-    if (favOffers.contains(widget.snap['offerId'])) {
+    try {
+      var snapx = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      snap55 = snapx.data()!;
+      favOffers = snap55['favoriteOffers'];
+      if (favOffers.contains(widget.snap['offerId'])) {
+        setState(() {
+          isFavorite = true;
+        });
+      }
+      var snap = await FirebaseFirestore.instance
+          .collection('Category')
+          .doc(widget.snap['offerId'])
+          .get();
+      var snap2 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      var snap5 = await FirebaseFirestore.instance
+          .collection('Category')
+          .doc(widget.snap['offerId'])
+          .collection('comments')
+          .get();
+      offerData = snap.data()!;
+      var snap4 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.snap['uid'])
+          .collection('comments')
+          .get();
+
+      var snap6 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.snap['uid'])
+          .get();
+      userData = snap6.data()!;
+      var snapxx = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      snap3 = snapxx.data()!;
       setState(() {
-        isFavorite = true;
+        favOffers = snap3['favoriteOffers'];
+        if (favOffers.contains(widget.snap['offerId'])) {
+          setState(() {
+            isFavorite = true;
+          });
+        }
       });
-    }
+      setState(() {
+        commentsLength = snap5.docs.length;
+        snap5.docs.forEach((value) {
+          var rate = value.data()!['rate'];
+          totalRate = totalRate + rate;
+        });
+        usercommentsLength = snap4.docs.length;
+        snap4.docs.forEach((value) {
+          var rate = value.data()!['rate'];
+          usertotalRate = usertotalRate + rate;
+        });
+        rate = totalRate / commentsLength;
+        userrate = usertotalRate / usercommentsLength;
+
+        CurrentUserData = snap2.data()!;
+
+        rrating = userData['rating'];
+      });
+      print(rate);
+    } catch (e) {}
   }
 
   @override
@@ -168,8 +238,7 @@ class _MainOfferCard extends State<MainOfferCard> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              rating(double.parse(widget.snap['rating']), true,
-                                  11.5)
+                              rating(rate.isNaN ? 0 : rate, true, 11.5)
                             ],
                           ),
                         ],

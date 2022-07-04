@@ -4,8 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:zone/Services/FireStoreSettings.dart';
 import 'package:zone/screens/mainPages/InDashBoard/chats/chatScreen.dart';
+import 'package:zone/screens/mainPages/offerCommentsScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
+import 'package:zone/screens/mainPages/usercommentsScreen.dart';
 
 import '../../additional/colors.dart';
 import '../../widgets/AdditionalWidgets.dart';
@@ -34,12 +37,17 @@ class _offerProfileState extends State<offerProfile> {
   void initState() {
     super.initState();
     getData();
-    getUserData();
   }
 
   List? ques = [];
   List? answ = [];
   String rrating = '0';
+  int commentsLength = 0;
+  double totalRate = 0;
+  double rate = 0;
+  int usercommentsLength = 0;
+  double usertotalRate = 0;
+  double userrate = 0;
 
   getData() async {
     try {
@@ -51,26 +59,46 @@ class _offerProfileState extends State<offerProfile> {
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
+      var snap3 = await FirebaseFirestore.instance
+          .collection('Category')
+          .doc(widget.uid)
+          .collection('comments')
+          .get();
+      offerData = snap.data()!;
+      var snap4 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(offerData['uid'])
+          .collection('comments')
+          .get();
+
+      var snap5 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.ownerUid)
+          .get();
+      userData = snap5.data()!;
 
       setState(() {
+        commentsLength = snap3.docs.length;
+        snap3.docs.forEach((value) {
+          var rate = value.data()!['rate'];
+          totalRate = totalRate + rate;
+        });
+        usercommentsLength = snap4.docs.length;
+        snap4.docs.forEach((value) {
+          var rate = value.data()!['rate'];
+          usertotalRate = usertotalRate + rate;
+        });
+        rate = totalRate / commentsLength;
+        userrate = usertotalRate / usercommentsLength;
+        print(rate);
+
         CurrentUserData = snap2.data()!;
-        offerData = snap.data()!;
+
         username = offerData['username'];
         ques = offerData['faqQuestion'];
         answ = offerData['faqAnswer'];
         rrating = userData['rating'];
       });
-    } catch (e) {}
-  }
-
-  getUserData() async {
-    try {
-      var snap = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(widget.ownerUid)
-          .get();
-      userData = snap.data()!;
-      setState(() {});
     } catch (e) {}
   }
 
@@ -113,10 +141,19 @@ class _offerProfileState extends State<offerProfile> {
                 Positioned(
                     top: 150,
                     left: 308,
-                    child: RatingbadgeUp(
-                      offerData['rating'],
-                      90,
-                      90,
+                    child: GestureDetector(
+                      onTap: () {
+                        navigateTo(
+                            context,
+                            offerComments(
+                              offerId: offerData['offerId'],
+                            ));
+                      },
+                      child: RatingbadgeUp(
+                        rate.isNaN ? '0' : rate.toStringAsFixed(1),
+                        90,
+                        90,
+                      ),
                     ))
               ]),
             ),
@@ -235,10 +272,16 @@ class _offerProfileState extends State<offerProfile> {
                 ),
                 Column(
                   children: [
-                    Ratingbadge(
-                      rrating,
-                      90,
-                      90,
+                    GestureDetector(
+                      onTap: () {
+                        navigateTo(
+                            context, userComments(userId: offerData['uid']));
+                      },
+                      child: Ratingbadge(
+                        userrate.isNaN ? '0' : userrate.toStringAsFixed(1),
+                        90,
+                        90,
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -300,10 +343,18 @@ class _offerProfileState extends State<offerProfile> {
         children: [
           GestureDetector(
             onTap: () async {
-              await setActiveContract();
+              String contractId = await FireStoreSettings().createContract(
+                  offerData['price'],
+                  DateTime.now().toString(),
+                  userData['uid'],
+                  CurrentUserData['uid'],
+                  offerData['offerId']);
+
               navigateToWithoutBack(
                 context,
                 chatScreen(
+                    contractId: contractId,
+                    isNewContract: false,
                     userAvatar: CurrentUserData['profilePhotoUrl'],
                     peerAvatar: userData['profilePhotoUrl'],
                     peerId: userData['uid'],
@@ -371,32 +422,32 @@ class _offerProfileState extends State<offerProfile> {
     setState(() {});
   }
 
-  setActiveContract() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      List currentlyActiveForUser = CurrentUserData['activeContracts'];
-      List currentlyActiveForOfferSeller = userData['activeContracts'];
-      currentlyActiveForUser.add(userData['uid']);
-      currentlyActiveForOfferSeller.add(CurrentUserData['uid']);
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(CurrentUserData['uid'])
-          .update({'activeContracts': currentlyActiveForUser});
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userData['uid'])
-          .update({'activeContracts': currentlyActiveForOfferSeller});
-      setState(() {
-        isLoading = false;
-      });
-      Fluttertoast.showToast(msg: "Activated Offer Successfully");
-    } catch (e) {
-      Fluttertoast.showToast(msg: e.toString());
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+// setActiveContract() async {
+//   try {
+//     setState(() {
+//       isLoading = true;
+//     });
+//     List currentlyActiveForUser = CurrentUserData['activeContracts'];
+//     List currentlyActiveForOfferSeller = userData['activeContracts'];
+//     currentlyActiveForUser.add(userData['uid']);
+//     currentlyActiveForOfferSeller.add(CurrentUserData['uid']);
+//     await FirebaseFirestore.instance
+//         .collection('users')
+//         .doc(CurrentUserData['uid'])
+//         .update({'activeContracts': currentlyActiveForUser});
+//     await FirebaseFirestore.instance
+//         .collection('users')
+//         .doc(userData['uid'])
+//         .update({'activeContracts': currentlyActiveForOfferSeller});
+//     setState(() {
+//       isLoading = false;
+//     });
+//     Fluttertoast.showToast(msg: "Activated Offer Successfully");
+//   } catch (e) {
+//     Fluttertoast.showToast(msg: e.toString());
+//     setState(() {
+//       isLoading = false;
+//     });
+//   }
+// }
 }
