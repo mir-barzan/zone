@@ -707,34 +707,3 @@ class _profileScreenState extends State<profileScreen> {
     }
   }
 }
-
-class customeShowcaseWidget extends StatelessWidget {
-  final Widget child;
-  final String desccription;
-  final GlobalKey globalKey;
-
-  const customeShowcaseWidget({
-    required this.desccription,
-    required this.child,
-    required this.globalKey,
-  });
-  @override
-  Widget build(BuildContext context) => Showcase(
-        key: globalKey,
-        showcaseBackgroundColor: Colors.pink.shade400,
-        contentPadding: EdgeInsets.all(12),
-        showArrow: true,
-        disableAnimation: false,
-        title: 'Hello',
-        titleTextStyle: TextStyle(color: Colors.white, fontSize: 32),
-        description: desccription,
-        descTextStyle: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
-        overlayColor: Colors.white,
-        overlayOpacity: 0.3,
-        child: child,
-      );
-}

@@ -21,6 +21,7 @@ import 'package:zone/screens/mainPages/leaderboard/leaderboard.dart';
 import 'package:zone/screens/mainPages/postScreen.dart';
 import 'package:zone/screens/mainPages/profileScreen.dart';
 import 'package:zone/widgets/AdditionalWidgets.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class mainPage extends StatefulWidget {
   final isFromSettings;
@@ -36,6 +37,19 @@ class _mainPageState extends State<mainPage> {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+//this key for showcases
+  int selectedIndex = 0;
+  final key1 = GlobalKey();
+  final key2 = GlobalKey();
+  final key3 = GlobalKey();
+  final key4 = GlobalKey();
+  final key5 = GlobalKey();
+  final key6 = GlobalKey();
+  final key7 = GlobalKey();
+  final key8 = GlobalKey();
+  final key9 = GlobalKey();
+  final key10 = GlobalKey();
+  final key11 = GlobalKey();
 
   @override
   void initState() {
@@ -43,6 +57,21 @@ class _mainPageState extends State<mainPage> {
     getData();
     registerNotification();
     configureLocalNotification();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => ShowCaseWidget.of(context).startShowCase([
+        key1,
+        key2,
+        key3,
+        key4,
+        key5,
+        key6,
+        key7,
+        key8,
+        key9,
+        key10,
+        key11,
+      ]),
+    );
   }
 
   int currentTab = 0;
@@ -144,40 +173,24 @@ class _mainPageState extends State<mainPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(
-                    Icons.exit_to_app,
-                    color: primaryColor,
+                  onPressed: () => setState(() {
+                    ShowCaseWidget.of(context)!.startShowCase([
+                      key1,
+                      key2,
+                      key3,
+                      key4,
+                      key5,
+                      key6,
+                      key7,
+                      key8,
+                      key9,
+                      key10,
+                      key11,
+                    ]);
+                  }),
+                  icon: const Icon(
+                    Icons.help_rounded,
                   ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(""),
-                          content: Text("Are you sure you want to logout?"),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  navigatePop(context, widget);
-                                },
-                                child: Text(
-                                  "Cancel",
-                                  style: TextStyle(color: offersColor),
-                                )),
-                            TextButton(
-                                onPressed: () async {
-                                  await FireAuth().signOut();
-                                  navigateToWithoutBack(context, login1());
-                                },
-                                child: Text(
-                                  "Ok",
-                                  style: TextStyle(color: Colors.red),
-                                )),
-                          ],
-                        );
-                      },
-                    );
-                  },
                 ),
               ],
             ),
@@ -211,10 +224,10 @@ class _mainPageState extends State<mainPage> {
                         children: [
                           FittedBox(
                               child: Icon(
-                                Icons.monetization_on,
-                                color: offersColor,
-                                size: 30,
-                              )),
+                            Icons.monetization_on,
+                            color: offersColor,
+                            size: 30,
+                          )),
                           FittedBox(
                             child: Text(
                               "  0.0 ",
@@ -236,41 +249,92 @@ class _mainPageState extends State<mainPage> {
             indicatorColor: primaryColor,
             tabs: [
               Tab(
-                text: 'Home',
-                icon: Icon(Icons.home),
-              ),
+                  text: 'Home',
+                  icon: customeShowcaseWidget(
+                    globalKey: key1,
+                    desccription:
+                        'Pressing this button will lead you to your home screen',
+                    child: Icon(Icons.home),
+                  )),
               Tab(
                 text: 'Dashboard',
-                icon: Icon(Icons.dashboard),
+                icon: customeShowcaseWidget(
+                  globalKey: key2,
+                  desccription:
+                      'Pressing this button will lead you to your dashboard screen',
+                  child: Icon(Icons.dashboard),
+                ),
               ),
               Tab(
-                text: 'Leader',
-                icon: Icon(Icons.flag),
-              ),
+                  text: 'Leader',
+                  icon: customeShowcaseWidget(
+                    globalKey: key3,
+                    desccription:
+                        'Pressing this button will lead you to Leader screen',
+                    child: Icon(Icons.flag),
+                  )),
               Tab(
-                text: 'Offers',
-                icon: Icon(Icons.local_offer),
-              ),
+                  text: 'Offers',
+                  icon: customeShowcaseWidget(
+                    globalKey: key4,
+                    desccription:
+                        'Pressing this button will lead you to offer screen',
+                    child: Icon(Icons.local_offer),
+                  )),
               Tab(
-                text: 'Profile',
-                icon: Icon(Icons.person),
-              ),
+                  text: 'Profile',
+                  icon: customeShowcaseWidget(
+                    globalKey: key5,
+                    desccription:
+                        'Pressing this button will lead you to your profile screen',
+                    child: Icon(Icons.person),
+                  )),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            homeScreen(),
-            dashboard(),
-            leaderBoard(),
-            personalOffersScreen(),
-            profileScreen(uid: uid, isVisiting: false)
+            customeShowcaseWidget(
+                desccription:
+                    'welcome to home screen where you can search for the offers or any thing else and filter them how you need',
+                child: homeScreen(),
+                globalKey: key7),
+            customeShowcaseWidget(
+              child: dashboard(),
+              desccription:
+                  'here is dashbord where you can navigate to the chats and look at the support also sales and your offers',
+              globalKey: key8,
+            ),
+            customeShowcaseWidget(
+              child: leaderBoard(),
+              desccription:
+                  'here is in this screen leader board where you can see the top freelancers rated by them sales',
+              globalKey: key9,
+            ),
+            customeShowcaseWidget(
+              child: personalOffersScreen(),
+              desccription:
+                  'here is   offers screen which can be easy to see the top offers also can search here for the ofeers too ;)7  ',
+              globalKey: key10,
+            ),
+            customeShowcaseWidget(
+              child: profileScreen(uid: uid, isVisiting: true),
+              desccription:
+                  'here is your profile  you can also edit it here by preesing edit buttun will lead you to profile edit screen' +
+                      'or go to sseting and uppdate or log out your profile',
+              globalKey: key11,
+            ),
           ],
         ),
         floatingActionButton: Container(
           margin: EdgeInsets.all(8),
           child: FloatingActionButton(
-            child: Icon(Icons.add),
+            child: customeShowcaseWidget(
+              globalKey: key6,
+              desccription:
+                  ' press this add  button to open for  you  adding offer page to Add Offers  ',
+              child: Icon(Icons.add),
+            ),
             onPressed: () {
               navigateTo(context, addOfferScreen());
             },
@@ -282,4 +346,34 @@ class _mainPageState extends State<mainPage> {
       ),
     );
   }
+}
+
+class customeShowcaseWidget extends StatelessWidget {
+  final Widget child;
+  final String desccription;
+  final GlobalKey globalKey;
+
+  const customeShowcaseWidget({
+    required this.desccription,
+    required this.child,
+    required this.globalKey,
+  });
+  @override
+  Widget build(BuildContext context) => Showcase(
+        key: globalKey,
+        showcaseBackgroundColor: Color.fromRGBO(5, 124, 120, 1),
+        contentPadding: EdgeInsets.all(12),
+        showArrow: true,
+        disableAnimation: false,
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 32),
+        description: desccription,
+        descTextStyle: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+        overlayColor: Colors.white,
+        overlayOpacity: 0.3,
+        child: child,
+      );
 }
