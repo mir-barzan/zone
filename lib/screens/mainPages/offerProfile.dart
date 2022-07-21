@@ -382,7 +382,7 @@ class _offerProfileState extends State<offerProfile> {
                           size: 24,
                         )
                       ],
-              ),
+                    ),
             ),
           )
         ],

@@ -13,9 +13,12 @@ import 'package:zone/widgets/widgets.dart';
 import 'package:zone/components/components.dart';
 import '../main_page.dart';
 import 'package:zone/screens/auth/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class login1 extends StatefulWidget {
   const login1({Key? key}) : super(key: key);
+
+  static Future init() async {}
 
   @override
   State<login1> createState() => _login1State();

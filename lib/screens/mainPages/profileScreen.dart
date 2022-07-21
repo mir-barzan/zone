@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:zone/additional/colors.dart';
 import 'package:zone/screens/SeeUserOffers.dart';
 import 'package:zone/screens/auth/fire_auth.dart';
@@ -44,23 +43,9 @@ class _profileScreenState extends State<profileScreen> {
   int portLen = 0;
 
   var sss;
-  final keyOne = GlobalKey();
-  final keyTwo = GlobalKey();
-  final keyThree = GlobalKey();
-  final keyFour = GlobalKey();
-  final keyFive = GlobalKey();
 
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => ShowCaseWidget.of(context).startShowCase([
-        keyOne,
-        keyTwo,
-        keyThree,
-        keyFour,
-        keyFive,
-      ]),
-    );
     getData();
     checkRank();
 
